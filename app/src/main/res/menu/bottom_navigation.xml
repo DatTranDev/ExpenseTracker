@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_home"
         android:id="@+id/home"/>
     <item
-        android:title="Sổ giao dịch"
+        android:title="Giao dịch"
         android:icon="@drawable/ic_transaction_log"
         android:id="@+id/transactionLog"/>
     <item
