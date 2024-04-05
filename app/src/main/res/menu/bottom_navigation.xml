@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Trang chủ"
+        android:icon="@drawable/ic_home"
+        android:id="@+id/home"/>
+    <item
+        android:title="Giao dịch"
+        android:icon="@drawable/ic_transaction_log"
+        android:id="@+id/transactionLog"/>
+    <item
+        android:title="Ngân sách"
+        android:icon="@drawable/ic_budget"
+        android:id="@+id/budget"/>
+    <item
+        android:title="Quỹ chung"
+        android:icon="@drawable/ic_mutual_fund"
+        android:id="@+id/mutualFund"/>
+    <item
+        android:title="Tài khoản"
+        android:icon="@drawable/ic_account"
+        android:id="@+id/account"/>
+</menu>
