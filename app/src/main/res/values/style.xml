@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GreenButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">#00DDB0</item> <!-- Set background color to white -->
+    </style>
+</resources>
