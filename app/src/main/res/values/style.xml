@@ -3,4 +3,8 @@
     <style name="GreenButton" parent="Widget.AppCompat.Button">
         <item name="android:background">#00DDB0</item> <!-- Set background color to white -->
     </style>
+    <style name="fab_rounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
