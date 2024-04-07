@@ -4,6 +4,7 @@
     <item
         android:title="Trang chủ"
         android:icon="@drawable/ic_home"
+        
         android:id="@+id/home"/>
     <item
         android:title="Giao dịch"
