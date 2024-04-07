@@ -89,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Password"
+        android:text="Mật khẩu"
         android:textSize="16sp"
         android:textColor="@color/light_gray"
         android:background="@drawable/input_text"
@@ -112,6 +112,7 @@
             android:buttonTint="@color/light_gray"
             android:buttonTintMode="multiply"
             app:layout_constraintTop_toBottomOf="@id/editTextTextPassword"
+            app:layout_constraintLeft_toLeftOf="parent"
             />
         <Button
             android:id="@+id/btnRegister"

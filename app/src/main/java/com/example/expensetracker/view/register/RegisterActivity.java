@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
         editTextEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
+                if (hasFocus&& editTextEmail.getText().toString().equals("Email") ){
                     editTextEmail.setText("");
                     editTextEmail.setTextColor(getResources().getColor(R.color.black));
                 }
@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         editTextName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
+                if (hasFocus && editTextName.getText().toString().equals("Họ và tên")) {
                     editTextName.setText("");
                     editTextName.setTextColor(getResources().getColor(R.color.black));
                 }
@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         editTextPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
+                if (hasFocus && editTextPassword.getText().toString().equals("Mật khẩu")){
                     editTextPassword.setText("");
                     editTextPassword.setTextColor(getResources().getColor(R.color.black));
                 }
