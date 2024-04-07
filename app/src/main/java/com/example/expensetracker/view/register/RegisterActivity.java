@@ -1,11 +1,14 @@
 package com.example.expensetracker.view.register;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.CompoundButtonCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.expensetracker.R;
@@ -21,13 +24,34 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        EditText editText = findViewById(R.id.editTextTextEmailAddress);
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        EditText editTextEmail = findViewById(R.id.editTextTextEmailAddress);
+        editTextEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    editText.setText("");
-                    editText.setTextColor(getResources().getColor(R.color.black));
+                    editTextEmail.setText("");
+                    editTextEmail.setTextColor(getResources().getColor(R.color.black));
+                }
+            }
+        });
+
+        EditText editTextName = findViewById(R.id.editTextTextPersonName);
+        editTextName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    editTextName.setText("");
+                    editTextName.setTextColor(getResources().getColor(R.color.black));
+                }
+            }
+        });
+        EditText editTextPassword = findViewById(R.id.editTextTextPassword);
+        editTextPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    editTextPassword.setText("");
+                    editTextPassword.setTextColor(getResources().getColor(R.color.black));
                 }
             }
         });
