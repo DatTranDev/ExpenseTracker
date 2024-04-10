@@ -1,16 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_blue"
+    android:padding="20dp"
     tools:context=".fragment.TransactionFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+
     <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Sổ giao dịch"
+        android:textSize="16sp"
+        android:textColor="#656565"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/filter"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Transaction Fragment"
-        android:textSize="24sp" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:padding="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/rounded_background"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <RadioButton
+            android:id="@+id/radioButtonDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/filter_selection_background"
+            android:button="@null"
+            android:checked="true"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="Ngày"
+            android:textColor="@color/filter_item_color"
+            android:textSize="12sp"
+            android:minHeight="0dp"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonMonth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:layout_height="wrap_content"
+            android:text="Tháng"
+            android:textSize="12sp"
+            android:padding="4dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:background="@drawable/filter_selection_background"
+            android:button="@null"
+            android:textColor="@color/filter_item_color"
+            android:gravity="center"
+            android:minHeight="0dp"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Năm"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:background="@drawable/filter_selection_background"
+            android:button="@null"
+            android:textColor="@color/filter_item_color"
+            android:gravity="center"
+            android:minHeight="0dp"/>
+
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter">
+
+        <TextView
+            android:id="@+id/transaction_filer_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="20sp"
+            android:text="Ngày 5/4/2024" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/transaction_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_filer_time"
+            tools:listitem="@layout/transaction_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
