@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:background="#F6F8FC"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:gravity="center"
+        android:text="Thêm chi tiêu"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="22dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextNumber2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:autofillHints="1"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="number"
+            android:textSize="40sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="bottom"
+            android:text="đ"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingRight="1dp">
+
+            <ImageButton
+                android:id="@+id/btn_spend"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/choose_type_button"
+                android:backgroundTint="@null"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+
+                android:src="@drawable/ic_spend" />
+
+            <ImageView
+                android:id="@+id/line"
+                android:layout_width="24dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/black_line" />
+
+            <ImageButton
+                android:id="@+id/btn_revenue"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/default_type_button"
+                android:backgroundTint="@null"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+
+                android:src="@drawable/ic_revenue" />
+
+            <ImageView
+                android:id="@+id/line2"
+                android:layout_width="24dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/black_line" />
+
+            <ImageButton
+                android:id="@+id/btn_loan"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/default_type_button"
+                android:backgroundTint="@null"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+
+                android:src="@drawable/ic_loan" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Khoản chi"
+                android:textSize="8sp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Khoản thu"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView14"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="44dp"
+                android:layout_height="14dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Vay, mượn"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/background_border_white"
+        android:backgroundTint="@null">
+
+        <ImageView
+            android:id="@+id/line3"
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/black_line" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="252dp"
+            android:layout_marginBottom="14dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_category" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Danh mục"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_border_white"
+        android:backgroundTint="@null">
+
+        <ImageView
+            android:id="@+id/line4"
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/black_line" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="252dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_calendar" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Thời gian"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_border_white"
+        android:backgroundTint="@null">
+
+        <ImageView
+            android:id="@+id/line5"
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/black_line" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="252dp"
+            android:layout_marginBottom="15dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_node" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Ghi chú"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_border_white"
+        android:backgroundTint="@null">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/black_line" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="252dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_wallet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Loại ví"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/choose_borrower"
+        android:visibility="gone"
+        android:layout_width="320dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_border_white"
+        android:backgroundTint="@null">
+
+        <ImageView
+
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/black_line" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="252dp"
+            android:layout_marginBottom="15dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_borrower" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Người vay"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#00DDB0"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Lưu"
+        android:textSize="15sp" />
+
+</LinearLayout>
