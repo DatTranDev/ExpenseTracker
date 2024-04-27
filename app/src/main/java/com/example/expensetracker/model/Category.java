@@ -5,7 +5,6 @@ public class Category {
     private String name;
     private boolean isPublic;
     private int iconId;
-    private String image;
     private int parentCategoryId;
     private int typeId;
 
@@ -15,7 +14,6 @@ public class Category {
         this.name = name;
         this.isPublic = isPublic;
         this.iconId = iconId;
-        this.image = image;
         this.parentCategoryId = parentCategoryId;
         this.typeId = typeId;
     }
@@ -51,14 +49,6 @@ public class Category {
 
     public void setIconId(int iconId) {
         this.iconId = iconId;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public int getParentCategoryId() {

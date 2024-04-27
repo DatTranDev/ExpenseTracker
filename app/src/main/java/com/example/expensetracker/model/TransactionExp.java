@@ -13,9 +13,10 @@ public class TransactionExp {
     private String partner;
     private int walletId;
     private Timestamp createdAt;
+    private String image;
 
     // Constructor
-    public TransactionExp(int id, int userId, int categoryId, String note, BigDecimal spend, int currencyId, String partner, int walletId, Timestamp createdAt) {
+    public TransactionExp(int id, int userId, int categoryId, String note, BigDecimal spend, int currencyId, String partner, int walletId, Timestamp createdAt, String image ) {
         this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
@@ -25,6 +26,7 @@ public class TransactionExp {
         this.partner = partner;
         this.walletId = walletId;
         this.createdAt = createdAt;
+        this.image = image;
     }
 
     // Getters and setters
@@ -98,5 +100,13 @@ public class TransactionExp {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getImage() {
+        return partner;
+    }
+
+    public void setImage(String partner) {
+        this.partner = partner;
     }
 }
