@@ -1,61 +1,60 @@
 package com.example.expensetracker.viewmodel;
 
-import android.content.Context;
-
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.expensetracker.BR;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
 
-public class LoginViewModel extends BaseObservable {
+public class RegisterViewModel extends BaseObservable {
     private String email;
-    private Context context;
     private String password;
+    private String userName;
+
     private MutableLiveData<String> toastMessage = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
-    private MutableLiveData<AppUser> appUserLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isRegistered = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    public MutableLiveData<Boolean> getIsLoading() {
-        return isLoading;
-    }
-    public MutableLiveData<AppUser> getAppUserLiveData() {
-        return appUserLiveData;
-    }
-    public  MutableLiveData<Boolean> getIsLoggedIn() {
-        return isLoggedIn;
-    }
-    public MutableLiveData<String> getToastMessage() {
-        return toastMessage;
-    }
-    @Bindable
     public String getEmail() {
         return email;
     }
     public void setEmail(String email) {
         this.email = email;
-        notifyPropertyChanged(BR.email);
     }
-    @Bindable
     public String getPassword() {
         return password;
     }
     public void setPassword(String password) {
         this.password = password;
     }
-    public void onClickLogin(){
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public MutableLiveData<String> getToastMessage() {
+        return toastMessage;
+    }
+    public MutableLiveData<Boolean> getIsRegistered() {
+        return isRegistered;
+    }
+    public MutableLiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
+    public void onClickRegister(){
         if(Helper.isValidEmail(getEmail())){
             isLoading.postValue(true);
-            AppUserRepository.getInstance().login(getEmail(), getPassword(), new ApiCallBack<AppUser>() {
+            AppUser appUser = new AppUser();
+            appUser.setEmail(getEmail());
+            appUser.setPassword(getPassword());
+            appUser.setUserName(getUserName());
+            AppUserRepository.getInstance().register(appUser, new ApiCallBack<AppUser>() {
                 @Override
                 public void onSuccess(AppUser appUser) {
-                    toastMessage.postValue("Welcome " + appUser.getUserName());
-                    isLoggedIn.postValue(true);
-                    appUserLiveData.postValue(appUser);
+                    toastMessage.postValue("Đăng ký thành công");
+                    isRegistered.postValue(true);
                     isLoading.postValue(false);
                 }
                 @Override
@@ -64,9 +63,8 @@ public class LoginViewModel extends BaseObservable {
                     isLoading.postValue(false);
                 }
             });
-        } else {
+        }else{
             toastMessage.postValue("Vui lòng nhập đúng định dạng email");
         }
     }
 }
-

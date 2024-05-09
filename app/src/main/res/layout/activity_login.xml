@@ -107,7 +107,7 @@
             android:text="Lưu đăng nhập"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:checked="false"
+            android:checked="true"
             android:fontFamily="@font/montserrat_semibold"
             android:buttonTint="@color/light_gray"
             android:buttonTintMode="multiply"

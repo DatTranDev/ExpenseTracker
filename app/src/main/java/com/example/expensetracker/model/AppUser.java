@@ -18,6 +18,7 @@ public class AppUser {
         this.email = email;
         this.alertTime = alertTime;
     }
+    public AppUser(){}
 
     // Getters and setters
     public String getId() {

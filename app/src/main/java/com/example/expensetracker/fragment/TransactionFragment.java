@@ -39,13 +39,13 @@ public class TransactionFragment extends Fragment {
         binding = FragmentTransactionBinding.inflate(inflater);
 
         ArrayList<TransactionExp> transactionExps = new ArrayList<>();
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("1", "1", "1", "oke", new BigDecimal(122), "1", "", "1", new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("2", "2", "2", "oke", new BigDecimal(122), "2", "", "2", new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("1", "1", "1", "oke", new BigDecimal(122), "1", "", "1", new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("2", "2", "2", "oke", new BigDecimal(122), "2", "", "2", new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("1", "1", "1", "oke", new BigDecimal(122), "1", "", "1", new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("2", "2", "2", "oke", new BigDecimal(122), "2", "", "2", new Timestamp(new Date().getTime()), ""));
+        transactionExps.add(new TransactionExp("1", "1", "1", "oke", new BigDecimal(122), "1", "", "1", new Timestamp(new Date().getTime()), ""));
 
         TransactionAdapter transactionAdapter = new TransactionAdapter(this.getContext(), transactionExps);
         binding.transactionList.setLayoutManager(new LinearLayoutManager(this.getContext()));
