@@ -18,9 +18,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     Context context;
     ArrayList<TransactionExp> transactionExps;
-    public TransactionAdapter(Context context, ArrayList<TransactionExp> transactionExps) {
+    public IClickItemListener vIClickItemListener;
+    public interface IClickItemListener {
+        void onClickItem(TransactionExp transactionExp);
+    }
+    public TransactionAdapter(Context context, ArrayList<TransactionExp> transactionExps, IClickItemListener listener) {
         this.context = context;
         this.transactionExps = transactionExps;
+        this.vIClickItemListener = listener;
     }
 
     @NonNull
@@ -34,6 +39,12 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         TransactionExp transactionExp = transactionExps.get(position);
         holder.binding.transactionPrice.setText(String.valueOf(transactionExp.getSpend()));
         holder.binding.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vIClickItemListener.onClickItem(transactionExp);
+            }
+        });
     }
 
     @Override
@@ -41,7 +52,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return transactionExps.size();
     }
 
-    public class TransactionViewHolder extends RecyclerView.ViewHolder {
+    public static class TransactionViewHolder extends RecyclerView.ViewHolder {
 
         TransactionItemBinding binding;
         public TransactionViewHolder(@NonNull View itemView) {

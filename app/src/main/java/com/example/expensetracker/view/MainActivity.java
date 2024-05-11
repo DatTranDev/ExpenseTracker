@@ -13,7 +13,9 @@ import com.example.expensetracker.fragment.AccountFragment;
 import com.example.expensetracker.fragment.BudgetFragment;
 import com.example.expensetracker.fragment.FundFragment;
 import com.example.expensetracker.fragment.HomeFragment;
+import com.example.expensetracker.fragment.TransactionDetailsFragment;
 import com.example.expensetracker.fragment.TransactionFragment;
+import com.example.expensetracker.model.TransactionExp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,4 +51,17 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    public void goToTransactionDetail(TransactionExp transactionExp) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("transaction", transactionExp);
+
+        transactionDetailsFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.contentLayout, transactionDetailsFragment);
+        fragmentTransaction.addToBackStack(TransactionDetailsFragment.TAG);
+        fragmentTransaction.commit();
+    }
 }

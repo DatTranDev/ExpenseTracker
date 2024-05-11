@@ -1,9 +1,10 @@
 package com.example.expensetracker.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class TransactionExp {
+public class TransactionExp implements Serializable {
     private int id;
     private int userId;
     private int categoryId;
