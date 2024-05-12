@@ -8,4 +8,7 @@ public class Helper {
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a, d/M/yyyy");
         return dateFormat.format(date);
     }
+    public static boolean isValidEmail(String email){
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 }

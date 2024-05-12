@@ -3,25 +3,27 @@ package com.example.expensetracker.model;
 import java.math.BigDecimal;
 
 public class Wallet {
-    private int id;
+    private String id;
     private String name;
     private BigDecimal amount;
+    private String currency;
     private boolean isSharing;
 
     // Constructor
-    public Wallet(int id, String name, BigDecimal amount, boolean isSharing) {
+    public Wallet(String id, String name, BigDecimal amount, String currency, boolean isSharing) {
         this.id = id;
         this.name = name;
         this.amount = amount;
+        this.currency = currency;
         this.isSharing = isSharing;
     }
 
     // Getters and setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -40,7 +42,12 @@ public class Wallet {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+    public String getCurrency() {
+        return currency;
+    }
     public boolean isSharing() {
         return isSharing;
     }

@@ -1,31 +1,29 @@
 package com.example.expensetracker.model;
 
 public class Category {
-    private int id;
+    private String id;
     private String name;
+    private String iconId;
+    private String parentCategoryId;
+    private String type;
     private boolean isPublic;
-    private int iconId;
-    private String image;
-    private int parentCategoryId;
-    private int typeId;
 
     // Constructor
-    public Category(int id, String name, boolean isPublic, int iconId, String image, int parentCategoryId, int typeId) {
+    public Category(String id, String name, boolean isPublic, String iconId, String image, String parentCategoryId, String type) {
         this.id = id;
         this.name = name;
         this.isPublic = isPublic;
         this.iconId = iconId;
-        this.image = image;
         this.parentCategoryId = parentCategoryId;
-        this.typeId = typeId;
+        this.type = type;
     }
 
     // Getters and setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -45,36 +43,28 @@ public class Category {
         isPublic = aPublic;
     }
 
-    public int getIconId() {
+    public String getIconId() {
         return iconId;
     }
 
-    public void setIconId(int iconId) {
+    public void setIconId(String iconId) {
         this.iconId = iconId;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getParentCategoryId() {
+    public String getParentCategoryId() {
         return parentCategoryId;
     }
 
-    public void setParentCategoryId(int parentCategoryId) {
+    public void setParentCategoryId(String parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }
 
-    public int getTypeId() {
-        return typeId;
+    public String getType() {
+        return type;
     }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
+    public void setType(String type) {
+        this.type = type;
     }
 }
 
