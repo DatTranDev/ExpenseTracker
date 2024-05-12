@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public class Budget {
     private String userId;
+    private AppUser user;
+    private Category category;
     private String categoryId;
     private BigDecimal amount;
     private String period;
@@ -17,6 +19,18 @@ public class Budget {
     }
 
     // Getters and setters
+    public AppUser getUser() {
+        return user;
+    }
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
     public String getUserId() {
         return userId;
     }

@@ -4,6 +4,7 @@ public class Category {
     private String id;
     private String name;
     private String iconId;
+    private Icon icon;
     private String parentCategoryId;
     private String type;
     private boolean isPublic;
@@ -57,6 +58,13 @@ public class Category {
 
     public void setParentCategoryId(String parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
 
     public String getType() {
