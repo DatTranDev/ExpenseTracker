@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class TransactionFragment extends Fragment {
     //    FragmentTransactionBinding binding;
@@ -51,13 +52,20 @@ public class TransactionFragment extends Fragment {
 
     private List<TransactionExp> getTransactionList() {
         List<TransactionExp> transactionExps = new ArrayList<>();
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke 1", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime())));
-        transactionExps.add(new TransactionExp(2, 1, 2, "oke 2", new BigDecimal(1142), 1, "", 2, new Timestamp(new Date().getTime())));
-        transactionExps.add(new TransactionExp(3, 1, 3, "oke 3", new BigDecimal(122551), 1, "", 2, new Timestamp(new Date().getTime())));
-        transactionExps.add(new TransactionExp(4, 1, 4, "oke 4", new BigDecimal(12522), 1, "", 2, new Timestamp(new Date().getTime())));
-        transactionExps.add(new TransactionExp(5, 1, 5, "oke 5", new BigDecimal(125162), 1, "", 2, new Timestamp(new Date().getTime())));
-        transactionExps.add(new TransactionExp(6, 1, 6, "oke 6", new BigDecimal(1152), 1, "", 2, new Timestamp(new Date().getTime())));
-        transactionExps.add(new TransactionExp(7, 1, 7, "oke 7", new BigDecimal(12212), 1, "", 2, new Timestamp(new Date().getTime())));
+        for (int i = 0; i < 10; i++) {
+            transactionExps.add(new TransactionExp(
+                    "id" + i + 1,
+                    "user" + i + 1,
+                    "category" + i + 1,
+                    "This is a note " + i + 1,
+                    new BigDecimal("" + new Random().nextInt(1000)),
+                    "VNĐ",
+                    "partner" + i +1,
+                    "wallet" + i + 1,
+                    new Timestamp(System.currentTimeMillis()),
+                    "image" + i + 1
+            ));
+        }
 
         return transactionExps;
     }

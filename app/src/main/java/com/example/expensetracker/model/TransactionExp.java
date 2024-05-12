@@ -108,15 +108,23 @@ public class TransactionExp implements Parcelable {
         this.createdAt = createdAt;
     }
 
+    public String getImage() {
+        return partner;
+    }
+
+    public void setImage(String partner) {
+        this.partner = partner;
+    }
+
     protected TransactionExp(Parcel in) {
-        id = in.readInt();
-        userId = in.readInt();
-        categoryId = in.readInt();
+        id = in.readString();
+        userId = in.readString();
+        categoryId = in.readString();
         note = in.readString();
         spend = (BigDecimal) in.readSerializable();
-        currencyId = in.readInt();
+        currency = in.readString();
         partner = in.readString();
-        walletId = in.readInt();
+        walletId = in.readString();
         createdAt = (Timestamp) in.readSerializable();
         image = in.readString();
     }
@@ -140,22 +148,15 @@ public class TransactionExp implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(userId);
-        dest.writeInt(categoryId);
+        dest.writeString(id);
+        dest.writeString(userId);
+        dest.writeString(categoryId);
         dest.writeString(note);
         dest.writeSerializable(spend);
-        dest.writeInt(currencyId);
+        dest.writeString(currency);
         dest.writeString(partner);
-        dest.writeInt(walletId);
+        dest.writeString(walletId);
         dest.writeSerializable(createdAt);
         dest.writeString(image);
-    }
-    public String getImage() {
-        return partner;
-    }
-
-    public void setImage(String partner) {
-        this.partner = partner;
     }
 }
