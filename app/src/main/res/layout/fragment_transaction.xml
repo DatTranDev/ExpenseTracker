@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/light_blue"
     android:padding="20dp"
+    android:id="@+id/transaction_fragment"
     tools:context=".fragment.TransactionFragment">
-
-    <!-- TODO: Update blank fragment layout -->
 
 
     <TextView

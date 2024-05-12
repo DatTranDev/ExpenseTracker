@@ -51,17 +51,4 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void goToTransactionDetail(TransactionExp transactionExp) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-        TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("transaction", transactionExp);
-
-        transactionDetailsFragment.setArguments(bundle);
-
-        fragmentTransaction.replace(R.id.contentLayout, transactionDetailsFragment);
-        fragmentTransaction.addToBackStack(TransactionDetailsFragment.TAG);
-        fragmentTransaction.commit();
-    }
 }
