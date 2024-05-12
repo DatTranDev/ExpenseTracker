@@ -1,9 +1,15 @@
 package com.example.expensetracker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class TransactionExp {
+public class TransactionExp implements Parcelable {
     private String id;
     private String userId;
     private String categoryId;
@@ -108,5 +114,49 @@ public class TransactionExp {
 
     public void setImage(String partner) {
         this.partner = partner;
+    }
+
+    protected TransactionExp(Parcel in) {
+        id = in.readString();
+        userId = in.readString();
+        categoryId = in.readString();
+        note = in.readString();
+        spend = (BigDecimal) in.readSerializable();
+        currency = in.readString();
+        partner = in.readString();
+        walletId = in.readString();
+        createdAt = (Timestamp) in.readSerializable();
+        image = in.readString();
+    }
+
+    public static final Creator<TransactionExp> CREATOR = new Creator<TransactionExp>() {
+        @Override
+        public TransactionExp createFromParcel(Parcel in) {
+            return new TransactionExp(in);
+        }
+
+        @Override
+        public TransactionExp[] newArray(int size) {
+            return new TransactionExp[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(userId);
+        dest.writeString(categoryId);
+        dest.writeString(note);
+        dest.writeSerializable(spend);
+        dest.writeString(currency);
+        dest.writeString(partner);
+        dest.writeString(walletId);
+        dest.writeSerializable(createdAt);
+        dest.writeString(image);
     }
 }

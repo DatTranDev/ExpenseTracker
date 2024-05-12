@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
+        <!-- Account -->
         <LinearLayout
             android:id="@+id/profile"
             android:layout_width="match_parent"
@@ -81,12 +81,15 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Content -->
         <LinearLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="32dp">
+            <!-- Balance -->
             <LinearLayout
                 android:id="@+id/total_balance_container"
                 android:layout_width="match_parent"
@@ -141,6 +144,167 @@
                         android:src="@drawable/ic_add_rounded"
                         android:background="@drawable/add_card"/>
                 </LinearLayout>
+            </LinearLayout>
+            <!-- Stats -->
+            <LinearLayout
+                android:id="@+id/stats_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thống kê"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+                   <androidx.constraintlayout.widget.ConstraintLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:padding="12dp"
+                       android:layout_weight="2"
+                       android:layout_gravity="start"
+                       android:background="@drawable/rounded_background_20">
+                       <LinearLayout
+                           android:id="@+id/linearLayout8"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:orientation="horizontal"
+                           app:layout_constraintStart_toStartOf="parent"
+                           app:layout_constraintTop_toTopOf="parent">
+
+                           <ImageView
+                               android:id="@+id/imageView16"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               app:srcCompat="@drawable/ic_income" />
+
+                       </LinearLayout>
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:orientation="vertical"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                           app:layout_constraintEnd_toEndOf="parent"
+                           app:layout_constraintStart_toStartOf="parent"
+                           app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:orientation="horizontal"
+                               android:layout_marginTop="10dp">
+
+                               <TextView
+                                   android:id="@+id/textView17"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:text="Thu nhập"
+                                   android:fontFamily="@font/montserrat"
+                                   android:textSize="12sp"
+                                   android:layout_marginEnd="30dp"/>
+
+                               <ImageView
+                                   android:id="@+id/imageView18"
+                                   android:layout_width="0dp"
+                                   android:layout_height="wrap_content"
+                                   android:layout_weight="1"
+                                   app:srcCompat="@drawable/ic_more" />
+
+
+                           </LinearLayout>
+
+                           <TextView
+                               android:id="@+id/stats_income_val"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:text="+92,231 đ"
+                               android:fontFamily="@font/montserrat_semibold"/>
+                       </LinearLayout>
+
+                   </androidx.constraintlayout.widget.ConstraintLayout>
+
+                   <View
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1"
+                       android:minHeight="1dp" />
+                   <androidx.constraintlayout.widget.ConstraintLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="end"
+                       android:layout_weight="2"
+                       android:background="@drawable/rounded_background_20"
+                       android:padding="12dp">
+
+                       <LinearLayout
+                           android:id="@+id/linearLayout9"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:orientation="horizontal"
+                           app:layout_constraintStart_toStartOf="parent"
+                           app:layout_constraintTop_toTopOf="parent">
+
+                           <ImageView
+                               android:id="@+id/imageView17"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               app:srcCompat="@drawable/ic_outcome" />
+
+                       </LinearLayout>
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:orientation="vertical"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                           app:layout_constraintEnd_toEndOf="parent"
+                           app:layout_constraintStart_toStartOf="parent"
+                           app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:layout_marginTop="10dp"
+                               android:orientation="horizontal">
+
+                               <TextView
+                                   android:id="@+id/textView18"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:layout_marginEnd="30dp"
+                                   android:fontFamily="@font/montserrat"
+                                   android:text="Chi tiêu"
+                                   android:textSize="12sp" />
+
+                               <ImageView
+                                   android:id="@+id/imageView19"
+                                   android:layout_width="0dp"
+                                   android:layout_height="wrap_content"
+                                   android:layout_weight="1"
+                                   app:srcCompat="@drawable/ic_more" />
+
+
+                           </LinearLayout>
+
+                           <TextView
+                               android:id="@+id/stats_outcome_val"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/montserrat_semibold"
+                               android:text="-92,231 đ" />
+                       </LinearLayout>
+                   </androidx.constraintlayout.widget.ConstraintLayout>
+               </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

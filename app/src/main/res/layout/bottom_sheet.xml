@@ -2,64 +2,33 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/bottom_sheet"
+    android:background="@drawable/bottom_sheet_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp"
-    android:backgroundTint="@color/light_blue"
-    tools:context=".fragment.TransactionDetailsFragment">
+    android:layout_height="wrap_content"
+    android:padding="20dp">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout7"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/cancelModify"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:orientation="horizontal"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Hủy"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Sửa giao dịch"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UselessParent">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/rounded_background"
-                android:contentDescription="Back"
-                android:src="@drawable/ic_back" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="Sổ giao dịch"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/modifyTransaction"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="Sửa"
-            android:textAlignment="viewEnd"
-            android:textSize="18sp" />
-    </LinearLayout>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/info"
@@ -70,7 +39,7 @@
         android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+        app:layout_constraintTop_toBottomOf="@+id/textView20">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,6 +51,34 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số tiền"
+                            android:fontFamily="@font/montserrat"/>
+                        <TextView
+                            android:id="@+id/transaction_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="200,000 đ"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textSize="16sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -104,14 +101,6 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
                         android:text="Ăn uống"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/transaction_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="200,000 đ"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -166,15 +155,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/btnDeleteTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F48484"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="Xóa giao dịch"
-        android:textSize="18sp"
-        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/accent_green"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info" />
+        app:layout_constraintTop_toBottomOf="@+id/info"
+        android:text="Lưu"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textSize="16sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

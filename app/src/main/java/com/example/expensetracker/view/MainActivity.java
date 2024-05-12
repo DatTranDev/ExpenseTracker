@@ -13,7 +13,9 @@ import com.example.expensetracker.fragment.AccountFragment;
 import com.example.expensetracker.fragment.BudgetFragment;
 import com.example.expensetracker.fragment.FundFragment;
 import com.example.expensetracker.fragment.HomeFragment;
+import com.example.expensetracker.fragment.TransactionDetailsFragment;
 import com.example.expensetracker.fragment.TransactionFragment;
+import com.example.expensetracker.model.TransactionExp;
 
 public class MainActivity extends AppCompatActivity {
 
