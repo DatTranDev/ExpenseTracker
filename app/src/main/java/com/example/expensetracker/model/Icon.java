@@ -1,21 +1,21 @@
 package com.example.expensetracker.model;
 
 public class Icon {
-    private int id;
+    private String id;
     private String linking;
 
     // Constructor
-    public Icon(int id, String linking) {
+    public Icon(String id, String linking) {
         this.id = id;
         this.linking = linking;
     }
 
     // Getters and setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

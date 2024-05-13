@@ -12,12 +12,15 @@ import java.sql.Timestamp;
 public class TransactionExp implements Parcelable {
     private String id;
     private String userId;
+    private AppUser user;
     private String categoryId;
+    private Category category;
     private String note;
     private BigDecimal spend;
     private String currency;
     private String partner;
     private String walletId;
+    private Wallet wallet;
     private Timestamp createdAt;
     private String image;
 

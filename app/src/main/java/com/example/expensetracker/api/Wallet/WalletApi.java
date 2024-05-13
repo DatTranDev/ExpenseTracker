@@ -1,7 +1,6 @@
 package com.example.expensetracker.api.Wallet;
 
 import com.example.expensetracker.api.DataResponse;
-import com.example.expensetracker.api.ResMessage;
 import com.example.expensetracker.model.Wallet;
 
 import retrofit2.Call;

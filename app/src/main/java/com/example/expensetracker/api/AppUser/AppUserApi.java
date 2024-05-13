@@ -1,7 +1,6 @@
 package com.example.expensetracker.api.AppUser;
 
 import com.example.expensetracker.api.DataResponse;
-import com.example.expensetracker.api.ResMessage;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.Category;
@@ -32,7 +31,7 @@ public interface AppUserApi {
     Call<DataResponse<AppUser>> findById(@Path ("id") String id);
 
     //Find feature
-    @GET("user/getcategory/:id")
+    @GET("user/getcategory/{id}")
     Call<DataResponse<List<Category>>> getCategory(@Path ("id") String id);
     @GET("user/getwallet/:id")
     Call<DataResponse<List<Wallet>>> getWallet(@Path ("id") String id);
