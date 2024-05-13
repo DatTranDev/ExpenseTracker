@@ -6,6 +6,8 @@ public class UserCategory {
     private boolean isDeleted;
 
     // Constructor
+    public UserCategory() {
+    }
     public UserCategory(int userId, int categoryId, boolean isDeleted) {
         this.userId = userId;
         this.categoryId = categoryId;
