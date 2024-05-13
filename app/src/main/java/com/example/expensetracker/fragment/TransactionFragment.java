@@ -82,6 +82,4 @@ public class TransactionFragment extends Fragment {
 
         return transactionExps;
     }
-
-
 }

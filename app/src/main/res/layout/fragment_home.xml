@@ -58,7 +58,7 @@
                         android:text="Chào mừng trở lại," />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_medium"
@@ -233,7 +233,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="Thu nhập"
                                         android:fontFamily="@font/montserrat"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:layout_marginEnd="30dp"/>
 
                                     <ImageView
@@ -251,7 +251,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="+92,231 đ"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:fontFamily="@font/montserrat_semibold"/>
                             </LinearLayout>
 
@@ -308,7 +308,7 @@
                                         android:layout_marginEnd="30dp"
                                         android:fontFamily="@font/montserrat"
                                         android:text="Chi tiêu"
-                                        android:textSize="16sp" />
+                                        android:textSize="14sp" />
 
                                     <ImageView
                                         android:id="@+id/imageView19"
@@ -324,7 +324,7 @@
                                     android:id="@+id/stats_outcome_val"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:fontFamily="@font/montserrat_semibold"
                                     android:text="-92,231 đ" />
                             </LinearLayout>
@@ -362,7 +362,7 @@
                     <com.anychart.AnyChartView
                         android:id="@+id/analysis_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="12dp" />
                 </LinearLayout>
             </LinearLayout>

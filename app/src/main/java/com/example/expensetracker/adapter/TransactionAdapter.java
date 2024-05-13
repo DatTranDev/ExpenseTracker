@@ -60,7 +60,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             }
         });
     }
-
     @Override
     public int getItemCount() {
         if (transactionExps != null) {
@@ -68,9 +67,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
         return 0;
     }
-
     public class TransactionViewHolder extends RecyclerView.ViewHolder {
-
         private TextView transactionPrice;
         private TextView transactionName;
         private TextView transactionType;
@@ -81,8 +78,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             transactionName = itemView.findViewById(R.id.transaction_name);
             transactionType = itemView.findViewById(R.id.transaction_type);
             transactionTime = itemView.findViewById(R.id.transaction_time);
-
         }
     }
-
 }

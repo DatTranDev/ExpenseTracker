@@ -1,7 +1,9 @@
 package com.example.expensetracker.fragment;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,12 +35,14 @@ import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
 import com.example.expensetracker.api.AppUser.AppUserApi;
 import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Constant;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.transition.Hold;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -53,8 +57,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeFragment extends Fragment {
     private WalletAdapter walletAdapter;
     AnyChartView chartView;
-
     private TextView totalBalance;
+    private TextView userName;
     public HomeFragment() {
 
     }
@@ -70,8 +74,11 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Set total balance
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", "");
+        AppUser user = new Gson().fromJson(userJson, AppUser.class);
 
+        // Set total balance
         totalBalance = view.findViewById(R.id.total_balance);
         List<Wallet> walletList = getWalletList();
 
@@ -79,6 +86,9 @@ public class HomeFragment extends Fragment {
         chartView = view.findViewById(R.id.analysis_view);
         setUpChartView();
 
+        // Set user name
+        userName = view.findViewById(R.id.user_name);
+        userName.setText(user.getUserName());
 
         // Wallet initialize
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -91,6 +101,38 @@ public class HomeFragment extends Fragment {
         walletAdapter = new WalletAdapter(walletList);
         rvWallet.setAdapter(walletAdapter);
         return view;
+    }
+    private void getTransactionList() {
+        List<TransactionExp> transactionExps = new ArrayList<>();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constant.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AppUserApi appUserApi = retrofit.create(AppUserApi.class);
+
+        String userId = "6615a4b40d01b7dd489839bc";
+        Call<DataResponse<List<TransactionExp>>> call = appUserApi.getTransaction(userId);
+        call.enqueue(new Callback<DataResponse<List<TransactionExp>>>() {
+            @Override
+            public void onResponse(Call<DataResponse<List<TransactionExp>>> call, Response<DataResponse<List<TransactionExp>>> response) {
+                if (response.isSuccessful()) {
+                    transactionExps.addAll(response.body().getData());
+                    BigDecimal income = new BigDecimal(0);
+                    BigDecimal outcome = new BigDecimal(0);
+                    for (int i = 0; i < transactionExps.size(); i++) {
+
+                    }
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataResponse<List<TransactionExp>>> call, Throwable t) {
+            }
+
+        });
     }
     private List<Wallet> getWalletList() {
         List<Wallet> walletList = new ArrayList<>();
