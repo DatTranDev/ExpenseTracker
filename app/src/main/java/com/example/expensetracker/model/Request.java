@@ -9,6 +9,19 @@ public class Request {
     private AppUser receiver;
     private Wallet wallet;
 
+    public Request() {
+    }
+
+    public Request(String senderId, String receiverId, String walletId, String name, AppUser sender, AppUser receiver, Wallet wallet) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.walletId = walletId;
+        this.name = name;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.wallet = wallet;
+    }
+
     public String getSenderId() {
         return senderId;
     }

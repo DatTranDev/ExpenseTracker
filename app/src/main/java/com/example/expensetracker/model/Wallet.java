@@ -10,6 +10,8 @@ public class Wallet {
     private boolean isSharing;
 
     // Constructor
+    public Wallet() {
+    }
     public Wallet(String id, String name, BigDecimal amount, String currency, boolean isSharing) {
         this.id = id;
         this.name = name;

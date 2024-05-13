@@ -10,6 +10,8 @@ public class Category {
     private boolean isPublic;
 
     // Constructor
+    public Category() {
+    }
     public Category(String id, String name, boolean isPublic, String iconId, String image, String parentCategoryId, String type) {
         this.id = id;
         this.name = name;

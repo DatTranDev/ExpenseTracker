@@ -25,6 +25,8 @@ public class TransactionExp implements Parcelable {
     private String image;
 
     // Constructor
+    public TransactionExp() {
+    }
     public TransactionExp(String id, String userId, String categoryId, String note, BigDecimal spend, String currency, String partner, String walletId, Timestamp createdAt, String image ) {
         this.id = id;
         this.userId = userId;

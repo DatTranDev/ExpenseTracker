@@ -6,6 +6,8 @@ public class UserWallet {
     private boolean isDeleted;
 
     // Constructor
+    public UserWallet() {
+    }
     public UserWallet(int walletId, int userId, boolean isDeleted) {
         this.walletId = walletId;
         this.userId = userId;

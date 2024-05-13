@@ -5,6 +5,8 @@ public class Icon {
     private String linking;
 
     // Constructor
+    public Icon() {
+    }
     public Icon(String id, String linking) {
         this.id = id;
         this.linking = linking;
