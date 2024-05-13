@@ -1,6 +1,5 @@
-package com.example.expensetracker;
+package com.example.expensetracker.adapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.expensetracker.databinding.TransactionItemBinding;
+import com.example.expensetracker.R;
 import com.example.expensetracker.fragment.TransactionDetailsFragment;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {

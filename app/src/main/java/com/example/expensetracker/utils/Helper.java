@@ -1,5 +1,7 @@
 package com.example.expensetracker.utils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,5 +12,9 @@ public class Helper {
     }
     public static boolean isValidEmail(String email){
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    public static String formatCurrency(BigDecimal amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        return formatter.format(amount);
     }
 }

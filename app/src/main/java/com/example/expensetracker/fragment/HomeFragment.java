@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -27,13 +29,32 @@ import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.example.expensetracker.R;
+import com.example.expensetracker.adapter.TransactionAdapter;
+import com.example.expensetracker.adapter.WalletAdapter;
+import com.example.expensetracker.api.AppUser.AppUserApi;
+import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.utils.Constant;
+import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.transition.Hold;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class HomeFragment extends Fragment {
+    private WalletAdapter walletAdapter;
     AnyChartView chartView;
+
+    private TextView totalBalance;
     public HomeFragment() {
 
     }
@@ -48,17 +69,67 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Set total balance
+
+        totalBalance = view.findViewById(R.id.total_balance);
+        List<Wallet> walletList = getWalletList();
+
+        // Chart view initialize
         chartView = view.findViewById(R.id.analysis_view);
         setUpChartView();
+
+
+        // Wallet initialize
+        MainActivity mainActivity = (MainActivity)getActivity();
+
+        RecyclerView rvWallet = view.findViewById(R.id.wallet_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
+
+        rvWallet.setLayoutManager(linearLayoutManager);
+
+        walletAdapter = new WalletAdapter(walletList);
+        rvWallet.setAdapter(walletAdapter);
         return view;
     }
+    private List<Wallet> getWalletList() {
+        List<Wallet> walletList = new ArrayList<>();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constant.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AppUserApi appUserApi = retrofit.create(AppUserApi.class);
+
+        String userId = "6615a4b40d01b7dd489839bc";
+        Call<DataResponse<List<Wallet>>> call = appUserApi.getWallet(userId);
+        call.enqueue(new Callback<DataResponse<List<Wallet>>>() {
+            @Override
+            public void onResponse(Call<DataResponse<List<Wallet>>> call, Response<DataResponse<List<Wallet>>> response) {
+                if (response.isSuccessful()) {
+                    walletList.addAll(response.body().getData());
+                    String currency = walletList.get(0).getCurrency();
+                    walletAdapter.notifyDataSetChanged();
+                    totalBalance.setText(String.format("%s %s", Helper.formatCurrency(getTotalBalance(walletList)), currency));
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataResponse<List<Wallet>>> call, Throwable t) {
+            }
+
+        });
+
+        return walletList;
+    }
     private void setUpChartView() {
         Cartesian cartesian = AnyChart.column();
 
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Rouge", 80540));
-        data.add(new ValueDataEntry("Foundation", 94190));
+        data.add(new ValueDataEntry("Tháng trước", 80540));
+        data.add(new ValueDataEntry("Tháng này", 94190));
 
         Column column = cartesian.column(data);
 
@@ -73,11 +144,21 @@ public class HomeFragment extends Fragment {
         cartesian.animation(true);
 
         cartesian.yScale().minimum(0d);
-        cartesian.yAxis(0).enabled(false);
+        cartesian.yAxis(0).title().enabled(false);
+        cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
 
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
         cartesian.interactivity().hoverMode(HoverMode.BY_X);
 
         chartView.setChart(cartesian);
+    }
+    private BigDecimal getTotalBalance(List<Wallet> walletList) {
+        BigDecimal result = new BigDecimal(0);
+
+        for (int i = 0; i < walletList.size(); i++) {
+            result = result.add(walletList.get(i).getAmount());
+        }
+
+        return result;
     }
 }

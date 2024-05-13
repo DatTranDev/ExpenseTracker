@@ -33,7 +33,7 @@ public interface AppUserApi {
     //Find feature
     @GET("user/getcategory/{id}")
     Call<DataResponse<List<Category>>> getCategory(@Path ("id") String id);
-    @GET("user/getwallet/:id")
+    @GET("user/getwallet/{id}")
     Call<DataResponse<List<Wallet>>> getWallet(@Path ("id") String id);
     @GET("user/getsharingwallet/:id")
     Call<DataResponse<List<Wallet>>> getSharingWallet(@Path ("id") String id);

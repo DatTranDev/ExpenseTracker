@@ -1,45 +1,31 @@
 package com.example.expensetracker.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.TransactionAdapter;
+import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.api.AppUser.AppUserApi;
 import com.example.expensetracker.api.DataResponse;
-import com.example.expensetracker.databinding.FragmentTransactionBinding;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.utils.Constant;
 import com.example.expensetracker.view.MainActivity;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import com.google.gson.Gson;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.PATCH;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 public class TransactionFragment extends Fragment {
     private TransactionAdapter transactionAdapter;
@@ -70,7 +56,7 @@ public class TransactionFragment extends Fragment {
         List<TransactionExp> transactionExps = new ArrayList<>();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://expensetrackerbe.onrender.com/api/v1/")
+                .baseUrl(Constant.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -90,7 +76,6 @@ public class TransactionFragment extends Fragment {
 
             @Override
             public void onFailure(Call<DataResponse<List<TransactionExp>>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Call API Error", Toast.LENGTH_SHORT).show();
             }
 
         });
