@@ -151,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="24dp">
 
                 <TextView
                     android:id="@+id/textView15"
@@ -169,8 +169,8 @@
                    <androidx.constraintlayout.widget.ConstraintLayout
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"
-                       android:padding="12dp"
-                       android:layout_weight="2"
+                       android:padding="16dp"
+                       android:layout_weight="3"
                        android:layout_gravity="start"
                        android:background="@drawable/rounded_background_20">
                        <LinearLayout
@@ -210,7 +210,7 @@
                                    android:layout_height="wrap_content"
                                    android:text="Thu nhập"
                                    android:fontFamily="@font/montserrat"
-                                   android:textSize="12sp"
+                                   android:textSize="16sp"
                                    android:layout_marginEnd="30dp"/>
 
                                <ImageView
@@ -228,6 +228,7 @@
                                android:layout_width="match_parent"
                                android:layout_height="wrap_content"
                                android:text="+92,231 đ"
+                               android:textSize="16sp"
                                android:fontFamily="@font/montserrat_semibold"/>
                        </LinearLayout>
 
@@ -242,9 +243,9 @@
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"
                        android:layout_gravity="end"
-                       android:layout_weight="2"
+                       android:layout_weight="3"
                        android:background="@drawable/rounded_background_20"
-                       android:padding="12dp">
+                       android:padding="16dp">
 
                        <LinearLayout
                            android:id="@+id/linearLayout9"
@@ -284,7 +285,7 @@
                                    android:layout_marginEnd="30dp"
                                    android:fontFamily="@font/montserrat"
                                    android:text="Chi tiêu"
-                                   android:textSize="12sp" />
+                                   android:textSize="16sp" />
 
                                <ImageView
                                    android:id="@+id/imageView19"
@@ -300,11 +301,45 @@
                                android:id="@+id/stats_outcome_val"
                                android:layout_width="match_parent"
                                android:layout_height="wrap_content"
+                               android:textSize="16sp"
                                android:fontFamily="@font/montserrat_semibold"
                                android:text="-92,231 đ" />
                        </LinearLayout>
                    </androidx.constraintlayout.widget.ConstraintLayout>
                </LinearLayout>
+            </LinearLayout>
+            <!-- Analysis -->
+            <LinearLayout
+                android:id="@+id/analysis_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Báo cáo"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/montserrat_semibold"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Xem báo cáo chi tiết"
+                            android:layout_weight="1"
+                            android:textColor="@color/accent_green"
+                            android:gravity="end"
+                            android:fontFamily="@font/montserrat"/>
+                    </LinearLayout>
+                <com.anychart.AnyChartView
+                    android:id="@+id/analysis_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

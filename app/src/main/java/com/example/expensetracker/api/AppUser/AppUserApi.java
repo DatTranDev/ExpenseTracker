@@ -38,7 +38,7 @@ public interface AppUserApi {
     Call<DataResponse<List<Wallet>>> getWallet(@Path ("id") String id);
     @GET("user/getsharingwallet/:id")
     Call<DataResponse<List<Wallet>>> getSharingWallet(@Path ("id") String id);
-    @GET("user/gettransaction/:id")
+    @GET("user/gettransaction/{id}")
     Call<DataResponse<List<TransactionExp>>> getTransaction(@Path ("id") String id);
     @GET("user/getbudget/:id")
     Call<DataResponse<List<Budget>>> getBudget(@Path ("id") String id);
