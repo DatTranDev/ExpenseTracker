@@ -22,7 +22,7 @@ import org.w3c.dom.Text;
 public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     private static final String KEY_TRANSACTION = "transaction_info";
     private TransactionExp transactionExp;
-    private TextView transactionName, transactionType, transactionTime, transactionNote, transactionAmount;
+    private TextView transactionType, transactionCategory, transactionTime, transactionNote, transactionAmount;
     private ImageView transactionCurrency;
     private TextView btnCancel;
 
@@ -63,9 +63,9 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     }
 
     private void initView(View view) {
-        transactionName = view.findViewById(R.id.transaction_name);
+        transactionType = view.findViewById(R.id.transaction_type);
         transactionCurrency = view.findViewById(R.id.transaction_currency);
-//        transactionType = view.findViewById(R.id.transaction_type);
+        transactionCategory = view.findViewById(R.id.transaction_category);
         transactionNote = view.findViewById(R.id.transaction_note);
         transactionTime = view.findViewById(R.id.transaction_time);
         transactionAmount = view.findViewById(R.id.transaction_price);
@@ -85,7 +85,7 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
         transactionNote.setText(transactionExp.getNote());
         transactionAmount.setText(String.valueOf(transactionExp.getSpend()));
         transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-//        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
-        transactionName.setText(String.valueOf(transactionExp.getNote()));
+        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
+        transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
     }
 }

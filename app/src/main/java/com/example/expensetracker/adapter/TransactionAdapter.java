@@ -41,8 +41,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         holder.transactionPrice.setText(String.valueOf(transactionExp.getSpend()));
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-        holder.transactionName.setText(String.valueOf(transactionExp.getNote()));
-        holder.transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
+        holder.transactionName.setText(String.valueOf(transactionExp.getCategory().getName()));
+        holder.transactionType.setText(String.valueOf(transactionExp.getNote()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
