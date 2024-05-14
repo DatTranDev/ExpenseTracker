@@ -14,7 +14,7 @@ public class Helper {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
     public static String formatCurrency(BigDecimal amount) {
-        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        DecimalFormat formatter = new DecimalFormat("#,##0.00");
         return formatter.format(amount);
     }
 }

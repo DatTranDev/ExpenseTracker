@@ -41,8 +41,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         holder.transactionPrice.setText(String.valueOf(transactionExp.getSpend()));
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-        holder.transactionName.setText(String.valueOf(transactionExp.getId()));
-        holder.transactionType.setText(String.valueOf(transactionExp.getCategoryId()));
+        holder.transactionName.setText(String.valueOf(transactionExp.getNote()));
+        holder.transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +67,18 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
         return 0;
     }
+
+    public void updateTransaction(List<TransactionExp> transactions) {
+        if (transactionExps != null) {
+            transactionExps.clear();
+            transactionExps.addAll(transactions);
+            notifyDataSetChanged();
+        } else {
+            transactionExps = transactions;
+            notifyDataSetChanged();
+        }
+    }
+
     public class TransactionViewHolder extends RecyclerView.ViewHolder {
         private TextView transactionPrice;
         private TextView transactionName;

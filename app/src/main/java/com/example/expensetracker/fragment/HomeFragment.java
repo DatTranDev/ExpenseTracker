@@ -33,11 +33,14 @@ import com.anychart.enums.TooltipPositionMode;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
+import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.AppUser.AppUserApi;
 import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Constant;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
@@ -46,6 +49,7 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,8 +60,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
     private WalletAdapter walletAdapter;
+    private TransactionAdapter transactionAdapter;
+    private List<TransactionExp> transactions;
     AnyChartView chartView;
     private TextView totalBalance;
+    private TextView income;
+    private TextView outcome;
     private TextView userName;
     public HomeFragment() {
 
@@ -90,48 +98,65 @@ public class HomeFragment extends Fragment {
         userName = view.findViewById(R.id.user_name);
         userName.setText(user.getUserName());
 
-        // Wallet initialize
+        // Set income and outcome
+        getTransactionsForUser(user.getUserName());
+
+        // Initialize wallets
         MainActivity mainActivity = (MainActivity)getActivity();
 
         RecyclerView rvWallet = view.findViewById(R.id.wallet_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
+        LinearLayoutManager walletLayoutManager = new LinearLayoutManager(mainActivity);
 
-        rvWallet.setLayoutManager(linearLayoutManager);
+        rvWallet.setLayoutManager(walletLayoutManager);
 
         walletAdapter = new WalletAdapter(walletList);
         rvWallet.setAdapter(walletAdapter);
+
+        // Initialize recent transactions
+        LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(mainActivity);
+        RecyclerView rvTransaction = view.findViewById(R.id.transaction_list_recent);
+
+        rvTransaction.setLayoutManager(transactionLayoutManager);
+
+        transactionAdapter = new TransactionAdapter(transactions);
+        getTransactionsForUser(user.getId());
+
+        rvTransaction.setAdapter(transactionAdapter);
         return view;
     }
-    private void getTransactionList() {
-        List<TransactionExp> transactionExps = new ArrayList<>();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AppUserApi appUserApi = retrofit.create(AppUserApi.class);
-
-        String userId = "6615a4b40d01b7dd489839bc";
-        Call<DataResponse<List<TransactionExp>>> call = appUserApi.getTransaction(userId);
-        call.enqueue(new Callback<DataResponse<List<TransactionExp>>>() {
+    private void getTransactionsForUser(String userId) {
+        AppUserRepository repository = AppUserRepository.getInstance();
+        repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
             @Override
-            public void onResponse(Call<DataResponse<List<TransactionExp>>> call, Response<DataResponse<List<TransactionExp>>> response) {
-                if (response.isSuccessful()) {
-                    transactionExps.addAll(response.body().getData());
-                    BigDecimal income = new BigDecimal(0);
-                    BigDecimal outcome = new BigDecimal(0);
-                    for (int i = 0; i < transactionExps.size(); i++) {
-
-                    }
-                } else {
+            public void onSuccess(List<TransactionExp> transactions) {
+                // Transactions
+                if (transactions.size() > 3) {
+                    transactions = transactions.subList(0, 3);
                 }
+                transactionAdapter.updateTransaction(transactions);
+                transactionAdapter.notifyDataSetChanged();
+
+                // Stats
+                BigDecimal incomeVal = new BigDecimal(0);
+                BigDecimal outcomeVal = new BigDecimal(0);
+                List<String> incomeCategories = Arrays.asList("Khoản thu", "Thu nợ", "Đi vay");
+                for (int i = 0; i < transactions.size(); i++) {
+                    if (incomeCategories.contains(transactions.get(i).getCategory().getType())) {
+                        incomeVal = incomeVal.add(transactions.get(i).getSpend());
+                    } else {
+                        outcomeVal = outcomeVal.add(transactions.get(i).getSpend());
+                    }
+                }
+                income = getView().findViewById(R.id.stats_income_val);
+                outcome = getView().findViewById(R.id.stats_outcome_val);
+                income.setText(Helper.formatCurrency(incomeVal));
+                outcome.setText(Helper.formatCurrency(outcomeVal));
             }
 
             @Override
-            public void onFailure(Call<DataResponse<List<TransactionExp>>> call, Throwable t) {
+            public void onError(String errorMessage) {
+                // Handle error here, display error message or retry logic
             }
-
         });
     }
     private List<Wallet> getWalletList() {

@@ -14,6 +14,31 @@ public class TransactionExp implements Parcelable {
     private String userId;
     private AppUser user;
     private String categoryId;
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
     private Category category;
     private String note;
     private BigDecimal spend;

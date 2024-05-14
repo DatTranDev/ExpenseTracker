@@ -85,7 +85,7 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
         transactionNote.setText(transactionExp.getNote());
         transactionAmount.setText(String.valueOf(transactionExp.getSpend()));
         transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-//        transactionType.setText(String.valueOf(transactionExp.getCategoryId()));
-        transactionName.setText(String.valueOf(transactionExp.getId()));
+//        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
+        transactionName.setText(String.valueOf(transactionExp.getNote()));
     }
 }

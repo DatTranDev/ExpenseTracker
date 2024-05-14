@@ -351,7 +351,7 @@
                             android:fontFamily="@font/montserrat_medium"/>
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="Xem báo cáo chi tiết"
                             android:layout_weight="1"
                             android:textSize="16sp"
@@ -362,8 +362,42 @@
                     <com.anychart.AnyChartView
                         android:id="@+id/analysis_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="200dp"
                         android:layout_marginTop="12dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="24dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Giao dịch gần đây"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Xem tất cả"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:gravity="end"
+                            android:textColor="@color/accent_green"/>
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/transaction_list_recent"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rounded_background_20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/transaction_item"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
