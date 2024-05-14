@@ -1,32 +1,41 @@
 package com.example.expensetracker.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.TransactionAdapter;
-import com.example.expensetracker.databinding.FragmentTransactionBinding;
+import com.example.expensetracker.adapter.TransactionAdapter;
+import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.api.AppUser.AppUserApi;
+import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.utils.Constant;
 import com.example.expensetracker.view.MainActivity;
+import com.google.gson.Gson;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
+
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Call;
 
 public class TransactionFragment extends Fragment {
-    //    FragmentTransactionBinding binding;
+    private TransactionAdapter transactionAdapter;
+    private List<TransactionExp> transactions = new ArrayList<>();
     private View view;
     public TransactionFragment() {
         // Required empty public constructor
@@ -37,6 +46,9 @@ public class TransactionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", "");
+        AppUser user = new Gson().fromJson(userJson, AppUser.class);
         MainActivity mainActivity = (MainActivity)getActivity();
 
         RecyclerView rvTransaction = view.findViewById(R.id.transaction_list);
@@ -44,30 +56,27 @@ public class TransactionFragment extends Fragment {
 
         rvTransaction.setLayoutManager(linearLayoutManager);
 
-        TransactionAdapter transactionAdapter = new TransactionAdapter(getTransactionList());
+        transactionAdapter = new TransactionAdapter(transactions);
+        getTransactionsForUser(user.getId());
+
         rvTransaction.setAdapter(transactionAdapter);
 
         return view;
     }
 
-    private List<TransactionExp> getTransactionList() {
-        List<TransactionExp> transactionExps = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            transactionExps.add(new TransactionExp(
-                    "id" + i + 1,
-                    "user" + i + 1,
-                    "category" + i + 1,
-                    "This is a note " + i + 1,
-                    new BigDecimal("" + new Random().nextInt(1000)),
-                    "VNĐ",
-                    "partner" + i +1,
-                    "wallet" + i + 1,
-                    new Timestamp(System.currentTimeMillis()),
-                    "image" + i + 1
-            ));
-        }
+    private void getTransactionsForUser(String userId) {
+        AppUserRepository repository = AppUserRepository.getInstance();
+        repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
+            @Override
+            public void onSuccess(List<TransactionExp> transactions) {
+                transactionAdapter.updateTransaction(transactions);
+                transactionAdapter.notifyDataSetChanged();
+            }
 
-        return transactionExps;
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
-
 }

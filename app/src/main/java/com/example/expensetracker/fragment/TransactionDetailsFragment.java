@@ -27,9 +27,10 @@ public class TransactionDetailsFragment extends Fragment {
 
     private static final String KEY_TRANSACTION = "transaction_info";
     private String transaction;
-    private TextView transactionName;
+    private TextView transactionType;
     private TextView transactionAmount;
     private TextView transactionTime;
+    private TextView transactionNote;
     private View view;
     private ImageButton btnBack;
 
@@ -58,9 +59,10 @@ public class TransactionDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_transaction_details, container, false);
-        transactionName = view.findViewById(R.id.transaction_name);
+        transactionType = view.findViewById(R.id.transaction_type);
         transactionAmount = view.findViewById(R.id.transaction_price);
         transactionTime = view.findViewById(R.id.transaction_time);
+        transactionNote = view.findViewById(R.id.transaction_note);
         btnBack = view.findViewById(R.id.btnBack);
         btnModify = view.findViewById(R.id.modifyTransaction);
 
@@ -69,7 +71,8 @@ public class TransactionDetailsFragment extends Fragment {
         if (receiver != null) {
             TransactionExp transactionExp = (TransactionExp) receiver.get(KEY_TRANSACTION);
             if (transactionExp != null) {
-                transactionName.setText(transactionExp.getNote());
+                transactionType.setText(transactionExp.getCategory().getName());
+                transactionNote.setText(transactionExp.getNote());
                 transactionAmount.setText(String.valueOf(transactionExp.getSpend()));
                 transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
             }

@@ -1,6 +1,5 @@
-package com.example.expensetracker;
+package com.example.expensetracker.adapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.expensetracker.databinding.TransactionItemBinding;
+import com.example.expensetracker.R;
 import com.example.expensetracker.fragment.TransactionDetailsFragment;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
@@ -43,8 +41,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         holder.transactionPrice.setText(String.valueOf(transactionExp.getSpend()));
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-        holder.transactionName.setText(String.valueOf(transactionExp.getId()));
-        holder.transactionType.setText(String.valueOf(transactionExp.getCategoryId()));
+        holder.transactionName.setText(String.valueOf(transactionExp.getCategory().getName()));
+        holder.transactionType.setText(String.valueOf(transactionExp.getNote()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +60,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             }
         });
     }
-
     @Override
     public int getItemCount() {
         if (transactionExps != null) {
@@ -71,8 +68,18 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return 0;
     }
 
-    public class TransactionViewHolder extends RecyclerView.ViewHolder {
+    public void updateTransaction(List<TransactionExp> transactions) {
+        if (transactionExps != null) {
+            transactionExps.clear();
+            transactionExps.addAll(transactions);
+            notifyDataSetChanged();
+        } else {
+            transactionExps = transactions;
+            notifyDataSetChanged();
+        }
+    }
 
+    public class TransactionViewHolder extends RecyclerView.ViewHolder {
         private TextView transactionPrice;
         private TextView transactionName;
         private TextView transactionType;
@@ -83,8 +90,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             transactionName = itemView.findViewById(R.id.transaction_name);
             transactionType = itemView.findViewById(R.id.transaction_type);
             transactionTime = itemView.findViewById(R.id.transaction_time);
-
         }
     }
-
 }

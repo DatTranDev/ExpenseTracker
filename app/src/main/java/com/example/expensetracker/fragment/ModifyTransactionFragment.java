@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.model.TransactionExp;
@@ -20,7 +22,8 @@ import org.w3c.dom.Text;
 public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     private static final String KEY_TRANSACTION = "transaction_info";
     private TransactionExp transactionExp;
-    private TextView transactionName, transactionType, transactionTime, transactionNote, transactionAmount;
+    private TextView transactionType, transactionCategory, transactionTime, transactionNote, transactionAmount;
+    private ImageView transactionCurrency;
     private TextView btnCancel;
 
     public static ModifyTransactionFragment newInstance(TransactionExp transactionExp) {
@@ -60,8 +63,9 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     }
 
     private void initView(View view) {
-        transactionName = view.findViewById(R.id.transaction_name);
-//        transactionType = view.findViewById(R.id.transaction_type);
+        transactionType = view.findViewById(R.id.transaction_type);
+        transactionCurrency = view.findViewById(R.id.transaction_currency);
+        transactionCategory = view.findViewById(R.id.transaction_category);
         transactionNote = view.findViewById(R.id.transaction_note);
         transactionTime = view.findViewById(R.id.transaction_time);
         transactionAmount = view.findViewById(R.id.transaction_price);
@@ -73,10 +77,15 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
             return;
         }
 
+        if (transactionExp.getCurrency().equals("VND")) {
+            transactionCurrency.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_vnd));
+        } else {
+            transactionCurrency.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_dollar));
+        }
         transactionNote.setText(transactionExp.getNote());
         transactionAmount.setText(String.valueOf(transactionExp.getSpend()));
         transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-//        transactionType.setText(String.valueOf(transactionExp.getCategoryId()));
-        transactionName.setText(String.valueOf(transactionExp.getId()));
+        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
+        transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
     }
 }
