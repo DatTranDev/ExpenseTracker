@@ -149,6 +149,7 @@
                                 android:textSize="16sp"
                                 android:fontFamily="@font/montserrat_medium"/>
                             <TextView
+                                android:id="@+id/show_wallet"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"

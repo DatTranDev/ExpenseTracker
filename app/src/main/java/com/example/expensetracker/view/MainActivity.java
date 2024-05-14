@@ -37,10 +37,11 @@ import com.google.gson.Gson;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     ActivityMainBinding binding;
     private ViewPager2 viewPager;
+    private ViewPagerAdapter adapter;
     FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(message);
             }
         });
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        adapter = new ViewPagerAdapter(this);
         fab = findViewById(R.id.fab);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
@@ -221,12 +222,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentLayout, fragment);
-        fragmentTransaction.addToBackStack(fragment.getTag());
-        fragmentTransaction.commit();
+    public void showTransactionDetails(TransactionExp transactionExp) {
+        TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("transaction_info", transactionExp);
+        transactionDetailsFragment.setArguments(bundle);
+
+        adapter.setTransactionDetailsFragment(transactionDetailsFragment);
+        viewPager.setCurrentItem(5, true);
     }
 
+    public void navigateBackToTransactions() {
+        viewPager.setCurrentItem(1, true);
+    }
 }

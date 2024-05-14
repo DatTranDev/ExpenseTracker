@@ -36,6 +36,8 @@ import com.example.expensetracker.adapter.WalletAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.AppUser.AppUserApi;
 import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.bottom_sheet.ModifyTransactionFragment;
+import com.example.expensetracker.bottom_sheet.WalletFragment;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
@@ -58,14 +60,16 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements TransactionAdapter.OnItemClickListener{
     private WalletAdapter walletAdapter;
     private TransactionAdapter transactionAdapter;
     private List<TransactionExp> transactions;
     AnyChartView chartView;
     private TextView totalBalance;
+    private AppUser user;
     private TextView income;
     private TextView outcome;
+    private TextView showWallet;
     private TextView userName;
     public HomeFragment() {
 
@@ -84,7 +88,7 @@ public class HomeFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user", "");
-        AppUser user = new Gson().fromJson(userJson, AppUser.class);
+        user = new Gson().fromJson(userJson, AppUser.class);
 
         // Set total balance
         totalBalance = view.findViewById(R.id.total_balance);
@@ -103,14 +107,19 @@ public class HomeFragment extends Fragment {
 
         // Initialize wallets
         MainActivity mainActivity = (MainActivity)getActivity();
-
         RecyclerView rvWallet = view.findViewById(R.id.wallet_list);
         LinearLayoutManager walletLayoutManager = new LinearLayoutManager(mainActivity);
-
         rvWallet.setLayoutManager(walletLayoutManager);
-
         walletAdapter = new WalletAdapter(walletList);
         rvWallet.setAdapter(walletAdapter);
+
+        showWallet = view.findViewById(R.id.show_wallet);
+        showWallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAllWallet(walletList);
+            }
+        });
 
         // Initialize recent transactions
         LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(mainActivity);
@@ -118,12 +127,18 @@ public class HomeFragment extends Fragment {
 
         rvTransaction.setLayoutManager(transactionLayoutManager);
 
-        transactionAdapter = new TransactionAdapter(transactions);
+        transactionAdapter = new TransactionAdapter(transactions, this);
         getTransactionsForUser(user.getId());
 
         rvTransaction.setAdapter(transactionAdapter);
         return view;
     }
+
+    private void showAllWallet(List<Wallet> walletList) {
+        WalletFragment walletFragment = WalletFragment.newInstance(walletList);
+        walletFragment.show(getActivity().getSupportFragmentManager(), walletFragment.getTag());
+    }
+
     private void getTransactionsForUser(String userId) {
         AppUserRepository repository = AppUserRepository.getInstance();
         repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
@@ -227,5 +242,13 @@ public class HomeFragment extends Fragment {
         }
 
         return result;
+    }
+
+    @Override
+    public void onItemClick(TransactionExp transactionExp) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.showTransactionDetails(transactionExp);
+        }
     }
 }

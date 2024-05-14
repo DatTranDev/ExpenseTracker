@@ -8,18 +8,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.expensetracker.R;
+import com.example.expensetracker.bottom_sheet.ModifyTransactionFragment;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 public class TransactionDetailsFragment extends Fragment {
 
@@ -81,8 +77,9 @@ public class TransactionDetailsFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getFragmentManager() != null) {
-                    getFragmentManager().popBackStack();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if (mainActivity != null) {
+                    mainActivity.navigateBackToTransactions();
                 }
             }
         });
