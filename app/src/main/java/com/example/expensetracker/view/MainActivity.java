@@ -1,13 +1,18 @@
 package com.example.expensetracker.view;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
+import com.example.expensetracker.adapter.ViewPagerAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.Request.RequestRes;
 import com.example.expensetracker.api.Wallet.WalletReq;
@@ -27,6 +32,9 @@ import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.repository.IconRepository;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.example.expensetracker.repository.RequestRepository;
 import com.example.expensetracker.repository.WalletRepository;
 import com.google.gson.Gson;
@@ -37,12 +45,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+    private ViewPager2 viewPager;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
 
         //TEST API
         //USER
@@ -166,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        fab = findViewById(R.id.fab);
+        viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
         //REQUEST
         //GET REQUEST BY USER
 //        RequestRepository.getInstance().getRequestsByUser("6615ab5c55cbe4d6104aa825", new ApiCallBack<List<Request>>() {
@@ -220,18 +233,46 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(message);
 //            }
 //        });
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                switch (position) {
+                    case 0:
+                        binding.navBar.setSelectedItemId(R.id.home);
+                        fab.show();
+                        break;
+                    case 1:
+                        binding.navBar.setSelectedItemId(R.id.transactionLog);
+                        fab.show();
+                        break;
+                    case 2:
+                        binding.navBar.setSelectedItemId(R.id.budget);
+                        fab.hide();
+                        break;
+                    case 3:
+                        binding.navBar.setSelectedItemId(R.id.mutualFund);
+                        fab.hide();
+                        break;
+                    case 4:
+                        binding.navBar.setSelectedItemId(R.id.account);
+                        fab.hide();
+                        break;
+                }
+            }
+        });
 
         binding.navBar.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
-                replaceFragment(new HomeFragment());
+                viewPager.setCurrentItem(0);
             } else if (item.getItemId() == R.id.transactionLog) {
-                replaceFragment(new TransactionFragment());
+                viewPager.setCurrentItem(1);
             } else if (item.getItemId() == R.id.budget) {
-                replaceFragment(new BudgetFragment());
+                viewPager.setCurrentItem(2);
             } else if (item.getItemId() == R.id.mutualFund) {
-                replaceFragment(new FundFragment());
+                viewPager.setCurrentItem(3);
             } else if (item.getItemId() == R.id.account) {
-                replaceFragment(new AccountFragment());
+                viewPager.setCurrentItem(4);
             }
 
             return true;
@@ -242,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.contentLayout, fragment);
+        fragmentTransaction.addToBackStack(fragment.getTag());
         fragmentTransaction.commit();
     }
 
