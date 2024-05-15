@@ -232,7 +232,8 @@ public class MainActivity extends AppCompatActivity{
         viewPager.setCurrentItem(5, true);
     }
 
-    public void navigateBackToTransactions() {
+    public void navigateToTransactions() {
         viewPager.setCurrentItem(1, true);
     }
+
 }

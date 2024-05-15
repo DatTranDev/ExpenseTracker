@@ -352,6 +352,7 @@
                             android:fontFamily="@font/montserrat_medium"/>
                         <TextView
                             android:layout_width="0dp"
+                            android:id="@+id/show_report"
                             android:layout_height="wrap_content"
                             android:text="Xem báo cáo chi tiết"
                             android:layout_weight="1"
@@ -388,6 +389,7 @@
                             android:layout_weight="1"
                             android:text="Xem tất cả"
                             android:textSize="16sp"
+                            android:id="@+id/show_transaction"
                             android:fontFamily="@font/montserrat_medium"
                             android:gravity="end"
                             android:textColor="@color/accent_green"/>

@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +23,6 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
-import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -34,22 +33,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WalletFragment extends BottomSheetDialogFragment implements WalletUpdateListener{
+public class ReportsFragment extends BottomSheetDialogFragment {
     private static final String KEY_WALLET_LIST = "wallet_list";
-    private TextView btnCancel;
-    private Button btnAdd;
+    private ImageButton btnClose;
     private RecyclerView recyclerView;
     private WalletAdapter walletAdapter;
-    private WalletUpdateListener walletUpdateListener;
     private TextView total;
     private List<Wallet> wallets;
 
-    public static WalletFragment newInstance(List<Wallet> walletList) {
-        WalletFragment walletFragment = new WalletFragment();
+    public static ReportsFragment newInstance(List<Wallet> walletList) {
+        ReportsFragment reportsFragment = new ReportsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(KEY_WALLET_LIST, new ArrayList<>(walletList));
-        walletFragment.setArguments(bundle);
-        return walletFragment;
+        reportsFragment.setArguments(bundle);
+        return reportsFragment;
     }
 
     @Override
@@ -64,25 +61,15 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_wallet, null);
+        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_report, null);
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
-        setData();
+//        setData();
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
-            }
-        });
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                if (mainActivity != null) {
-                    addWallet();
-                }
             }
         });
 
@@ -95,24 +82,15 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
                     BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-                    int maxHeight = getResources().getDisplayMetrics().heightPixels;
-                    maxHeight = maxHeight - maxHeight / 8;
-
                     ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                     if (layoutParams != null) {
-                        layoutParams.height = maxHeight;;
+                        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                         bottomSheet.setLayoutParams(layoutParams);
                     }
                 }
             }
         });
         return bottomSheetDialog;
-    }
-
-    private void addWallet() {
-        AddWalletFragment addWalletFragment = AddWalletFragment.newInstance();
-        addWalletFragment.setWalletUpdateListener(this);
-        addWalletFragment.show(getActivity().getSupportFragmentManager(), addWalletFragment.getTag());
     }
 
     private void setData() {
@@ -127,19 +105,11 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
     }
 
     private void initView(View view) {
-        btnAdd = view.findViewById(R.id.add_wallet);
-        btnCancel = view.findViewById(R.id.close_wallet);
-        recyclerView = view.findViewById(R.id.wallet_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        walletAdapter = new WalletAdapter(wallets);
-        total = view.findViewById(R.id.wallet_total_amount);
-        recyclerView.setAdapter(walletAdapter);
-    }
-
-    @Override
-    public void onWalletAdded(Wallet wallet) {
-        wallets.add(wallet);
-        walletAdapter.notifyItemInserted(wallets.size() - 1);
-        setData();
+        btnClose = view.findViewById(R.id.close_report);
+//        recyclerView = view.findViewById(R.id.wallet_list);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        walletAdapter = new WalletAdapter(wallets);
+//        total = view.findViewById(R.id.wallet_total_amount);
+//        recyclerView.setAdapter(walletAdapter);
     }
 }

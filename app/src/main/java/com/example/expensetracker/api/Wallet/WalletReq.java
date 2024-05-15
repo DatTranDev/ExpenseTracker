@@ -22,6 +22,9 @@ public class WalletReq {
         this.inviteUserMail = inviteUserMail;
     }
 
+    public WalletReq() {
+    }
+
     public String getId() {
         return id;
     }

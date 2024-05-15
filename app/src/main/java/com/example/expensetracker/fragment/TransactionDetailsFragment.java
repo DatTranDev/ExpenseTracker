@@ -79,7 +79,7 @@ public class TransactionDetailsFragment extends Fragment {
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 if (mainActivity != null) {
-                    mainActivity.navigateBackToTransactions();
+                    mainActivity.navigateToTransactions();
                 }
             }
         });
