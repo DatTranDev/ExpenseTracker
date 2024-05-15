@@ -1,56 +1,82 @@
 package com.example.expensetracker.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.expensetracker.TransactionAdapter;
-import com.example.expensetracker.databinding.FragmentTransactionBinding;
+import com.example.expensetracker.R;
+import com.example.expensetracker.adapter.TransactionAdapter;
+import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.api.AppUser.AppUserApi;
+import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.utils.Constant;
+import com.example.expensetracker.view.MainActivity;
+import com.google.gson.Gson;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Call;
 
 public class TransactionFragment extends Fragment {
-    private RecyclerView rvTransaction;
-    FragmentTransactionBinding binding;
-
+    private TransactionAdapter transactionAdapter;
+    private List<TransactionExp> transactions = new ArrayList<>();
+    private View view;
     public TransactionFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentTransactionBinding.inflate(inflater);
+        view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", "");
+        AppUser user = new Gson().fromJson(userJson, AppUser.class);
+        MainActivity mainActivity = (MainActivity)getActivity();
 
-        ArrayList<TransactionExp> transactionExps = new ArrayList<>();
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
-        transactionExps.add(new TransactionExp(1, 1, 1, "oke", new BigDecimal(122), 1, "", 2, new Timestamp(new Date().getTime()), ""));
+        RecyclerView rvTransaction = view.findViewById(R.id.transaction_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
 
-        TransactionAdapter transactionAdapter = new TransactionAdapter(this.getContext(), transactionExps);
-        binding.transactionList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        binding.transactionList.setAdapter(transactionAdapter);
+        rvTransaction.setLayoutManager(linearLayoutManager);
 
-        return binding.getRoot();
+        transactionAdapter = new TransactionAdapter(transactions);
+        getTransactionsForUser(user.getId());
+
+        rvTransaction.setAdapter(transactionAdapter);
+
+        return view;
+    }
+
+    private void getTransactionsForUser(String userId) {
+        AppUserRepository repository = AppUserRepository.getInstance();
+        repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
+            @Override
+            public void onSuccess(List<TransactionExp> transactions) {
+                transactionAdapter.updateTransaction(transactions);
+                transactionAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 }

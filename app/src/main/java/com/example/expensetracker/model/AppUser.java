@@ -2,28 +2,30 @@ package com.example.expensetracker.model;
 
 import java.sql.Time;
 
+
 public class AppUser {
-    private int id;
+    private String id;
     private String userName;
     private String password;
     private String email;
-    private Time alertTime;
+    private String alertTime;
 
     // Constructor
-    public AppUser(int id, String userName, String password, String email, Time alertTime) {
+    public AppUser(String id, String userName, String password, String email, String alertTime) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.alertTime = alertTime;
     }
+    public AppUser(){}
 
     // Getters and setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,11 +53,11 @@ public class AppUser {
         this.email = email;
     }
 
-    public Time getAlertTime() {
+    public String getAlertTime() {
         return alertTime;
     }
 
-    public void setAlertTime(Time alertTime) {
+    public void setAlertTime(String alertTime) {
         this.alertTime = alertTime;
     }
 }

@@ -1,28 +1,64 @@
 package com.example.expensetracker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class TransactionExp {
-    private int id;
-    private int userId;
-    private int categoryId;
+public class TransactionExp implements Parcelable {
+    private String id;
+    private String userId;
+    private AppUser user;
+    private String categoryId;
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    private Category category;
     private String note;
     private BigDecimal spend;
-    private int currencyId;
+    private String currency;
     private String partner;
-    private int walletId;
+    private String walletId;
+    private Wallet wallet;
     private Timestamp createdAt;
     private String image;
 
     // Constructor
-    public TransactionExp(int id, int userId, int categoryId, String note, BigDecimal spend, int currencyId, String partner, int walletId, Timestamp createdAt, String image ) {
+    public TransactionExp() {
+    }
+    public TransactionExp(String id, String userId, String categoryId, String note, BigDecimal spend, String currency, String partner, String walletId, Timestamp createdAt, String image ) {
         this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
         this.note = note;
         this.spend = spend;
-        this.currencyId = currencyId;
+        this.currency = currency;
         this.partner = partner;
         this.walletId = walletId;
         this.createdAt = createdAt;
@@ -30,27 +66,27 @@ public class TransactionExp {
     }
 
     // Getters and setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -70,12 +106,12 @@ public class TransactionExp {
         this.spend = spend;
     }
 
-    public int getCurrencyId() {
-        return currencyId;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setCurrencyId(int currencyId) {
-        this.currencyId = currencyId;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getPartner() {
@@ -86,11 +122,11 @@ public class TransactionExp {
         this.partner = partner;
     }
 
-    public int getWalletId() {
+    public String getWalletId() {
         return walletId;
     }
 
-    public void setWalletId(int walletId) {
+    public void setWalletId(String walletId) {
         this.walletId = walletId;
     }
 
@@ -108,5 +144,49 @@ public class TransactionExp {
 
     public void setImage(String partner) {
         this.partner = partner;
+    }
+
+    protected TransactionExp(Parcel in) {
+        id = in.readString();
+        userId = in.readString();
+        categoryId = in.readString();
+        note = in.readString();
+        spend = (BigDecimal) in.readSerializable();
+        currency = in.readString();
+        partner = in.readString();
+        walletId = in.readString();
+        createdAt = (Timestamp) in.readSerializable();
+        image = in.readString();
+    }
+
+    public static final Creator<TransactionExp> CREATOR = new Creator<TransactionExp>() {
+        @Override
+        public TransactionExp createFromParcel(Parcel in) {
+            return new TransactionExp(in);
+        }
+
+        @Override
+        public TransactionExp[] newArray(int size) {
+            return new TransactionExp[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(userId);
+        dest.writeString(categoryId);
+        dest.writeString(note);
+        dest.writeSerializable(spend);
+        dest.writeString(currency);
+        dest.writeString(partner);
+        dest.writeString(walletId);
+        dest.writeSerializable(createdAt);
+        dest.writeString(image);
     }
 }

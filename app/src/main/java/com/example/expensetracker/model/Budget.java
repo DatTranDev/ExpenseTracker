@@ -3,13 +3,18 @@ package com.example.expensetracker.model;
 import java.math.BigDecimal;
 
 public class Budget {
-    private int userId;
-    private int categoryId;
+    private String userId;
+    private AppUser user;
+    private Category category;
+    private String categoryId;
     private BigDecimal amount;
+    private String currency;
     private String period;
+    public Budget() {
+    }
 
     // Constructor
-    public Budget(int userId, int categoryId, BigDecimal amount, String period) {
+    public Budget(String userId, String categoryId, BigDecimal amount, String period) {
         this.userId = userId;
         this.categoryId = categoryId;
         this.amount = amount;
@@ -17,19 +22,37 @@ public class Budget {
     }
 
     // Getters and setters
-    public int getUserId() {
+    public String getCurrency() {
+        return currency;
+    }
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+    public AppUser getUser() {
+        return user;
+    }
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
