@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    >
+<LinearLayout
     android:layout_width="match_parent"
 
     android:layout_height="match_parent"
     android:background="#F6F8FC"
     android:orientation="vertical">
-
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
@@ -93,6 +94,7 @@
                 android:background="@drawable/default_type_button"
                 android:backgroundTint="@null"
                 android:padding="10dp"
+                android:onClick="onButtonClick"
                 android:scaleType="centerInside"
 
                 android:src="@drawable/ic_revenue" />
@@ -164,6 +166,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/chooseCategory"
         android:layout_width="320dp"
         android:layout_height="65dp"
         android:layout_gravity="center"
@@ -184,7 +187,7 @@
             android:src="@drawable/black_line" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/a"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
@@ -210,6 +213,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/chooseTime"
         android:layout_width="320dp"
         android:layout_height="65dp"
         android:layout_gravity="center"
@@ -256,6 +260,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/chooseNote"
         android:layout_width="320dp"
         android:layout_height="65dp"
         android:layout_gravity="center"
@@ -302,6 +307,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/chooseWallet"
         android:layout_width="320dp"
         android:layout_height="65dp"
         android:layout_gravity="center"
@@ -345,7 +351,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/choose_borrower"
+        android:id="@+id/borrower"
         android:visibility="gone"
         android:layout_width="320dp"
         android:layout_height="65dp"
@@ -401,3 +407,5 @@
         android:textSize="15sp" />
 
 </LinearLayout>
+
+</layout>
