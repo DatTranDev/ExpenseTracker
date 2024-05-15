@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.api.Request.RequestRes;
+import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.databinding.ActivityMainBinding;
 import com.example.expensetracker.fragment.AccountFragment;
 import com.example.expensetracker.fragment.BudgetFragment;
@@ -19,11 +21,14 @@ import com.example.expensetracker.fragment.TransactionFragment;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.Request;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.repository.IconRepository;
+import com.example.expensetracker.repository.RequestRepository;
+import com.example.expensetracker.repository.WalletRepository;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -148,21 +153,73 @@ public class MainActivity extends AppCompatActivity {
 
         //ICON
         //GET ALL ICON
-        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<com.example.expensetracker.model.Icon>>() {
-            @Override
-            public void onSuccess(List<com.example.expensetracker.model.Icon> icons) {
-                for (com.example.expensetracker.model.Icon icon : icons) {
-                    System.out.println(icon.getLinking());
-                }
-            }
+//        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<com.example.expensetracker.model.Icon>>() {
+//            @Override
+//            public void onSuccess(List<com.example.expensetracker.model.Icon> icons) {
+//                for (com.example.expensetracker.model.Icon icon : icons) {
+//                    System.out.println(icon.getLinking());
+//                }
+//            }
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
 
-            @Override
-            public void onError(String message) {
-                System.out.println(message);
-            }
-        });
+        //REQUEST
+        //GET REQUEST BY USER
+//        RequestRepository.getInstance().getRequestsByUser("6615ab5c55cbe4d6104aa825", new ApiCallBack<List<Request>>() {
+//            @Override
+//            public void onSuccess(List<Request> requests) {
+//                for (Request request : requests) {
+//                    System.out.println(request.getName());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
+        //RESPONSE REQUEST
+//        RequestRes requestRes = new RequestRes();
+//        requestRes.setRequestId("661758e9fc1bf79782d9ce37");
+//        requestRes.setAccepted(true);
+//        RequestRepository.getInstance().responseRequest(requestRes, new ApiCallBack<Request>() {
+//            @Override
+//            public void onSuccess(Request request) {
+//                System.out.println(request.getName());
+//            }
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
 
+        //Wallet
+        //ADD WALLET
+        //Ví riêng isSharing = false
+//        WalletReq walletReq = new WalletReq();
+//        walletReq.setName("Quỹ đen giấu vk");
+//        walletReq.setAmount(new BigDecimal(1000000));
+//        walletReq.setCurrency("VND");
+//        walletReq.setSharing(false);
+//        walletReq.setUserId("6615a4b40d01b7dd489839bc");
+        //Ví chung isSharing = true
+        //Ví chung có thêm list email để mời
+        //walletReq.setInviteUserMail(List<String> inviteUserMail);
 
+//        WalletRepository.getInstance().addWallet(walletReq, new ApiCallBack<Wallet>() {
+//            @Override
+//            public void onSuccess(Wallet wallet) {
+//                System.out.println(wallet.getName());
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
 
         binding.navBar.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {

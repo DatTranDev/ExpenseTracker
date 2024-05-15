@@ -11,6 +11,8 @@ public class WalletReq {
     private boolean isSharing;
     private String userId;
     private List<String> inviteUserMail;
+    public WalletReq() {
+    }
 
     public WalletReq(String id, String name, BigDecimal amount, String currency, boolean isSharing, String userId, List<String> inviteUserMail) {
         this.id = id;
