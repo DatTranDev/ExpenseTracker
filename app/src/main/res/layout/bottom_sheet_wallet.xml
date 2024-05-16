@@ -35,13 +35,6 @@
             android:gravity="center"
             android:text="Ví của tôi"
             android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="Sửa"
-            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +82,7 @@
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="360dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +96,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout12"
-            tools:listitem="@layout/wallet_item" />
+            tools:listitem="@layout/wallet_item_show" />
     </ScrollView>
 
     <Button
@@ -116,7 +109,7 @@
         android:fontFamily="@font/montserrat_semibold"
         android:text="Thêm ví"
         android:textSize="16sp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

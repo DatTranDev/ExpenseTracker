@@ -18,7 +18,7 @@ public interface WalletApi {
     @POST("wallet/add")
     Call<DataResponse<Wallet>> addWallet(@Body WalletReq walletReq);
     @PATCH("wallet/update/{id}")
-    Call<DataResponse<Wallet>> updateWallet(@Path("id") String id, Wallet wallet);
+    Call<DataResponse<Wallet>> updateWallet(@Path("id") String id, @Body Wallet wallet);
     @DELETE("wallet/delete/{id}")
     Call<DataResponse<Wallet>> deleteWallet(@Path("id") String id);
     @PATCH("wallet/addmember")
