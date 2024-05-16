@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -20,7 +21,7 @@ public interface WalletApi {
     Call<DataResponse<Wallet>> addWallet(@Body WalletReq walletReq);
     @PATCH("wallet/update/{id}")
     Call<DataResponse<Wallet>> updateWallet(@Path("id") String id, @Body Wallet wallet);
-    @DELETE("wallet/delete")
+    @HTTP(method = "DELETE", path = "wallet/delete", hasBody = true)
     Call<DataResponse<Wallet>> deleteWallet(@Body UserWallet userWallet);
     @PATCH("wallet/addmember")
     Call<DataResponse<Wallet>> addMember(@Body AddMemberReq addMemberReq);

@@ -13,8 +13,10 @@ import com.example.expensetracker.adapter.ViewPagerAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.databinding.ActivityMainBinding;
 import com.example.expensetracker.fragment.TransactionDetailsFragment;
+import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.IconRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -208,6 +210,20 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(message);
 //            }
 //        });
+
+
+        AppUserRepository.getInstance().findByEmail("neban0444@gmail.com", new ApiCallBack<AppUser>() {
+            @Override
+            public void onSuccess(AppUser appUser) {
+                System.out.println(appUser.getEmail());
+            }
+
+            @Override
+            public void onError(String message) {
+                System.out.println(message);
+            }
+        });
+
         adapter = new ViewPagerAdapter(this);
         fab = findViewById(R.id.fab);
         viewPager = findViewById(R.id.viewPager);
