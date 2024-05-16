@@ -29,6 +29,7 @@ import com.example.expensetracker.adapter.WalletAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.bottom_sheet.ReportsFragment;
 import com.example.expensetracker.bottom_sheet.WalletFragment;
+import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements TransactionAdapter.OnItemClickListener{
+public class HomeFragment extends Fragment implements TransactionAdapter.OnItemClickListener, WalletUpdateListener {
     private WalletAdapter walletAdapter;
     private TransactionAdapter transactionAdapter;
     private List<TransactionExp> transactionList;
@@ -145,6 +146,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
     private void showAllWallet(List<Wallet> walletList) {
         WalletFragment walletFragment = WalletFragment.newInstance(walletList);
+        walletFragment.setWalletUpdateListener(this);
         walletFragment.show(getActivity().getSupportFragmentManager(), walletFragment.getTag());
     }
 
@@ -256,5 +258,47 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         if (mainActivity != null) {
             mainActivity.showTransactionDetails(transactionExp);
         }
+    }
+
+    @Override
+    public void onWalletAdded(Wallet wallet) {
+        walletList.add(wallet);
+        walletAdapter.notifyItemInserted(walletList.size() - 1);
+        setData();
+    }
+
+    @Override
+    public void onWalletUpdated(Wallet wallet) {
+        for (int i = 0; i < walletList.size(); i++) {
+            if (walletList.get(i).getId().equals(wallet.getId())) {
+                walletList.set(i, wallet);
+                walletAdapter.notifyItemChanged(i);
+                setData();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onWalletDeleted(String walletId) {
+        for (int i = 0; i < walletList.size(); i++) {
+            if (walletList.get(i).getId().equals(walletId)) {
+                walletList.remove(i);
+                walletAdapter.notifyItemRemoved(i);
+                setData();
+                break;
+            }
+        }
+    }
+
+    private void setData() {
+        BigDecimal result = new BigDecimal(0);
+
+        for (int i = 0; i < walletList.size(); i++) {
+            result = result.add(walletList.get(i).getAmount());
+        }
+
+        String currency = walletList.get(0).getCurrency();
+        totalBalance.setText(String.format("%s %s", Helper.formatCurrency(result), currency));
     }
 }

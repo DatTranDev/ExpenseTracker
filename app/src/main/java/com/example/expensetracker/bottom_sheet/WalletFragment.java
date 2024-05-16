@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.WalletAdapter;
+import com.example.expensetracker.adapter.WalletShowAdapter;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
@@ -34,12 +35,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WalletFragment extends BottomSheetDialogFragment implements WalletUpdateListener{
+public class WalletFragment extends BottomSheetDialogFragment implements WalletUpdateListener, WalletShowAdapter.OnWalletModifyClickListener {
     private static final String KEY_WALLET_LIST = "wallet_list";
     private TextView btnCancel;
     private Button btnAdd;
     private RecyclerView recyclerView;
-    private WalletAdapter walletAdapter;
+    private WalletShowAdapter walletAdapter;
     private WalletUpdateListener walletUpdateListener;
     private TextView total;
     private List<Wallet> wallets;
@@ -59,6 +60,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
             wallets = getArguments().getParcelableArrayList(KEY_WALLET_LIST);
         }
     }
+
 
     @NonNull
     @Override
@@ -131,7 +133,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
         btnCancel = view.findViewById(R.id.close_wallet);
         recyclerView = view.findViewById(R.id.wallet_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        walletAdapter = new WalletAdapter(wallets);
+        walletAdapter = new WalletShowAdapter(wallets, this);
         total = view.findViewById(R.id.wallet_total_amount);
         recyclerView.setAdapter(walletAdapter);
     }
@@ -141,5 +143,43 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
         wallets.add(wallet);
         walletAdapter.notifyItemInserted(wallets.size() - 1);
         setData();
+        walletUpdateListener.onWalletAdded(wallet);
+    }
+
+    @Override
+    public void onWalletUpdated(Wallet wallet) {
+        for (int i = 0; i < wallets.size(); i++) {
+            if (wallets.get(i).getId().equals(wallet.getId())) {
+                wallets.set(i, wallet);
+                walletAdapter.notifyItemChanged(i);
+                setData();
+                break;
+            }
+        }
+        walletUpdateListener.onWalletUpdated(wallet);
+    }
+
+    @Override
+    public void onWalletDeleted(String walletId) {
+        for (int i = 0; i < wallets.size(); i++) {
+            if (wallets.get(i).getId().equals(walletId)) {
+                wallets.remove(i);
+                walletAdapter.notifyItemRemoved(i);
+                setData();
+                break;
+            }
+        }
+        walletUpdateListener.onWalletDeleted(walletId);
+    }
+
+    public void setWalletUpdateListener(WalletUpdateListener listener) {
+        this.walletUpdateListener = listener;
+    }
+
+    @Override
+    public void onWalletModifyClick(Wallet wallet) {
+        ModifyWalletFragment modifyWalletFragment = ModifyWalletFragment.newInstance(wallet);
+        modifyWalletFragment.setWalletUpdateListener(this);
+        modifyWalletFragment.show(getActivity().getSupportFragmentManager(), modifyWalletFragment.getTag());
     }
 }

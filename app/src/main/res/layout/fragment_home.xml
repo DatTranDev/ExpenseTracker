@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.HomeFragment">
-
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
@@ -25,7 +24,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
             <!-- Account -->
             <LinearLayout
                 android:id="@+id/profile"
@@ -34,14 +32,12 @@
                 android:background="@drawable/rounded_background"
                 android:orientation="horizontal"
                 android:padding="4dp">
-
                 <ImageView
                     android:id="@+id/avatar"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="profilePicture"
                     android:src="@drawable/avatar" />
-
                 <LinearLayout
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
@@ -49,14 +45,12 @@
                     android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
-
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
                         android:text="Chào mừng trở lại," />
-
                     <TextView
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
@@ -64,14 +58,12 @@
                         android:fontFamily="@font/montserrat_medium"
                         android:text="Quark" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:id="@+id/notification_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="end"
                     android:orientation="horizontal">
-
                     <LinearLayout
                         android:id="@+id/notification"
                         android:layout_width="48dp"
@@ -79,7 +71,6 @@
                         android:background="@drawable/rounded_background_icon"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
-
                         <ImageView
                             android:id="@+id/imageView3"
                             android:layout_width="match_parent"
@@ -88,7 +79,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
             <!-- Content -->
             <LinearLayout
                 android:id="@+id/main_content"
@@ -110,13 +100,11 @@
                         android:fontFamily="@font/montserrat"
                         android:textSize="12sp"
                         android:text="Tổng số dư" />
-
                     <LinearLayout
                         android:id="@+id/total_balance_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
                         <TextView
                             android:id="@+id/total_balance"
                             android:layout_width="0dp"
@@ -126,7 +114,6 @@
                             android:text="0 đ"
                             android:textSize="16sp" />
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -176,7 +163,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="24dp">
-
                     <TextView
                         android:id="@+id/textView15"
                         android:layout_width="match_parent"
@@ -185,7 +171,6 @@
                         android:fontFamily="@font/montserrat_semibold"
                         android:textSize="16sp"
                         android:layout_marginBottom="12dp"/>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -204,15 +189,12 @@
                                 android:orientation="horizontal"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
-
                                 <ImageView
                                     android:id="@+id/imageView16"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:srcCompat="@drawable/ic_income" />
-
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -221,13 +203,11 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
-
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:orientation="horizontal"
                                     android:layout_marginTop="10dp">
-
                                     <TextView
                                         android:id="@+id/textView17"
                                         android:layout_width="wrap_content"
@@ -236,17 +216,13 @@
                                         android:fontFamily="@font/montserrat"
                                         android:textSize="14sp"
                                         android:layout_marginEnd="30dp"/>
-
                                     <ImageView
                                         android:id="@+id/imageView18"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         app:srcCompat="@drawable/ic_more" />
-
-
                                 </LinearLayout>
-
                                 <TextView
                                     android:id="@+id/stats_income_val"
                                     android:layout_width="match_parent"
@@ -255,9 +231,7 @@
                                     android:textSize="14sp"
                                     android:fontFamily="@font/montserrat_semibold"/>
                             </LinearLayout>
-
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
                         <View
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -270,7 +244,6 @@
                             android:layout_weight="3"
                             android:background="@drawable/rounded_background_20"
                             android:padding="16dp">
-
                             <LinearLayout
                                 android:id="@+id/linearLayout9"
                                 android:layout_width="match_parent"
@@ -278,15 +251,12 @@
                                 android:orientation="horizontal"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
-
                                 <ImageView
                                     android:id="@+id/imageView17"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:srcCompat="@drawable/ic_outcome" />
-
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -295,13 +265,11 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
-
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="10dp"
                                     android:orientation="horizontal">
-
                                     <TextView
                                         android:id="@+id/textView18"
                                         android:layout_width="wrap_content"
@@ -310,17 +278,13 @@
                                         android:fontFamily="@font/montserrat"
                                         android:text="Chi tiêu"
                                         android:textSize="14sp" />
-
                                     <ImageView
                                         android:id="@+id/imageView19"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         app:srcCompat="@drawable/ic_more" />
-
-
                                 </LinearLayout>
-
                                 <TextView
                                     android:id="@+id/stats_outcome_val"
                                     android:layout_width="match_parent"
@@ -405,5 +369,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.expensetracker.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
+
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.AppUser.AppUserApi;
 import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.model.AppUser;
+
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Constant;
