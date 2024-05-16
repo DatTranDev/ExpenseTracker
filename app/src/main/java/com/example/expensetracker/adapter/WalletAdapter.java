@@ -59,4 +59,15 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletView
             walletAmount = itemView.findViewById(R.id.wallet_amount);
         }
     }
+
+    public void updateWallet(List<Wallet> wallets) {
+        if (walletList != null) {
+            walletList.clear();
+            walletList.addAll(wallets);
+            notifyDataSetChanged();
+        } else {
+            walletList = wallets;
+            notifyDataSetChanged();
+        }
+    }
 }

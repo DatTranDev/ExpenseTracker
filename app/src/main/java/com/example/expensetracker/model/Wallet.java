@@ -1,8 +1,13 @@
 package com.example.expensetracker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.math.BigDecimal;
 
-public class Wallet {
+public class Wallet implements Parcelable {
     private String id;
     private String name;
     private BigDecimal amount;
@@ -57,5 +62,39 @@ public class Wallet {
     public void setSharing(boolean sharing) {
         isSharing = sharing;
     }
+
+    protected Wallet(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        amount = new BigDecimal(in.readString());
+        currency = in.readString();
+        isSharing = in.readByte() != 0;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(amount.toPlainString());
+        dest.writeString(currency);
+        dest.writeByte((byte) (isSharing ? 1 : 0));
+    }
+
+    public static final Creator<Wallet> CREATOR = new Creator<Wallet>() {
+        @Override
+        public Wallet createFromParcel(Parcel in) {
+            return new Wallet(in);
+        }
+
+        @Override
+        public Wallet[] newArray(int size) {
+            return new Wallet[size];
+        }
+    };
 }
 
