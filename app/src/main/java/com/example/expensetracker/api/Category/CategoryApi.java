@@ -11,8 +11,8 @@ import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 
 public interface CategoryApi {
-    @POST("/category/add")
+    @POST("category/add")
     Call<DataResponse<Category>> addCategory(@Body CategoryReq categoryReq);
-    @HTTP(method = "DELETE", path = "/category/delete", hasBody = true)
+    @HTTP(method = "DELETE", path = "category/delete", hasBody = true)
     Call<DataResponse<Category>> deleteCategory(@Body UserCategory category);
 }

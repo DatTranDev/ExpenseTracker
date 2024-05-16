@@ -6,6 +6,8 @@ import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.model.TransactionExp;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -80,4 +82,43 @@ public class TransactionRepository {
             }
         });
     }
+
+    public synchronized void getNeedToReceive(String id, ApiCallBack<List<TransactionExp>> callback) {
+        transactionApi.getNeedToReceive(id).enqueue(new Callback<DataResponse<List<TransactionExp>>>() {
+            @Override
+            public void onResponse(Call<DataResponse<List<TransactionExp>>> call, retrofit2.Response<DataResponse<List<TransactionExp>>> response) {
+                if (response.isSuccessful()) {
+                    DataResponse<List<TransactionExp>> responseData = response.body();
+                    callback.onSuccess(responseData.getData());
+                } else {
+                    callback.onError("Failed to get need to receive");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataResponse<List<TransactionExp>>> call, Throwable t) {
+                callback.onError("Server error, please try again later: " + t.getMessage());
+            }
+        });
+    }
+
+    public synchronized void getNeedToPay(String id, ApiCallBack<List<TransactionExp>> callback) {
+        transactionApi.getNeedToPay(id).enqueue(new Callback<DataResponse<List<TransactionExp>>>() {
+            @Override
+            public void onResponse(Call<DataResponse<List<TransactionExp>>> call, retrofit2.Response<DataResponse<List<TransactionExp>>> response) {
+                if (response.isSuccessful()) {
+                    DataResponse<List<TransactionExp>> responseData = response.body();
+                    callback.onSuccess(responseData.getData());
+                } else {
+                    callback.onError("Failed to get need to pay");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataResponse<List<TransactionExp>>> call, Throwable t) {
+                callback.onError("Server error, please try again later: " + t.getMessage());
+            }
+        });
+    }
+
 }
