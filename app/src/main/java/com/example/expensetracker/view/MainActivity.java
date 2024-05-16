@@ -1,46 +1,17 @@
 package com.example.expensetracker.view;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.ViewPagerAdapter;
-import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.api.Request.RequestRes;
-import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.databinding.ActivityMainBinding;
-import com.example.expensetracker.fragment.AccountFragment;
-import com.example.expensetracker.fragment.BudgetFragment;
-import com.example.expensetracker.fragment.FundFragment;
-import com.example.expensetracker.fragment.HomeFragment;
-import com.example.expensetracker.fragment.TransactionDetailsFragment;
-import com.example.expensetracker.fragment.TransactionFragment;
-import com.example.expensetracker.model.AppUser;
-import com.example.expensetracker.model.Budget;
-import com.example.expensetracker.model.Category;
-import com.example.expensetracker.model.Request;
-import com.example.expensetracker.model.TransactionExp;
-import com.example.expensetracker.model.Wallet;
-import com.example.expensetracker.repository.AppUserRepository;
-import com.example.expensetracker.repository.BudgetRepository;
-import com.example.expensetracker.repository.IconRepository;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
-import com.example.expensetracker.repository.RequestRepository;
-import com.example.expensetracker.repository.WalletRepository;
-import com.google.gson.Gson;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
