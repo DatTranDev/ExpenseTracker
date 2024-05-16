@@ -18,7 +18,13 @@ import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
+<<<<<<< Updated upstream
 import com.anychart.core.cartesian.series.Column;
+=======
+import com.anychart.charts.Pie;
+import com.anychart.core.cartesian.series.Column;
+import com.anychart.core.cartesian.series.Line;
+>>>>>>> Stashed changes
 import com.anychart.enums.Anchor;
 import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
@@ -39,6 +45,7 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+<<<<<<< Updated upstream
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,6 +64,12 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private TextView showTransaction;
     private TextView showReport;
     private TextView userName;
+=======
+import java.util.List;
+
+public class HomeFragment extends Fragment {
+    AnyChartView chartView;
+>>>>>>> Stashed changes
     public HomeFragment() {
 
     }
@@ -71,6 +84,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+<<<<<<< Updated upstream
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user", "");
@@ -212,12 +226,24 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             }
         });
     }
+=======
+        chartView = view.findViewById(R.id.analysis_view);
+        setUpChartView();
+        return view;
+    }
+
+>>>>>>> Stashed changes
     private void setUpChartView() {
         Cartesian cartesian = AnyChart.column();
 
         List<DataEntry> data = new ArrayList<>();
+<<<<<<< Updated upstream
         data.add(new ValueDataEntry("Tháng trước", 80540));
         data.add(new ValueDataEntry("Tháng này", 94190));
+=======
+        data.add(new ValueDataEntry("Rouge", 80540));
+        data.add(new ValueDataEntry("Foundation", 94190));
+>>>>>>> Stashed changes
 
         Column column = cartesian.column(data);
 
@@ -232,14 +258,19 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         cartesian.animation(true);
 
         cartesian.yScale().minimum(0d);
+<<<<<<< Updated upstream
         cartesian.yAxis(0).title().enabled(false);
         cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
+=======
+        cartesian.yAxis(0).enabled(false);
+>>>>>>> Stashed changes
 
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
         cartesian.interactivity().hoverMode(HoverMode.BY_X);
 
         chartView.setChart(cartesian);
     }
+<<<<<<< Updated upstream
     private BigDecimal getTotalBalance(List<Wallet> walletList) {
         BigDecimal result = new BigDecimal(0);
 
@@ -257,4 +288,6 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             mainActivity.showTransactionDetails(transactionExp);
         }
     }
+=======
+>>>>>>> Stashed changes
 }

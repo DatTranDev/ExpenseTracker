@@ -20,7 +20,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     private static final String KEY_TRANSACTION = "transaction_info";
     private TransactionExp transactionExp;
+<<<<<<< Updated upstream:app/src/main/java/com/example/expensetracker/bottom_sheet/ModifyTransactionFragment.java
     private TextView transactionType, transactionCategory, transactionTime, transactionNote, transactionAmount;
+=======
+    private TextView transactionName, transactionType, transactionTime, transactionNote, transactionAmount;
+>>>>>>> Stashed changes:app/src/main/java/com/example/expensetracker/fragment/ModifyTransactionFragment.java
     private ImageView transactionCurrency;
     private TextView btnCancel;
 
@@ -61,9 +65,15 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     }
 
     private void initView(View view) {
+<<<<<<< Updated upstream:app/src/main/java/com/example/expensetracker/bottom_sheet/ModifyTransactionFragment.java
         transactionType = view.findViewById(R.id.transaction_type);
         transactionCurrency = view.findViewById(R.id.transaction_currency);
         transactionCategory = view.findViewById(R.id.transaction_category);
+=======
+        transactionName = view.findViewById(R.id.transaction_name);
+        transactionCurrency = view.findViewById(R.id.transaction_currency);
+//        transactionType = view.findViewById(R.id.transaction_type);
+>>>>>>> Stashed changes:app/src/main/java/com/example/expensetracker/fragment/ModifyTransactionFragment.java
         transactionNote = view.findViewById(R.id.transaction_note);
         transactionTime = view.findViewById(R.id.transaction_time);
         transactionAmount = view.findViewById(R.id.transaction_price);
