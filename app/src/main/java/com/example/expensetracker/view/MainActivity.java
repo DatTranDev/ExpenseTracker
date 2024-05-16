@@ -10,13 +10,21 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.ViewPagerAdapter;
+import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.databinding.ActivityMainBinding;
+import com.example.expensetracker.fragment.TransactionDetailsFragment;
+import com.example.expensetracker.model.Icon;
+import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.repository.IconRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private ViewPager2 viewPager;
+    private ViewPagerAdapter adapter;
     FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,23 +141,19 @@ public class MainActivity extends AppCompatActivity {
 
         //ICON
         //GET ALL ICON
-//        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<com.example.expensetracker.model.Icon>>() {
-//            @Override
-//            public void onSuccess(List<com.example.expensetracker.model.Icon> icons) {
-//                for (com.example.expensetracker.model.Icon icon : icons) {
-//                    System.out.println(icon.getLinking());
-//                }
-//            }
-//            @Override
-//            public void onError(String message) {
-//                System.out.println(message);
-//            }
-//        });
+        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<Icon>>() {
+            @Override
+            public void onSuccess(List<com.example.expensetracker.model.Icon> icons) {
+                for (com.example.expensetracker.model.Icon icon : icons) {
+                    System.out.println(icon.getLinking());
+                }
+            }
+            @Override
+            public void onError(String message) {
+                System.out.println(message);
+            }
+        });
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
-        fab = findViewById(R.id.fab);
-        viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
         //REQUEST
         //GET REQUEST BY USER
 //        RequestRepository.getInstance().getRequestsByUser("6615ab5c55cbe4d6104aa825", new ApiCallBack<List<Request>>() {
@@ -204,6 +208,11 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(message);
 //            }
 //        });
+        adapter = new ViewPagerAdapter(this);
+        fab = findViewById(R.id.fab);
+        viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -250,6 +259,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void showTransactionDetails(TransactionExp transactionExp) {
+        TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("transaction_info", transactionExp);
+        transactionDetailsFragment.setArguments(bundle);
+
+        adapter.setTransactionDetailsFragment(transactionDetailsFragment);
+        viewPager.setCurrentItem(5, true);
+    }
+
+    public void navigateToTransactions() {
+        viewPager.setCurrentItem(1, true);
+    }
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
