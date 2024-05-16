@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.fragment.TransactionDetailsFragment;
@@ -21,8 +22,11 @@ import java.util.List;
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
     private List<TransactionExp> transactionExps;
     private static final String KEY_TRANSACTION = "transaction_info";
-    public TransactionAdapter(List<TransactionExp> transactionExps) {
+    private OnItemClickListener listener;
+
+    public TransactionAdapter(List<TransactionExp> transactionExps, OnItemClickListener listener) {
         this.transactionExps = transactionExps;
+        this.listener = listener;
     }
 
     @NonNull
@@ -43,22 +47,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
         holder.transactionName.setText(String.valueOf(transactionExp.getCategory().getName()));
         holder.transactionType.setText(String.valueOf(transactionExp.getNote()));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
-                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(KEY_TRANSACTION, transactionExp);
-                transactionDetailsFragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.contentLayout, transactionDetailsFragment);
-                fragmentTransaction.addToBackStack(TransactionDetailsFragment.TAG);
-                fragmentTransaction.commit();
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(transactionExp));
     }
     @Override
     public int getItemCount() {
@@ -77,6 +66,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             transactionExps = transactions;
             notifyDataSetChanged();
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(TransactionExp transactionExp);
     }
 
     public class TransactionViewHolder extends RecyclerView.ViewHolder {

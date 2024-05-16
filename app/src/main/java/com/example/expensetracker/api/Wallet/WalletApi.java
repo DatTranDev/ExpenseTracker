@@ -7,6 +7,7 @@ import com.example.expensetracker.model.Wallet;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
@@ -15,7 +16,7 @@ import retrofit2.http.Path;
 
 public interface WalletApi {
     @POST("wallet/add")
-    Call<DataResponse<Wallet>> addWallet(WalletReq walletReq);
+    Call<DataResponse<Wallet>> addWallet(@Body WalletReq walletReq);
     @PATCH("wallet/update/{id}")
     Call<DataResponse<Wallet>> updateWallet(@Path("id") String id, Wallet wallet);
     @DELETE("wallet/delete/{id}")

@@ -1,4 +1,4 @@
-package com.example.expensetracker.fragment;
+package com.example.expensetracker.bottom_sheet;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,8 +16,6 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import org.w3c.dom.Text;
 
 public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     private static final String KEY_TRANSACTION = "transaction_info";
@@ -47,7 +45,7 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet, null);
+        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_modify_transaction, null);
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
         setTransactionData();
@@ -85,7 +83,7 @@ public class ModifyTransactionFragment extends BottomSheetDialogFragment {
         transactionNote.setText(transactionExp.getNote());
         transactionAmount.setText(String.valueOf(transactionExp.getSpend()));
         transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
+        transactionCategory.setText(String.valueOf(transactionExp.getCategory().getType()));
         transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
     }
 }

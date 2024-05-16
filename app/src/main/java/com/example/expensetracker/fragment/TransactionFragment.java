@@ -33,7 +33,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 
-public class TransactionFragment extends Fragment {
+public class TransactionFragment extends Fragment implements TransactionAdapter.OnItemClickListener {
     private TransactionAdapter transactionAdapter;
     private List<TransactionExp> transactions = new ArrayList<>();
     private View view;
@@ -56,7 +56,7 @@ public class TransactionFragment extends Fragment {
 
         rvTransaction.setLayoutManager(linearLayoutManager);
 
-        transactionAdapter = new TransactionAdapter(transactions);
+        transactionAdapter = new TransactionAdapter(transactions, this);
         getTransactionsForUser(user.getId());
 
         rvTransaction.setAdapter(transactionAdapter);
@@ -78,5 +78,13 @@ public class TransactionFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onItemClick(TransactionExp transactionExp) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.showTransactionDetails(transactionExp);
+        }
     }
 }
