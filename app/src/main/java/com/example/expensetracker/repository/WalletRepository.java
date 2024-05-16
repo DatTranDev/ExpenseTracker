@@ -5,6 +5,7 @@ import com.example.expensetracker.api.Wallet.WalletApi;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.api.Wallet.AddMemberReq;
@@ -68,8 +69,8 @@ public class WalletRepository {
         });
     }
 
-    public synchronized void deleteWallet(String id, ApiCallBack<Wallet> callback) {
-        walletApi.deleteWallet(id).enqueue(new Callback<DataResponse<Wallet>>() {
+    public synchronized void deleteWallet(UserWallet userWallet, ApiCallBack<Wallet> callback) {
+        walletApi.deleteWallet(userWallet).enqueue(new Callback<DataResponse<Wallet>>() {
             @Override
             public void onResponse(Call<DataResponse<Wallet>> call, retrofit2.Response<DataResponse<Wallet>> response) {
                 if (response.isSuccessful()) {
