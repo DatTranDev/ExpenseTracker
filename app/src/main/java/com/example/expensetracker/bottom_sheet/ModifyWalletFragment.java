@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.model.AppUser;
+import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.WalletRepository;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -47,7 +49,8 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
     private TextInputLayout textInputLayout;
     private EditText walletName;
     private EditText walletAmount;
-    private TextView btnSave;
+    private Button btnSave;
+    private Button btnDelete;
 
     public static ModifyWalletFragment newInstance(Wallet wallet) {
         ModifyWalletFragment fragment = new ModifyWalletFragment();
@@ -73,7 +76,7 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
         user = new Gson().fromJson(userJson, AppUser.class);
 
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_add_wallet, null); // reuse the same layout
+        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_modify_wallet, null); // reuse the same layout
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
 
@@ -122,7 +125,33 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
 
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(getContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Cập nhật thất bại!\n Lỗi: " + message, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserWallet userWallet = new UserWallet();
+                userWallet.setWalletId(wallet.getId());
+                userWallet.setUserId(user.getId());
+                userWallet.setDeleted(true);
+                String walletId = wallet.getId();
+                WalletRepository.getInstance().deleteWallet(userWallet, new ApiCallBack<Wallet>() {
+                    @Override
+                    public void onSuccess(Wallet wallet) {
+                        Toast.makeText(getContext(), "Xóa ví thành công", Toast.LENGTH_SHORT).show();
+                        if (walletUpdateListener != null) {
+                            walletUpdateListener.onWalletDeleted(walletId);
+                        }
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(getContext(), "Không xóa được ví!\n Lỗi: " + message, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -156,13 +185,12 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
     private void initView(View view) {
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnSave = view.findViewById(R.id.save_wallet);
+        btnDelete = view.findViewById(R.id.delete_wallet);
         autoCompleteTextView = view.findViewById(R.id.add_wallet_currency);
         textInputLayout = view.findViewById(R.id.text_input_currency);
         walletName = view.findViewById(R.id.wallet_name);
         walletAmount = view.findViewById(R.id.wallet_amount);
-        title = view.findViewById(R.id.title);
 
-        title.setText("Sửa ví");
         if (wallet != null) {
             walletName.setText(wallet.getName());
             walletAmount.setText(String.valueOf(wallet.getAmount()));

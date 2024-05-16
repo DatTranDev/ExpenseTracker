@@ -193,10 +193,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/transaction_list"
                 android:layout_width="match_parent"
-<<<<<<< Updated upstream
                 android:background="@drawable/rounded_background_20"
-=======
->>>>>>> Stashed changes
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"

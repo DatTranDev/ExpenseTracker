@@ -134,7 +134,7 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
 
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(getContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Tạo ví thất bại!\n Lỗi: " + message, Toast.LENGTH_LONG).show();
                     }
                 });
             }

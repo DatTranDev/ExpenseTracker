@@ -98,6 +98,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
                     int maxHeight = getResources().getDisplayMetrics().heightPixels;
+                    maxHeight = maxHeight - maxHeight / 8;
 
                     ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                     if (layoutParams != null) {
@@ -142,6 +143,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
         wallets.add(wallet);
         walletAdapter.notifyItemInserted(wallets.size() - 1);
         setData();
+        walletUpdateListener.onWalletAdded(wallet);
     }
 
     @Override
@@ -154,6 +156,24 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
                 break;
             }
         }
+        walletUpdateListener.onWalletUpdated(wallet);
+    }
+
+    @Override
+    public void onWalletDeleted(String walletId) {
+        for (int i = 0; i < wallets.size(); i++) {
+            if (wallets.get(i).getId().equals(walletId)) {
+                wallets.remove(i);
+                walletAdapter.notifyItemRemoved(i);
+                setData();
+                break;
+            }
+        }
+        walletUpdateListener.onWalletDeleted(walletId);
+    }
+
+    public void setWalletUpdateListener(WalletUpdateListener listener) {
+        this.walletUpdateListener = listener;
     }
 
     @Override
