@@ -15,7 +15,9 @@ import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.databinding.ActivityMainBinding;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.IconRepository;
+import com.example.expensetracker.repository.TransactionRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -208,6 +210,33 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(message);
 //            }
 //        });
+
+
+//        AppUserRepository.getInstance().findByEmail("neban0444@gmail.com", new ApiCallBack<AppUser>() {
+//            @Override
+//            public void onSuccess(AppUser appUser) {
+//                System.out.println(appUser.getEmail());
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
+        TransactionRepository.getInstance().getNeedToPay("6615a4b40d01b7dd489839bc", new ApiCallBack<List<TransactionExp>>() {
+            @Override
+            public void onSuccess(List<TransactionExp> transactionExps) {
+                for (TransactionExp transactionExp : transactionExps) {
+                    System.out.println(transactionExp.getUserId());
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                System.out.println(message);
+            }
+        });
+
         adapter = new ViewPagerAdapter(this);
         fab = findViewById(R.id.fab);
         viewPager = findViewById(R.id.viewPager);

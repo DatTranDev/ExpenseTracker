@@ -15,6 +15,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WalletRepository {
     private static WalletRepository walletRepository;
@@ -34,7 +35,7 @@ public class WalletRepository {
     public synchronized void addWallet(WalletReq walletReq, ApiCallBack<Wallet> callback) {
         walletApi.addWallet(walletReq).enqueue(new Callback<DataResponse<Wallet>>() {
             @Override
-            public void onResponse(Call<DataResponse<Wallet>> call, retrofit2.Response<DataResponse<Wallet>> response) {
+            public void onResponse(Call<DataResponse<Wallet>> call, Response<DataResponse<Wallet>> response) {
                 if (response.isSuccessful()) {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
