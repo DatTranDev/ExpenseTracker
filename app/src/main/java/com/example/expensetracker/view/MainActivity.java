@@ -1,5 +1,6 @@
 package com.example.expensetracker.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +18,8 @@ import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.IconRepository;
-import com.example.expensetracker.repository.TransactionRepository;
+//import com.example.expensetracker.repository.TransactionRepository;
+import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -223,19 +225,19 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(message);
 //            }
 //        });
-        TransactionRepository.getInstance().getNeedToPay("6615a4b40d01b7dd489839bc", new ApiCallBack<List<TransactionExp>>() {
-            @Override
-            public void onSuccess(List<TransactionExp> transactionExps) {
-                for (TransactionExp transactionExp : transactionExps) {
-                    System.out.println(transactionExp.getUserId());
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                System.out.println(message);
-            }
-        });
+//        TransactionRepository.getInstance().getNeedToPay("6615a4b40d01b7dd489839bc", new ApiCallBack<List<TransactionExp>>() {
+//            @Override
+//            public void onSuccess(List<TransactionExp> transactionExps) {
+//                for (TransactionExp transactionExp : transactionExps) {
+//                    System.out.println(transactionExp.getUserId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
 
         adapter = new ViewPagerAdapter(this);
         fab = findViewById(R.id.fab);
@@ -286,6 +288,10 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+        fab.setOnClickListener(v -> {
+            Intent intent= new Intent(MainActivity.this, mainAddActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void navigateToTransactions() {
@@ -298,5 +304,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(fragment.getTag());
         fragmentTransaction.commit();
     }
+
 
 }

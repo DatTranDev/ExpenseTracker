@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableField;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityAddTransactionBinding;
 import com.example.expensetracker.viewmodel.AddTransactionViewModel;
@@ -103,6 +104,10 @@ public class mainAddActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
         btnBack.setOnClickListener(v -> finish());
+//        String a="ic_cho_vay";
+//        int resourceId = getResources().getIdentifier(a, "drawable", getPackageName());
+//        btnBack.setImageResource(resourceId);
+
 
 
 
