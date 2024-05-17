@@ -11,7 +11,6 @@ public class WalletReq {
     private boolean isSharing;
     private String userId;
     private List<String> inviteUserMail;
-
     public WalletReq(String id, String name, BigDecimal amount, String currency, boolean isSharing, String userId, List<String> inviteUserMail) {
         this.id = id;
         this.name = name;
@@ -20,6 +19,9 @@ public class WalletReq {
         this.isSharing = isSharing;
         this.userId = userId;
         this.inviteUserMail = inviteUserMail;
+    }
+
+    public WalletReq() {
     }
 
     public String getId() {

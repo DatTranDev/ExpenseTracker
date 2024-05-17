@@ -5,6 +5,7 @@ import com.example.expensetracker.api.Wallet.WalletApi;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.api.Wallet.AddMemberReq;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WalletRepository {
     private static WalletRepository walletRepository;
@@ -33,7 +35,7 @@ public class WalletRepository {
     public synchronized void addWallet(WalletReq walletReq, ApiCallBack<Wallet> callback) {
         walletApi.addWallet(walletReq).enqueue(new Callback<DataResponse<Wallet>>() {
             @Override
-            public void onResponse(Call<DataResponse<Wallet>> call, retrofit2.Response<DataResponse<Wallet>> response) {
+            public void onResponse(Call<DataResponse<Wallet>> call, Response<DataResponse<Wallet>> response) {
                 if (response.isSuccessful()) {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
@@ -68,8 +70,8 @@ public class WalletRepository {
         });
     }
 
-    public synchronized void deleteWallet(String id, ApiCallBack<Wallet> callback) {
-        walletApi.deleteWallet(id).enqueue(new Callback<DataResponse<Wallet>>() {
+    public synchronized void deleteWallet(UserWallet userWallet, ApiCallBack<Wallet> callback) {
+        walletApi.deleteWallet(userWallet).enqueue(new Callback<DataResponse<Wallet>>() {
             @Override
             public void onResponse(Call<DataResponse<Wallet>> call, retrofit2.Response<DataResponse<Wallet>> response) {
                 if (response.isSuccessful()) {

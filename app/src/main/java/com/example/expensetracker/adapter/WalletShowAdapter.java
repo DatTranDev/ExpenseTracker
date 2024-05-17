@@ -9,29 +9,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
 
 import java.util.List;
 
-public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletViewHolder> {
+public class WalletShowAdapter extends RecyclerView.Adapter<WalletShowAdapter.WalletShowViewHolder> {
     private List<Wallet> walletList;
+    private OnWalletModifyClickListener walletModifyListener;
 
-    public WalletAdapter(List<Wallet> walletList) {
+    public WalletShowAdapter(List<Wallet> walletList, OnWalletModifyClickListener listener) {
         this.walletList = walletList;
+        this.walletModifyListener = listener;
+    }
+
+    public interface OnWalletModifyClickListener {
+        void onWalletModifyClick(Wallet wallet);
     }
 
     @NonNull
     @Override
-    public WalletViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallet_item, parent, false);
-
-        return new WalletAdapter.WalletViewHolder(view);
+    public WalletShowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallet_item_show, parent, false);
+        return new WalletShowViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WalletShowViewHolder holder, int position) {
         Wallet wallet = walletList.get(position);
         if (wallet == null) {
             return;
@@ -40,6 +44,13 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletView
         String currency = wallet.getCurrency();
         holder.walletAmount.setText(String.format("%s %s", Helper.formatCurrency(wallet.getAmount()), currency));
         holder.walletName.setText(wallet.getName());
+
+        holder.modifyWallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                walletModifyListener.onWalletModifyClick(wallet);
+            }
+        });
     }
 
     @Override
@@ -50,13 +61,16 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletView
         return 0;
     }
 
-    public class WalletViewHolder extends RecyclerView.ViewHolder {
+    public static class WalletShowViewHolder extends RecyclerView.ViewHolder {
         private TextView walletName;
         private TextView walletAmount;
-        public WalletViewHolder(@NonNull View itemView) {
+        private TextView modifyWallet;
+
+        public WalletShowViewHolder(@NonNull View itemView) {
             super(itemView);
             walletName = itemView.findViewById(R.id.wallet_name);
             walletAmount = itemView.findViewById(R.id.wallet_amount);
+            modifyWallet = itemView.findViewById(R.id.modify_wallet);
         }
     }
 

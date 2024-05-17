@@ -1,33 +1,33 @@
 package com.example.expensetracker.model;
 
 public class UserCategory {
-    private int userId;
-    private int categoryId;
+    private String userId;
+    private String categoryId;
     private boolean isDeleted;
 
     // Constructor
     public UserCategory() {
     }
-    public UserCategory(int userId, int categoryId, boolean isDeleted) {
+    public UserCategory(String userId, String categoryId, boolean isDeleted) {
         this.userId = userId;
         this.categoryId = categoryId;
         this.isDeleted = isDeleted;
     }
 
     // Getters and setters
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 

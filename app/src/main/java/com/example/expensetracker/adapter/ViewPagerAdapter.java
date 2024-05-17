@@ -12,29 +12,24 @@ import com.example.expensetracker.fragment.HomeFragment;
 import com.example.expensetracker.fragment.TransactionFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
+    private Fragment[] fragments;
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
+        fragments = new Fragment[] {new HomeFragment(),
+                                    new TransactionFragment(),
+                                    new BudgetFragment(),
+                                    new FundFragment(),
+                                    new AccountFragment()};
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 1:
-                return new TransactionFragment();
-            case 2:
-                return new BudgetFragment();
-            case 3:
-                return new FundFragment();
-            case 4:
-                return new AccountFragment();
-            default:
-                return new HomeFragment();
-        }
+        return fragments[position];
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return fragments.length;
     }
 }

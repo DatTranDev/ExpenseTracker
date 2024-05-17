@@ -1,49 +1,32 @@
 package com.example.expensetracker.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.ViewPagerAdapter;
 import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.databinding.ActivityMainBinding;
-import com.example.expensetracker.fragment.AccountFragment;
-import com.example.expensetracker.fragment.BudgetFragment;
-import com.example.expensetracker.fragment.FundFragment;
-import com.example.expensetracker.fragment.HomeFragment;
-import com.example.expensetracker.fragment.TransactionDetailsFragment;
-import com.example.expensetracker.fragment.TransactionFragment;
-import com.example.expensetracker.model.AppUser;
-import com.example.expensetracker.model.Budget;
-import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
-import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
-import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.repository.IconRepository;
-import com.example.expensetracker.view.addTransaction.mainAddActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.expensetracker.repository.TransactionRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.gson.Gson;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private ViewPager2 viewPager;
+    private ViewPagerAdapter adapter;
     FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,11 +143,91 @@ public class MainActivity extends AppCompatActivity {
 
         //ICON
         //GET ALL ICON
-        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<com.example.expensetracker.model.Icon>>() {
+        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<Icon>>() {
             @Override
             public void onSuccess(List<com.example.expensetracker.model.Icon> icons) {
                 for (com.example.expensetracker.model.Icon icon : icons) {
                     System.out.println(icon.getLinking());
+                }
+            }
+            @Override
+            public void onError(String message) {
+                System.out.println(message);
+            }
+        });
+
+        //REQUEST
+        //GET REQUEST BY USER
+//        RequestRepository.getInstance().getRequestsByUser("6615ab5c55cbe4d6104aa825", new ApiCallBack<List<Request>>() {
+//            @Override
+//            public void onSuccess(List<Request> requests) {
+//                for (Request request : requests) {
+//                    System.out.println(request.getName());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
+        //RESPONSE REQUEST
+//        RequestRes requestRes = new RequestRes();
+//        requestRes.setRequestId("661758e9fc1bf79782d9ce37");
+//        requestRes.setAccepted(true);
+//        RequestRepository.getInstance().responseRequest(requestRes, new ApiCallBack<Request>() {
+//            @Override
+//            public void onSuccess(Request request) {
+//                System.out.println(request.getName());
+//            }
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
+
+        //Wallet
+        //ADD WALLET
+        //Ví riêng isSharing = false
+//        WalletReq walletReq = new WalletReq();
+//        walletReq.setName("Quỹ đen giấu vk");
+//        walletReq.setAmount(new BigDecimal(1000000));
+//        walletReq.setCurrency("VND");
+//        walletReq.setSharing(false);
+//        walletReq.setUserId("6615a4b40d01b7dd489839bc");
+        //Ví chung isSharing = true
+        //Ví chung có thêm list email để mời
+        //walletReq.setInviteUserMail(List<String> inviteUserMail);
+
+//        WalletRepository.getInstance().addWallet(walletReq, new ApiCallBack<Wallet>() {
+//            @Override
+//            public void onSuccess(Wallet wallet) {
+//                System.out.println(wallet.getName());
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
+
+
+//        AppUserRepository.getInstance().findByEmail("neban0444@gmail.com", new ApiCallBack<AppUser>() {
+//            @Override
+//            public void onSuccess(AppUser appUser) {
+//                System.out.println(appUser.getEmail());
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                System.out.println(message);
+//            }
+//        });
+        TransactionRepository.getInstance().getNeedToPay("6615a4b40d01b7dd489839bc", new ApiCallBack<List<TransactionExp>>() {
+            @Override
+            public void onSuccess(List<TransactionExp> transactionExps) {
+                for (TransactionExp transactionExp : transactionExps) {
+                    System.out.println(transactionExp.getUserId());
                 }
             }
 
@@ -173,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(message);
             }
         });
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+
+        adapter = new ViewPagerAdapter(this);
         fab = findViewById(R.id.fab);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
@@ -222,16 +286,11 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Tạo Intent để chuyển sang Activity mới
-                Intent intent = new Intent(MainActivity.this, mainAddActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
+    public void navigateToTransactions() {
+        viewPager.setCurrentItem(1, true);
+    }
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
