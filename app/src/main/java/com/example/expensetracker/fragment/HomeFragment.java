@@ -28,8 +28,10 @@ import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.bottom_sheet.ReportsFragment;
+import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.bottom_sheet.WalletFragment;
 import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
+import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
@@ -170,7 +172,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
                 // Stats
                 BigDecimal incomeVal = new BigDecimal(0);
                 BigDecimal outcomeVal = new BigDecimal(0);
-                List<String> incomeCategories = Arrays.asList("Khoản thu", "Thu nợ", "Đi vay");
+                List<String> incomeCategories = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
                 for (int i = 0; i < transactionList.size(); i++) {
                     if (incomeCategories.contains(transactionList.get(i).getCategory().getType())) {
                         incomeVal = incomeVal.add(transactionList.get(i).getSpend());
@@ -254,10 +256,8 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
     @Override
     public void onItemClick(TransactionExp transactionExp) {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null) {
-            mainActivity.showTransactionDetails(transactionExp);
-        }
+        TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
+        transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
     }
 
     @Override

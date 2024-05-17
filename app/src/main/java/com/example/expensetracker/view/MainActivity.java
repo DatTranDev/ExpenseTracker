@@ -11,9 +11,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.ViewPagerAdapter;
 import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.databinding.ActivityMainBinding;
-import com.example.expensetracker.fragment.TransactionDetailsFragment;
-import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
@@ -287,16 +286,6 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-    }
-
-    public void showTransactionDetails(TransactionExp transactionExp) {
-        TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("transaction_info", transactionExp);
-        transactionDetailsFragment.setArguments(bundle);
-
-        adapter.setTransactionDetailsFragment(transactionDetailsFragment);
-        viewPager.setCurrentItem(5, true);
     }
 
     public void navigateToTransactions() {
