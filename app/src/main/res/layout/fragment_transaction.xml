@@ -117,7 +117,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -128,18 +132,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="16dp"
                     android:fontFamily="@font/montserrat"
-                    android:text="Số dư đầu" />
+                    android:text="Số dư đầu"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="16dp"
+                    android:id="@+id/opening_balance"
                     android:fontFamily="@font/montserrat"
                     android:gravity="end"
-                    android:text="123,123 đ" />
+                    android:text="123,123 đ"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,20 +159,21 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat"
                     android:text="Số dư cuối"
-                    android:textSize="16dp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/ending_balance"
                     android:fontFamily="@font/montserrat"
                     android:gravity="end"
-                    android:textSize="16dp"
-                    android:text="+123,123 đ" />
+                    android:text="+123,123 đ"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="4dp"
@@ -184,9 +190,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:textSize="16sp"
+                    android:text="Chênh lệch"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:gravity="end"
+                    android:id="@+id/difference"
                     android:text="246,246 đ"
-                    android:textSize="16dp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,6 @@ import com.example.expensetracker.fragment.AccountFragment;
 import com.example.expensetracker.fragment.BudgetFragment;
 import com.example.expensetracker.fragment.FundFragment;
 import com.example.expensetracker.fragment.HomeFragment;
-import com.example.expensetracker.fragment.TransactionDetailsFragment;
 import com.example.expensetracker.fragment.TransactionFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
@@ -20,8 +19,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                                     new TransactionFragment(),
                                     new BudgetFragment(),
                                     new FundFragment(),
-                                    new AccountFragment(),
-                                    new Fragment()};
+                                    new AccountFragment()};
     }
 
     @NonNull
@@ -33,9 +31,5 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return fragments.length;
-    }
-    public void setTransactionDetailsFragment(TransactionDetailsFragment transactionDetailsFragment) {
-        fragments[5] = transactionDetailsFragment;
-        notifyDataSetChanged();
     }
 }

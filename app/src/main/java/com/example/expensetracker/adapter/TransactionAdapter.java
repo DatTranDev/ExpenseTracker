@@ -1,5 +1,6 @@
 package com.example.expensetracker.adapter;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +9,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.fragment.TransactionDetailsFragment;
+import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
@@ -43,7 +46,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             return;
         }
 
-        holder.transactionPrice.setText(String.valueOf(transactionExp.getSpend()));
+        List<String> income = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
+        if (income.contains(transactionExp.getCategory().getType())) {
+            holder.transactionPrice.setText(String.format("+%s %s", String.valueOf(Helper.formatCurrency(transactionExp.getSpend())), transactionExp.getCurrency()));
+            holder.transactionPrice.setTextColor(Color.parseColor("#00DDB0")); // accent_green
+        } else {
+            holder.transactionPrice.setText(String.format("-%s %s", String.valueOf(Helper.formatCurrency(transactionExp.getSpend())), transactionExp.getCurrency()));
+            holder.transactionPrice.setTextColor(Color.parseColor("#F48484")); // light_red
+        }
+
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
         holder.transactionName.setText(String.valueOf(transactionExp.getCategory().getName()));
         holder.transactionType.setText(String.valueOf(transactionExp.getNote()));

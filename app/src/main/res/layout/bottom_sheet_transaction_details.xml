@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    android:backgroundTint="@color/light_blue"
-    tools:context=".fragment.TransactionDetailsFragment">
+    android:background="@drawable/bottom_sheet_background">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -15,7 +14,6 @@
         android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +47,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/modifyTransaction"
+            android:id="@+id/modify_transaction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -85,6 +83,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/transaction_currency"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_vnd"
+                    android:contentDescription="Currency" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số tiền"
+                        android:fontFamily="@font/montserrat"/>
+                    <TextView
+                        android:id="@+id/transaction_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200,000"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textSize="20sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Khoản chi"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/montserrat"
+                        android:id="@+id/transaction_category"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imageView14"
@@ -104,14 +140,6 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
                         android:text="Ăn uống"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/transaction_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="200,000 đ"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -173,7 +201,7 @@
         android:fontFamily="@font/montserrat_medium"
         android:text="Xóa giao dịch"
         android:textSize="18sp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info" />

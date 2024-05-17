@@ -2,6 +2,7 @@ package com.example.expensetracker.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +22,9 @@ import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.AppUser.AppUserApi;
 import com.example.expensetracker.api.DataResponse;
+import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.enums.Period;
+import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 
 import com.example.expensetracker.model.TransactionExp;
@@ -32,10 +35,12 @@ import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -52,6 +57,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     private List<TransactionExp> allTransactions = new ArrayList<>();
     private TabLayout tabLayoutFilter;
     private ImageButton previousTime;
+    private TextView openingBalance, endingBalance, difference;
     private ImageButton nextTime;
     private TextView time;
     private View view;
@@ -179,14 +185,66 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
 
     private void filterTransactions(Date startDate, Date endDate) {
         List<TransactionExp> filteredTransactions = new ArrayList<>();
+        BigDecimal openingBalanceAmount = new BigDecimal(0);
+        BigDecimal endingBalanceAmount = new BigDecimal(0);
+        BigDecimal differenceAmount = new BigDecimal(0);
+
         for (TransactionExp transaction : allTransactions) {
             Date createdAt = transaction.getCreatedAt();
+            List<String> income = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
+            BigDecimal transactionAmount = transaction.getSpend();
+            if (!income.contains(transaction.getCategory().getType())) {
+                transactionAmount = new BigDecimal(0).subtract(transactionAmount);
+            }
+
+            if (createdAt.before(startDate)) {
+                openingBalanceAmount = openingBalanceAmount.add(transactionAmount);
+            }
             if (createdAt.after(startDate) && createdAt.before(endDate) || createdAt.equals(startDate) || createdAt.equals(endDate)) {
                 filteredTransactions.add(transaction);
             }
+            if (createdAt.equals(endDate) || createdAt.before(endDate)) {
+                endingBalanceAmount = endingBalanceAmount.add(transactionAmount);
+            }
         }
+
+        differenceAmount = endingBalanceAmount.subtract(openingBalanceAmount);
+
         transactionAdapter.updateTransaction(filteredTransactions);
         transactionAdapter.notifyDataSetChanged();
+
+        String currency = "";
+        if (!filteredTransactions.isEmpty()) {
+            currency = filteredTransactions.get(0).getCurrency();
+        }
+
+        if (openingBalanceAmount.compareTo(new BigDecimal(0)) < 0) {
+            openingBalance.setText(String.format("%s %s", Helper.formatCurrency(openingBalanceAmount), currency));
+            openingBalance.setTextColor(Color.parseColor("#F48484"));
+        } else {
+            openingBalance.setText(String.format("+%s %s", Helper.formatCurrency(openingBalanceAmount), currency));
+            openingBalance.setTextColor(Color.parseColor("#00DDB0"));
+
+        }
+
+        if (endingBalanceAmount.compareTo(new BigDecimal(0)) < 0) {
+            endingBalance.setText(String.format("%s %s", Helper.formatCurrency(endingBalanceAmount), currency));
+            endingBalance.setTextColor(Color.parseColor("#F48484"));
+        } else {
+            endingBalance.setText(String.format("+%s %s", Helper.formatCurrency(endingBalanceAmount), currency));
+            endingBalance.setTextColor(Color.parseColor("#00DDB0"));
+
+        }
+
+        if (differenceAmount.compareTo(new BigDecimal(0)) < 0) {
+            difference.setText(String.format("%s %s", Helper.formatCurrency(differenceAmount), currency));
+            difference.setTextColor(Color.parseColor("#F48484"));
+        } else {
+            difference.setText(String.format("+%s %s", Helper.formatCurrency(differenceAmount), currency));
+            difference.setTextColor(Color.parseColor("#00DDB0"));
+
+        }
+
     }
 
     private String getFilter() {
@@ -200,6 +258,9 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         previousTime = view.findViewById(R.id.previous_time);
         nextTime = view.findViewById(R.id.next_time);
         time = view.findViewById(R.id.time);
+        openingBalance = view.findViewById(R.id.opening_balance);
+        endingBalance = view.findViewById(R.id.ending_balance);
+        difference = view.findViewById(R.id.difference);
     }
 
     private void getTransactionsForUser(String userId) {
@@ -221,9 +282,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
 
     @Override
     public void onItemClick(TransactionExp transactionExp) {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null) {
-            mainActivity.showTransactionDetails(transactionExp);
-        }
+        TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
+        transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
     }
 }
