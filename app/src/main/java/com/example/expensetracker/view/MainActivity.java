@@ -1,7 +1,9 @@
 package com.example.expensetracker.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +31,7 @@ import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.repository.IconRepository;
+import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -218,6 +221,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return true;
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Tạo Intent để chuyển sang Activity mới
+                Intent intent = new Intent(MainActivity.this, mainAddActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
