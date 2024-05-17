@@ -25,8 +25,8 @@ public interface AppUserApi {
     Call<DataResponse<AppUser>> changePassword(@Body AppUser appUser);
     @PATCH("user/update/{id}")
     Call<DataResponse<AppUser>> update(@Path ("id") String id, @Body AppUser appUser);
-    @GET("user/find/email")
-    Call<DataResponse<AppUser>> findByEmail(@Body AppUser appUser);
+    @GET("user/findbyemail/{email}")
+    Call<DataResponse<AppUser>> findByEmail(@Path("email") String email);
     @GET("user/findbyid/{id}")
     Call<DataResponse<AppUser>> findById(@Path ("id") String id);
 

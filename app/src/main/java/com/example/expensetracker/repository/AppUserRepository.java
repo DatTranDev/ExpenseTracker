@@ -104,8 +104,8 @@ public class AppUserRepository {
         });
     }
 
-    public synchronized void findByEmail(AppUser appUser, ApiCallBack<AppUser> userApiCallBack) {
-        appUserApi.findByEmail(appUser).enqueue(new Callback<DataResponse<AppUser>>() {
+    public synchronized void findByEmail(String email, ApiCallBack<AppUser> userApiCallBack) {
+        appUserApi.findByEmail(email).enqueue(new Callback<DataResponse<AppUser>>() {
             @Override
             public void onResponse(Call<DataResponse<AppUser>> call, retrofit2.Response<DataResponse<AppUser>> response) {
                 if (response.isSuccessful()) {
