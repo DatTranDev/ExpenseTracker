@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     private TabLayout tabLayoutFilter;
     private ImageButton previousTime;
     private TextView openingBalance, endingBalance, difference;
+    private LinearLayout transactionEmpty;
     private ImageButton nextTime;
     private TextView time;
     private View view;
@@ -216,6 +218,9 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         String currency = "";
         if (!filteredTransactions.isEmpty()) {
             currency = filteredTransactions.get(0).getCurrency();
+            transactionEmpty.setVisibility(View.GONE);
+        } else {
+            transactionEmpty.setVisibility(View.VISIBLE);
         }
 
         if (openingBalanceAmount.compareTo(new BigDecimal(0)) < 0) {
@@ -261,6 +266,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         openingBalance = view.findViewById(R.id.opening_balance);
         endingBalance = view.findViewById(R.id.ending_balance);
         difference = view.findViewById(R.id.difference);
+        transactionEmpty = view.findViewById(R.id.transaction_empty);
     }
 
     private void getTransactionsForUser(String userId) {
