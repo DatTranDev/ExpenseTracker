@@ -1,8 +1,14 @@
 package com.example.expensetracker.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.content.SharedPreferences;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +43,23 @@ import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.renderer.BarChartRenderer;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements TransactionAdapter.OnItemClickListener, WalletUpdateListener {
@@ -50,13 +68,15 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private List<TransactionExp> transactionList;
     private List<Wallet> walletList; // for WalletFragment bottom sheet
     private List<Wallet> subWallets; // for HomeFragment
-    AnyChartView chartView;
+    private TabLayout filterTabLayout;
+    private BarChart chartView;
     private TextView totalBalance;
     private AppUser user;
     private TextView income;
     private TextView outcome;
     private TextView showWallet;
     private TextView showTransaction;
+    private TextView emptyWallet;
     private TextView showReport;
     private TextView userName;
     public HomeFragment() {
@@ -78,25 +98,49 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         String userJson = sharedPreferences.getString("user", "");
         user = new Gson().fromJson(userJson, AppUser.class);
 
+        emptyWallet = view.findViewById(R.id.wallet_empty);
+
+        // Load initial data
+        getWalletList();
+        getTransactionList();
+
         // Set total balance
         totalBalance = view.findViewById(R.id.total_balance);
 
         // Chart view initialize
         chartView = view.findViewById(R.id.analysis_view);
-        setUpChartView();
+        filterTabLayout = view.findViewById(R.id.filter);
+        filterTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if (position == 0) {
+                    updateChartForWeek();
+                } else if (position == 1) {
+                    updateChartForMonth();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+        // Set user name
+        userName = view.findViewById(R.id.user_name);
+        userName.setText(user.getUserName());
 
         // Show report
         showReport = view.findViewById(R.id.show_report);
         showReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showReport(walletList);
+                showReport(transactionList);
             }
         });
-
-        // Set user name
-        userName = view.findViewById(R.id.user_name);
-        userName.setText(user.getUserName());
 
         // Initialize wallets
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -104,7 +148,6 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         RecyclerView rvWallet = view.findViewById(R.id.wallet_list);
         rvWallet.setLayoutManager(walletLayoutManager);
         walletAdapter = new WalletAdapter(subWallets);
-        getWalletList();
         rvWallet.setAdapter(walletAdapter);
 
         showWallet = view.findViewById(R.id.show_wallet);
@@ -120,9 +163,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         RecyclerView rvTransaction = view.findViewById(R.id.transaction_list_recent);
         rvTransaction.setLayoutManager(transactionLayoutManager);
         transactionAdapter = new TransactionAdapter(transactionList, this);
-        getTransactionList();
         rvTransaction.setAdapter(transactionAdapter);
-
 
         showTransaction = view.findViewById(R.id.show_transaction);
         showTransaction.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +175,125 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
                 }
             }
         });
+
         return view;
+
+    }
+
+    private void updateChartForMonth() {
+        Calendar cal = Calendar.getInstance();
+
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startOfCurrentMonth = cal.getTime();
+        cal.add(Calendar.MONTH, 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startOfNextMonth = cal.getTime();
+
+
+        cal.add(Calendar.MONTH, -2);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startOfPreviousMonth = cal.getTime();
+        cal.add(Calendar.MONTH, 1);
+        Date startOfCurrentMonthLastMonth = cal.getTime();
+
+        BigDecimal lastMonthOutcome = getOutcomeForPeriod(startOfPreviousMonth, startOfCurrentMonthLastMonth);
+        BigDecimal currentMonthOutcome = getOutcomeForPeriod(startOfCurrentMonth, startOfNextMonth);
+
+        String[] labels = {"Tháng trước", "Tháng này"};
+        updateChartView(lastMonthOutcome, currentMonthOutcome, labels);
+    }
+
+
+    private void updateChartView(BigDecimal value1, BigDecimal value2, String[] labels) {
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        if (value1.equals(BigDecimal.ZERO) && value2.equals(BigDecimal.ZERO)) {
+            chartView.setNoDataText("No data found");
+            chartView.invalidate();
+            return;
+        }
+        entries.add(new BarEntry(0f, value1.floatValue()));
+        entries.add(new BarEntry(1f, value2.floatValue()));
+
+        BarDataSet dataSet = new BarDataSet(entries, "Expenses");
+        BarData barData = new BarData(dataSet);
+        chartView.setData(barData);
+
+        chartView.getDescription().setEnabled(false);
+        chartView.getAxisLeft().setAxisMinimum(0);
+        chartView.getAxisRight().setEnabled(false);
+
+        chartView.getXAxis().setDrawGridLines(false);
+        chartView.getXAxis().setDrawAxisLine(true);
+        chartView.getAxisLeft().setDrawGridLines(false);
+        chartView.getAxisLeft().setDrawAxisLine(false);
+        chartView.getAxisRight().setDrawGridLines(false);
+        chartView.getAxisRight().setDrawAxisLine(false);
+
+        chartView.getAxisLeft().setDrawLabels(false);
+        chartView.getAxisRight().setDrawLabels(false);
+
+        XAxis xAxis = chartView.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+        xAxis.setGranularity(1f);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setAxisLineWidth(2f);
+        xAxis.setTextSize(14f);
+
+        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
+        xAxis.setTypeface(typeface);
+
+        dataSet.setColor(Color.parseColor("#F48484"));
+        dataSet.setHighlightEnabled(false);
+        dataSet.setValueTextSize(16f);
+
+        Legend legend = chartView.getLegend();
+        legend.setEnabled(false);
+
+        Description description = new Description();
+        description.setText("");
+        chartView.setDescription(description);
+
+
+        barData.setBarWidth(0.3f);
+        chartView.setExtraOffsets(40f, 40f, 40f, 40f);
+
+        chartView.invalidate();
+    }
+
+    private BigDecimal getOutcomeForPeriod(Date start, Date end) {
+        BigDecimal outcome = BigDecimal.ZERO;
+        List<String> outcomeCategories = Arrays.asList(Type.KHOAN_CHI.getDisplayName(), Type.CHO_VAY.getDisplayName(), Type.TRA_NO.getDisplayName());
+        for (TransactionExp transaction : transactionList) {
+            Date transactionDate = transaction.getCreatedAt();
+            if (!transactionDate.before(start) && transactionDate.before(end) &&
+                    outcomeCategories.contains(transaction.getCategory().getType())) {
+                outcome = outcome.add(transaction.getSpend());
+            }
+        }
+        return outcome;
+    }
+
+    private void updateChartForWeek() {
+        Date currentDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date startOfWeek = cal.getTime();
+        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        Date endOfWeek = cal.getTime();
+
+        cal.add(Calendar.WEEK_OF_YEAR, -2);
+        Date startOfLastWeek = cal.getTime();
+        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        Date endOfLastWeek = cal.getTime();
+
+        BigDecimal lastWeekOutcome = getOutcomeForPeriod(startOfLastWeek, endOfLastWeek);
+        BigDecimal currentWeekOutcome = getOutcomeForPeriod(startOfWeek, endOfWeek);
+        String[] labels = {"Tuần trước", "Tuần này"};
+        updateChartView(lastWeekOutcome, currentWeekOutcome, labels);
     }
 
     private void updateTotalAmount() {
@@ -151,9 +310,11 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         walletFragment.show(getActivity().getSupportFragmentManager(), walletFragment.getTag());
     }
 
-    private void showReport(List<Wallet> walletList) {
-        ReportsFragment reportsFragment = ReportsFragment.newInstance(walletList);
+    private void showReport(List<TransactionExp> transactionExps) {
+        ReportsFragment reportsFragment = ReportsFragment.newInstance(transactionExps);
+        reportsFragment.setCancelable(false);
         reportsFragment.show(getActivity().getSupportFragmentManager(), reportsFragment.getTag());
+
     }
 
     private void getTransactionList() {
@@ -167,6 +328,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
                 }
                 transactionAdapter.updateTransaction(transactions);
                 transactionAdapter.notifyDataSetChanged();
+                updateChartForWeek();
 
                 // Stats
                 BigDecimal incomeVal = new BigDecimal(0);
@@ -197,8 +359,13 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             @Override
             public void onSuccess(List<Wallet> wallets) {
                 walletList = wallets;
-                String currency = wallets.get(0).getCurrency();
-                totalBalance.setText(String.format("%s %s", Helper.formatCurrency(getTotalBalance(wallets)), currency));
+                totalBalance.setText(Helper.formatCurrency(getTotalBalance(wallets)));
+
+                if (walletList.isEmpty()) {
+                    emptyWallet.setVisibility(View.VISIBLE);
+                } else {
+                    emptyWallet.setVisibility(View.GONE);
+                }
 
                 if (wallets.size() > 3) {
                     wallets = wallets.subList(0, 3);
@@ -215,34 +382,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             }
         });
     }
-    private void setUpChartView() {
-        Cartesian cartesian = AnyChart.column();
 
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Tháng trước", 80540));
-        data.add(new ValueDataEntry("Tháng này", 94190));
-
-        Column column = cartesian.column(data);
-
-        column.tooltip()
-                .titleFormat("{%X}")
-                .position(Position.CENTER_BOTTOM)
-                .anchor(Anchor.CENTER_BOTTOM)
-                .offsetX(0d)
-                .offsetY(5d)
-                .format("${%Value}{groupsSeparator: }");
-
-        cartesian.animation(true);
-
-        cartesian.yScale().minimum(0d);
-        cartesian.yAxis(0).title().enabled(false);
-        cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
-
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-        cartesian.interactivity().hoverMode(HoverMode.BY_X);
-
-        chartView.setChart(cartesian);
-    }
     private BigDecimal getTotalBalance(List<Wallet> walletList) {
         BigDecimal result = new BigDecimal(0);
 
@@ -297,7 +437,12 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             result = result.add(walletList.get(i).getAmount());
         }
 
-        String currency = walletList.get(0).getCurrency();
-        totalBalance.setText(String.format("%s %s", Helper.formatCurrency(result), currency));
+        totalBalance.setText(Helper.formatCurrency(result));
+
+        if (walletList.isEmpty()) {
+            emptyWallet.setVisibility(View.VISIBLE);
+        } else {
+            emptyWallet.setVisibility(View.GONE);
+        }
     }
 }
