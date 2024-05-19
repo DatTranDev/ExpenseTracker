@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 
@@ -29,6 +30,21 @@ public class LoginActivity extends AppCompatActivity {
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         LoginViewModel loginViewModel = new LoginViewModel();
         binding.setLoginViewModel(loginViewModel);
+        AppCompatButton loginButton = findViewById(R.id.btnFacebookLogin);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "Tính năng đang được phát triển...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AppCompatButton loginButton2 = findViewById(R.id.btnGoogleLogin);
+        loginButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "Tính năng đang được phát triển...", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
         loginViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
