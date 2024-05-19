@@ -11,13 +11,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.ViewPagerAdapter;
 import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.databinding.ActivityMainBinding;
 import com.example.expensetracker.model.Icon;
-import com.example.expensetracker.model.TransactionExp;
-import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.IconRepository;
-//import com.example.expensetracker.repository.TransactionRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
