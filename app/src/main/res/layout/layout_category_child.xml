@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="330dp"
-    android:layout_height="45dp"
+    android:layout_height="50dp"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/background_border_white">
 
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imageCategoryChild"
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:layout_gravity="center"
@@ -15,7 +15,7 @@
         android:layout_marginLeft="50dp"/>
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/nameCategoryChild"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
