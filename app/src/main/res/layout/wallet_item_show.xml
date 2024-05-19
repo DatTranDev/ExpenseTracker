@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:contentDescription="walletImage"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_wallet"/>
+        android:src="@drawable/ic_wallet2"/>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_marginStart="12dp"
