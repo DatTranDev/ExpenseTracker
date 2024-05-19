@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/montserrat_medium"
-            android:text="13/5/2024 - 20/5/2024"
+            android:text="13/5/2024 - 19/5/2024"
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:textSize="18sp" />

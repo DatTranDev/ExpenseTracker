@@ -2,19 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:padding="12dp"
-    android:layout_marginBottom="12dp"
-    android:background="@drawable/rounded_background_20"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/transaction_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_transaction_item"
+        app:srcCompat="@drawable/ic_borrower"
         android:contentDescription="Transaction icon" />
 
     <LinearLayout
@@ -22,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/transaction_icon"
@@ -33,13 +32,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
+
+
             <TextView
                 android:id="@+id/transaction_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_semibold"
-                android:text="Nike Air Force 1" />
+                android:text="Ai đó" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="17sp"
+                android:text="Còn" />
 
             <TextView
                 android:id="@+id/transaction_price"
@@ -48,7 +60,8 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_semibold"
                 android:textAlignment="viewEnd"
-                android:text="-1,000,000 đ" />
+                android:textSize="15sp"
+                android:text="1,000,000 đ" />
         </LinearLayout>
 
         <LinearLayout
@@ -57,12 +70,12 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/transaction_type"
+                android:id="@+id/debt_name"
                 android:layout_width="0dp"
                 android:fontFamily="@font/montserrat"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Giày" />
+                android:text="1 giao dịch" />
 
             <TextView
                 android:id="@+id/transaction_time"
@@ -75,4 +88,5 @@
 
         </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

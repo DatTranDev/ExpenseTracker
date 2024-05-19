@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
 
@@ -35,22 +37,23 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WalletFragment extends BottomSheetDialogFragment implements WalletUpdateListener, WalletShowAdapter.OnWalletModifyClickListener {
+public class AccountWallet extends BottomSheetDialogFragment implements WalletUpdateListener, WalletShowAdapter.OnWalletModifyClickListener{
+
     private static final String KEY_WALLET_LIST = "wallet_list";
-    private TextView btnCancel;
-    private Button btnAdd;
+    private ImageButton btnCancel;
+    private FloatingActionButton btnAdd;
     private RecyclerView recyclerView;
     private WalletShowAdapter walletAdapter;
     private WalletUpdateListener walletUpdateListener;
     private TextView total;
     private List<Wallet> wallets;
 
-    public static WalletFragment newInstance(List<Wallet> walletList) {
-        WalletFragment walletFragment = new WalletFragment();
+    public static AccountWallet newInstance(List<Wallet> walletList) {
+        AccountWallet accountWallet = new AccountWallet();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(KEY_WALLET_LIST, new ArrayList<>(walletList));
-        walletFragment.setArguments(bundle);
-        return walletFragment;
+        accountWallet.setArguments(bundle);
+        return accountWallet;
     }
 
     @Override
@@ -61,12 +64,11 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
         }
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_wallet, null);
+        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.account_wallet, null);
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
         setData();
@@ -98,7 +100,6 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
                     int maxHeight = getResources().getDisplayMetrics().heightPixels;
-                    maxHeight = maxHeight - maxHeight / 8;
 
                     ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                     if (layoutParams != null) {
@@ -111,10 +112,14 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
         return bottomSheetDialog;
     }
 
-    private void addWallet() {
-        AddWalletFragment addWalletFragment = AddWalletFragment.newInstance();
-        addWalletFragment.setWalletUpdateListener(this);
-        addWalletFragment.show(getActivity().getSupportFragmentManager(), addWalletFragment.getTag());
+    private void initView(View view) {
+        btnAdd = view.findViewById(R.id.account_add_wallet);
+        btnCancel = view.findViewById(R.id.wallet_back);
+        recyclerView = view.findViewById(R.id.account_wallet_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        walletAdapter = new WalletShowAdapter(wallets, this);
+//        total = view.findViewById(R.id.wallet_total_amount);
+        recyclerView.setAdapter(walletAdapter);
     }
 
     private void setData() {
@@ -124,17 +129,21 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
             result = result.add(wallets.get(i).getAmount());
         }
 
-        total.setText(Helper.formatCurrency(result));
+        String currency = wallets.get(0).getCurrency();
+//        total.setText(String.format("%s %s", Helper.formatCurrency(result), currency));
     }
 
-    private void initView(View view) {
-        btnAdd = view.findViewById(R.id.add_wallet);
-        btnCancel = view.findViewById(R.id.close_wallet);
-        recyclerView = view.findViewById(R.id.wallet_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        walletAdapter = new WalletShowAdapter(wallets, this);
-        total = view.findViewById(R.id.wallet_total_amount);
-        recyclerView.setAdapter(walletAdapter);
+    private void addWallet() {
+        AddWalletFragment addWalletFragment = AddWalletFragment.newInstance();
+        addWalletFragment.setWalletUpdateListener(this);
+        addWalletFragment.show(getActivity().getSupportFragmentManager(), addWalletFragment.getTag());
+    }
+
+    @Override
+    public void onWalletModifyClick(Wallet wallet) {
+        ModifyWalletFragment modifyWalletFragment = ModifyWalletFragment.newInstance(wallet);
+        modifyWalletFragment.setWalletUpdateListener(this);
+        modifyWalletFragment.show(getActivity().getSupportFragmentManager(), modifyWalletFragment.getTag());
     }
 
     @Override
@@ -170,15 +179,8 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
         }
         walletUpdateListener.onWalletDeleted(walletId);
     }
-
     public void setWalletUpdateListener(WalletUpdateListener listener) {
         this.walletUpdateListener = listener;
     }
 
-    @Override
-    public void onWalletModifyClick(Wallet wallet) {
-        ModifyWalletFragment modifyWalletFragment = ModifyWalletFragment.newInstance(wallet);
-        modifyWalletFragment.setWalletUpdateListener(this);
-        modifyWalletFragment.show(getActivity().getSupportFragmentManager(), modifyWalletFragment.getTag());
-    }
 }

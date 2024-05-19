@@ -49,11 +49,7 @@ import java.util.List;
 
 public class AddWalletFragment extends BottomSheetDialogFragment {
     private TextView btnCancel;
-    private String[] currencies = {"USD", "VND"};
-    private AutoCompleteTextView autoCompleteTextView;
-    private ArrayAdapter<String> currencyItemAdapter;
     private WalletUpdateListener walletUpdateListener;
-    private TextInputLayout textInputLayout;
     private EditText walletName;
     private EditText walletAmount;
     private TextView btnSave;
@@ -85,17 +81,6 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
 
-        currencyItemAdapter = new ArrayAdapter<>(getContext(), R.layout.select_item, currencies);
-        autoCompleteTextView.setAdapter(currencyItemAdapter);
-
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                textInputLayout.setHint(null);
-
-            }
-        });
-
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,16 +93,15 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 String name = walletName.getText().toString();
                 BigDecimal amount = (walletAmount.getText().toString()).isEmpty() ? new BigDecimal(0) : new BigDecimal(walletAmount.getText().toString());
-                String currency = autoCompleteTextView.getText().toString();
 
-                if (name.isEmpty() || amount.equals(new BigDecimal(0)) || currency.isEmpty()) {
+                if (name.isEmpty() || amount.equals(new BigDecimal(0))) {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ các trường!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 WalletReq walletReq = new WalletReq();
                 walletReq.setAmount(amount);
-                walletReq.setCurrency(currency);
+                walletReq.setCurrency("VND");
                 walletReq.setName(name);
                 walletReq.setSharing(false);
                 walletReq.setUserId(user.getId());
@@ -167,8 +151,6 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
     private void initView(View view) {
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnSave = view.findViewById(R.id.save_wallet);
-        autoCompleteTextView = view.findViewById(R.id.add_wallet_currency);
-        textInputLayout = view.findViewById(R.id.text_input_currency);
         walletName = view.findViewById(R.id.wallet_name);
         walletAmount = view.findViewById(R.id.wallet_amount);
     }

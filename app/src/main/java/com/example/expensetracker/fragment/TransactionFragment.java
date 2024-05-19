@@ -40,11 +40,14 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,33 +121,28 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     }
 
     private void updateDateRange() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
-        try {
-            Date currentDate = dateFormat.parse(Helper.formatDate(new Date()));
-            Calendar calendarStart = Calendar.getInstance();
-            Calendar calendarEnd = Calendar.getInstance();
-            calendarStart.setTime(currentDate);
-            calendarEnd.setTime(currentDate);
-            switch (getFilter()) {
-                case "Tuần":
-                    calendarStart.set(Calendar.DAY_OF_WEEK, calendarStart.getFirstDayOfWeek());
-                    calendarEnd.set(Calendar.DAY_OF_WEEK, calendarEnd.getFirstDayOfWeek());
-                    calendarEnd.add(Calendar.DAY_OF_WEEK, 6);
-                    break;
-                case "Tháng":
-                    calendarStart.set(Calendar.DAY_OF_MONTH, 1);
-                    calendarEnd.set(Calendar.DAY_OF_MONTH, calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
-                    break;
-                case "Năm":
-                    calendarStart.set(Calendar.DAY_OF_YEAR, 1);
-                    calendarEnd.set(Calendar.DAY_OF_YEAR, calendarEnd.getActualMaximum(Calendar.DAY_OF_YEAR));
-                    break;
-            }
-            filterTransactions(calendarStart.getTime(), calendarEnd.getTime());
-            time.setText(Helper.formatDate(calendarStart.getTime()) + " - " + Helper.formatDate(calendarEnd.getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        Calendar calendarStart = Calendar.getInstance(Locale.US);
+        Calendar calendarEnd = Calendar.getInstance(Locale.US);
+        calendarStart.setFirstDayOfWeek(Calendar.MONDAY);
+        calendarEnd.setFirstDayOfWeek(Calendar.MONDAY);
+        switch (getFilter()) {
+            case "Tuần":
+                calendarStart.set(Calendar.DAY_OF_WEEK, calendarStart.getFirstDayOfWeek());
+                calendarEnd.set(Calendar.DAY_OF_WEEK, calendarEnd.getFirstDayOfWeek());
+                calendarEnd.add(Calendar.DAY_OF_WEEK, 6);
+                break;
+            case "Tháng":
+                calendarStart.set(Calendar.DAY_OF_MONTH, 1);
+                calendarEnd.set(Calendar.DAY_OF_MONTH, calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
+                break;
+            case "Năm":
+                calendarStart.set(Calendar.DAY_OF_YEAR, 1);
+                calendarEnd.set(Calendar.DAY_OF_YEAR, calendarEnd.getActualMaximum(Calendar.DAY_OF_YEAR));
+                break;
         }
+        filterTransactions(calendarStart.getTime(), calendarEnd.getTime());
+        time.setText(Helper.formatDate(calendarStart.getTime()) + " - " + Helper.formatDate(calendarEnd.getTime()));
+
     }
 
     private void adjustTimePeriod(int increment) {
@@ -191,6 +189,9 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         BigDecimal endingBalanceAmount = new BigDecimal(0);
         BigDecimal differenceAmount = new BigDecimal(0);
 
+        startDate = Helper.normalizeDate(startDate, true);
+        endDate = Helper.normalizeDate(endDate, false);
+
         for (TransactionExp transaction : allTransactions) {
             Date createdAt = transaction.getCreatedAt();
             List<String> income = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
@@ -215,37 +216,35 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         transactionAdapter.updateTransaction(filteredTransactions);
         transactionAdapter.notifyDataSetChanged();
 
-        String currency = "";
         if (!filteredTransactions.isEmpty()) {
-            currency = filteredTransactions.get(0).getCurrency();
             transactionEmpty.setVisibility(View.GONE);
         } else {
             transactionEmpty.setVisibility(View.VISIBLE);
         }
 
         if (openingBalanceAmount.compareTo(new BigDecimal(0)) < 0) {
-            openingBalance.setText(String.format("%s %s", Helper.formatCurrency(openingBalanceAmount), currency));
+            openingBalance.setText(Helper.formatCurrency(openingBalanceAmount));
             openingBalance.setTextColor(Color.parseColor("#F48484"));
         } else {
-            openingBalance.setText(String.format("+%s %s", Helper.formatCurrency(openingBalanceAmount), currency));
+            openingBalance.setText(String.format("+%s", Helper.formatCurrency(openingBalanceAmount)));
             openingBalance.setTextColor(Color.parseColor("#00DDB0"));
 
         }
 
         if (endingBalanceAmount.compareTo(new BigDecimal(0)) < 0) {
-            endingBalance.setText(String.format("%s %s", Helper.formatCurrency(endingBalanceAmount), currency));
+            endingBalance.setText(Helper.formatCurrency(endingBalanceAmount));
             endingBalance.setTextColor(Color.parseColor("#F48484"));
         } else {
-            endingBalance.setText(String.format("+%s %s", Helper.formatCurrency(endingBalanceAmount), currency));
+            endingBalance.setText(String.format("+%s", Helper.formatCurrency(endingBalanceAmount)));
             endingBalance.setTextColor(Color.parseColor("#00DDB0"));
 
         }
 
         if (differenceAmount.compareTo(new BigDecimal(0)) < 0) {
-            difference.setText(String.format("%s %s", Helper.formatCurrency(differenceAmount), currency));
+            difference.setText(Helper.formatCurrency(differenceAmount));
             difference.setTextColor(Color.parseColor("#F48484"));
         } else {
-            difference.setText(String.format("+%s %s", Helper.formatCurrency(differenceAmount), currency));
+            difference.setText(String.format("+%s", Helper.formatCurrency(differenceAmount)));
             difference.setTextColor(Color.parseColor("#00DDB0"));
 
         }
@@ -275,8 +274,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
                 allTransactions = transactions;
-                filterTransactions(new Date(), new Date());
-
+                adjustTimePeriod(0);
             }
 
             @Override
