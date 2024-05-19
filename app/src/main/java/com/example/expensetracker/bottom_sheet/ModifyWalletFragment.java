@@ -40,13 +40,8 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
     private static final String KEY_WALLET = "wallet";
     private Wallet wallet;
     private AppUser user;
-    private TextView title;
     private TextView btnCancel;
-    private String[] currencies = {"USD", "VND"};
-    private AutoCompleteTextView autoCompleteTextView;
-    private ArrayAdapter<String> currencyItemAdapter;
     private WalletUpdateListener walletUpdateListener;
-    private TextInputLayout textInputLayout;
     private EditText walletName;
     private EditText walletAmount;
     private Button btnSave;
@@ -80,16 +75,6 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
 
-        currencyItemAdapter = new ArrayAdapter<>(getContext(), R.layout.select_item, currencies);
-        autoCompleteTextView.setAdapter(currencyItemAdapter);
-
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                textInputLayout.setHint(null);
-            }
-        });
-
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,15 +87,14 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 String name = walletName.getText().toString();
                 BigDecimal amount = (walletAmount.getText().toString()).isEmpty() ? new BigDecimal(0) : new BigDecimal(walletAmount.getText().toString());
-                String currency = autoCompleteTextView.getText().toString();
 
-                if (name.isEmpty() || amount.equals(new BigDecimal(0)) || currency.isEmpty()) {
+                if (name.isEmpty() || amount.equals(new BigDecimal(0))) {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ các trường!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 wallet.setAmount(amount);
-                wallet.setCurrency(currency);
+                wallet.setCurrency("VND");
                 wallet.setName(name);
 
                 WalletRepository.getInstance().updateWallet(wallet.getId(), wallet, new ApiCallBack<Wallet>() {
@@ -160,7 +144,6 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
         bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                textInputLayout.setHint(null);
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                 if (bottomSheet != null) {
@@ -186,15 +169,12 @@ public class ModifyWalletFragment extends BottomSheetDialogFragment {
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnSave = view.findViewById(R.id.save_wallet);
         btnDelete = view.findViewById(R.id.delete_wallet);
-        autoCompleteTextView = view.findViewById(R.id.add_wallet_currency);
-        textInputLayout = view.findViewById(R.id.text_input_currency);
         walletName = view.findViewById(R.id.wallet_name);
         walletAmount = view.findViewById(R.id.wallet_amount);
 
         if (wallet != null) {
             walletName.setText(wallet.getName());
             walletAmount.setText(String.valueOf(wallet.getAmount()));
-            autoCompleteTextView.setText(wallet.getCurrency(), false);
         }
     }
 

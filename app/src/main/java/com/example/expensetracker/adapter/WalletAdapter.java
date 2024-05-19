@@ -38,7 +38,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletView
         }
 
         String currency = wallet.getCurrency();
-        holder.walletAmount.setText(String.format("%s %s", Helper.formatCurrency(wallet.getAmount()), currency));
+        holder.walletAmount.setText(Helper.formatCurrency(wallet.getAmount()));
         holder.walletName.setText(wallet.getName());
     }
 

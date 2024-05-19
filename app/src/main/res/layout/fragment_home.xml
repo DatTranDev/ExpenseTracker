@@ -154,6 +154,17 @@
                             android:orientation="vertical"
                             tools:listitem="@layout/wallet_item">
                         </androidx.recyclerview.widget.RecyclerView>
+                        <TextView
+                            android:id="@+id/wallet_empty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Không có ví nào"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textAlignment="center"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
                 <!-- Stats -->
@@ -227,7 +238,7 @@
                                     android:id="@+id/stats_income_val"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="+92,231 đ"
+                                    android:text="0 VND"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/montserrat_semibold"/>
                             </LinearLayout>
@@ -291,7 +302,7 @@
                                     android:layout_height="wrap_content"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/montserrat_semibold"
-                                    android:text="-92,231 đ" />
+                                    android:text="0 VND" />
                             </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
@@ -325,11 +336,43 @@
                             android:gravity="end|center"
                             android:fontFamily="@font/montserrat_medium"/>
                     </LinearLayout>
-                    <com.anychart.AnyChartView
-                        android:id="@+id/analysis_view"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="12dp" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_background_20"
+                        android:padding="20dp"
+                        android:layout_marginTop="12dp">
+                        <com.google.android.material.tabs.TabLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            app:tabBackground="@color/white"
+                            android:id="@+id/filter"
+                            app:tabIndicatorColor="@color/accent_green"
+                            app:tabIndicatorFullWidth="true"
+                            app:tabSelectedTextColor="@color/accent_green"
+                            app:tabTextAppearance="@style/tab_text">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_week"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tuần" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tháng" />
+                        </com.google.android.material.tabs.TabLayout>
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:id="@+id/analysis_view"
+                            android:layout_marginTop="12dp"/>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

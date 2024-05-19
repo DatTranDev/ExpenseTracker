@@ -228,7 +228,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
             transactionCurrency.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_dollar));
         }
         transactionNote.setText(transactionExp.getNote());
-        transactionAmount.setText(String.format("%s %s", Helper.formatCurrency(transactionExp.getSpend()), transactionExp.getCurrency()));
+        transactionAmount.setText(Helper.formatCurrency(transactionExp.getSpend()));
         transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
         transactionCategory.setText(String.valueOf(transactionExp.getCategory().getType()));
         transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
