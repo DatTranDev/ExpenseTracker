@@ -1,6 +1,7 @@
 package com.example.expensetracker.view.register;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.databinding.DataBindingUtil;
@@ -32,6 +33,23 @@ public class RegisterActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
 
         TextView textView = findViewById(R.id.textViewLogin);
+
+        AppCompatButton loginButton = findViewById(R.id.btnFacebook);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RegisterActivity.this, "Tính năng đang được phát triển...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AppCompatButton loginButton2 = findViewById(R.id.btnGoogle);
+        loginButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RegisterActivity.this, "Tính năng đang được phát triển...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

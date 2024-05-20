@@ -42,7 +42,7 @@ public class WalletShowAdapter extends RecyclerView.Adapter<WalletShowAdapter.Wa
         }
 
         String currency = wallet.getCurrency();
-        holder.walletAmount.setText(String.format("%s %s", Helper.formatCurrency(wallet.getAmount()), currency));
+        holder.walletAmount.setText(Helper.formatCurrency(wallet.getAmount()));
         holder.walletName.setText(wallet.getName());
 
         holder.modifyWallet.setOnClickListener(new View.OnClickListener() {

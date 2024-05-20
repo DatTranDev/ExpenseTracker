@@ -48,10 +48,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         List<String> income = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
         if (income.contains(transactionExp.getCategory().getType())) {
-            holder.transactionPrice.setText(String.format("+%s %s", String.valueOf(Helper.formatCurrency(transactionExp.getSpend())), transactionExp.getCurrency()));
+            holder.transactionPrice.setText(String.format("+%s", Helper.formatCurrency(transactionExp.getSpend())));
             holder.transactionPrice.setTextColor(Color.parseColor("#00DDB0")); // accent_green
         } else {
-            holder.transactionPrice.setText(String.format("-%s %s", String.valueOf(Helper.formatCurrency(transactionExp.getSpend())), transactionExp.getCurrency()));
+            holder.transactionPrice.setText(String.format("-%s", Helper.formatCurrency(transactionExp.getSpend())));
             holder.transactionPrice.setTextColor(Color.parseColor("#F48484")); // light_red
         }
 

@@ -124,8 +124,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletU
             result = result.add(wallets.get(i).getAmount());
         }
 
-        String currency = wallets.get(0).getCurrency();
-        total.setText(String.format("%s %s", Helper.formatCurrency(result), currency));
+        total.setText(Helper.formatCurrency(result));
     }
 
     private void initView(View view) {

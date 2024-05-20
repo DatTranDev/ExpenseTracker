@@ -19,9 +19,23 @@
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="true" />
+        <activity android:name=".view.login.ForgotPasswordActivity"
+            android:exported="true"/>
+        <activity android:name=".view.login.ResetPasswordActivity"
+            android:exported="true"/>
+        <activity android:name=".view.login.VerifyCodeActivity"
+            android:exported="true"/>
         <activity
             android:name=".view.register.WelcomeActivity"
             android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name=".view.SplashScreenActivity"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
