@@ -1,6 +1,7 @@
 package com.example.expensetracker.viewmodel.addTransactionVM;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 import androidx.lifecycle.LiveData;
@@ -38,11 +39,14 @@ public class ChooseCategoryViewModel extends BaseObservable {
         AppUserRepository.getInstance().getCategory(user.getId(), new ApiCallBack<List<Category>>() {
             @Override
             public void onSuccess(List<Category> categories) {
+
                 listCategory.setValue(categories);
+                Log.i("test",listCategory.getValue().get(0).getName());
+
             }
             @Override
             public void onError(String message) {
-
+                Log.i("test"," lấy danh mục lỗi");
             }
         });
 

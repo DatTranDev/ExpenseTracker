@@ -1,5 +1,7 @@
 package com.example.expensetracker.view.addTransaction;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +21,22 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Category> data;
     private OnItemClickListener mListener;
+    public static Context context;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-
+    public void updateCategories(List<Category> newCategories) {
+        data = newCategories;
+        notifyDataSetChanged();
+    }
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
-    public CategoryAdapter(List<Category> list)
+    public CategoryAdapter(Context context, List<Category> list)
     {
         data=list;
+        this.context = context;
     }
     @NonNull
     @Override
@@ -48,6 +55,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Category item = data.get(position);
         if (holder.getItemViewType() == 0) {
+
             ((ParentViewHolder) holder).bind(item);
         } else {
             ((ChildViewHolder) holder).bind(item);
@@ -91,12 +99,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void bind(Category item) {
             name.setText(item.getName());
-            Glide.with(image.getContext())
-                    .load(item.getIcon())
-                    .apply(new RequestOptions()
-//                            .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
-                            .error(R.drawable.error)) // Error image if loading fails
-                    .into(image);
+            String iconName= item.getIcon().getLinking();
+            int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+            if (resourceId != 0) {
+                image.setImageResource(resourceId);
+            } else {
+                // Xử lý trường hợp icon không tồn tại
+                image.setImageResource(R.drawable.error); // Một icon mặc định
+            }
         }
     }
 
@@ -126,12 +136,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void bind(Category item) {
             name.setText(item.getName());
-            Glide.with(image.getContext())
-                    .load(item.getIcon())
-                    .apply(new RequestOptions()
-//                            .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
-                            .error(R.drawable.error)) // Error image if loading fails
-                    .into(image);
+            String iconName= item.getIcon().getLinking();
+            int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+            if (resourceId != 0) {
+                image.setImageResource(resourceId);
+            } else {
+                // Xử lý trường hợp icon không tồn tại
+                image.setImageResource(R.drawable.error); // Một icon mặc định
+            }
         }
     }
 }
