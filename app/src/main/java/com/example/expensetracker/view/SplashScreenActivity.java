@@ -2,9 +2,12 @@ package com.example.expensetracker.view;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
@@ -15,7 +18,7 @@ import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.IconRepository;
 import com.example.expensetracker.view.register.WelcomeActivity;
 import com.google.gson.Gson;
-
+import android.Manifest;
 import java.util.List;
 
 public class SplashScreenActivity extends AppCompatActivity{
@@ -23,8 +26,13 @@ public class SplashScreenActivity extends AppCompatActivity{
     protected void onCreate(android.os.Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
         Button retry = findViewById(R.id.reloadButton);
-
         retry.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {

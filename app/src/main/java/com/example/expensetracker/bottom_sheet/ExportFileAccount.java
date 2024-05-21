@@ -1,15 +1,11 @@
 package com.example.expensetracker.bottom_sheet;
 
-import static androidx.core.content.ContextCompat.checkSelfPermission;
-
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -27,7 +23,6 @@ import androidx.core.content.FileProvider;
 import androidx.multidex.BuildConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
