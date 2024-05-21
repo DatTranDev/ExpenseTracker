@@ -85,7 +85,6 @@ public class AddTransactionViewModel extends BaseObservable {
             }
             TransactionExp newTransaction= new TransactionExp();
             newTransaction.setUserId(user.getId());
-            Log.d("check",timeTransaction.get().toLocaleString());
             newTransaction.setCategoryId(category.get().getId());
             newTransaction.setWalletId(wallet.get().getId());
             newTransaction.setSpend((BigDecimal) spend);
@@ -112,6 +111,14 @@ public class AddTransactionViewModel extends BaseObservable {
         else {
             if(money.get()==null){
                 showMessage("Vui lòng nhập số tiền của giao dịch");
+            }
+            if(category.get()==null)
+            {
+                showMessage("Vui lòng chọn danh mục");
+            }
+            if(wallet.get()==null)
+            {
+                showMessage("Vui lòng chọn ví để sử dụng");
             }
         }
 

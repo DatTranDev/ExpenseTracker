@@ -38,6 +38,10 @@ public class ThousandSeparatorTextWatcher implements TextWatcher {
 
             try {
                 double parsed = Double.parseDouble(cleanString);
+                if(parsed>99999999)
+                {
+                    parsed=99999999;
+                }
                 String formatted = NumberFormat.getInstance(Locale.US).format(parsed);
                 current = formatted;
                 editText.setText(formatted);

@@ -37,7 +37,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/montserrat_semibold"
             android:gravity="center"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="70dp"
 
             android:text="Thêm giao dịch"
             android:textSize="22sp" />
@@ -54,7 +54,7 @@
 
         <EditText
             android:id="@+id/edit_text_money"
-            android:layout_width="200dp"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:autofillHints="1"
@@ -73,8 +73,9 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat_semibold"
             android:gravity="bottom"
+            android:layout_marginLeft="2dp"
             android:text="đ"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -328,6 +329,7 @@
             android:layout_marginStart="72dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/inter_semibold"
+            android:text="@={AddTransactionViewModel.node}"
             android:hint="Thêm ghi chú"
             android:textSize="16sp" />
 
@@ -455,6 +457,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="72dp"
             android:layout_marginTop="20dp"
+            android:text="@={AddTransactionViewModel.borrower}"
             android:fontFamily="@font/inter_semibold"
             android:hint="Người vay"
             android:textSize="16sp" />
@@ -497,7 +500,7 @@
     <Button
         android:id="@+id/button"
         android:layout_width="125dp"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
         android:backgroundTint="#00DDB0"

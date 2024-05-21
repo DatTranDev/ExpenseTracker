@@ -64,6 +64,7 @@ public class mainAddActivity extends AppCompatActivity {
         timeTran= findViewById(R.id.timeTran);
         iconCategory=findViewById(R.id.icon_category);
         money= findViewById(R.id.edit_text_money);
+        money.setTextColor(getResources().getColor(R.color.red));
 //        btnChoose=btnSpend;
 //        btnChoose.setBackgroundResource(R.drawable.choose_type_button);
         btnSpend.setOnClickListener(v -> {
@@ -72,6 +73,8 @@ public class mainAddActivity extends AppCompatActivity {
             btnRevenue.setBackgroundResource(R.drawable.default_type_button);
             btnLoan.setBackgroundResource(R.drawable.default_type_button);
             layBorrower.setVisibility(View.GONE);
+            money.setTextColor(getResources().getColor(R.color.red));
+            resetData();
         });
         btnLoan.setOnClickListener(v -> {
             typeTransaction="loan";
@@ -79,6 +82,8 @@ public class mainAddActivity extends AppCompatActivity {
             btnRevenue.setBackgroundResource(R.drawable.default_type_button);
             btnSpend.setBackgroundResource(R.drawable.default_type_button);
             layBorrower.setVisibility(View.VISIBLE);
+            money.setTextColor(getResources().getColor(R.color.orange));
+            resetData();
         });
         btnRevenue.setOnClickListener(v -> {
             typeTransaction="revenue";
@@ -86,6 +91,8 @@ public class mainAddActivity extends AppCompatActivity {
             btnLoan.setBackgroundResource(R.drawable.default_type_button);
             btnSpend.setBackgroundResource(R.drawable.default_type_button);
             layBorrower.setVisibility(View.GONE);
+            money.setTextColor(getResources().getColor(R.color.green));
+            resetData();
         });
         layCategory.setOnClickListener(v -> {
             Intent intent2= new Intent(mainAddActivity.this,ChooseCategoryActivity.class);
@@ -157,5 +164,12 @@ public class mainAddActivity extends AppCompatActivity {
             int resourceId = getResources().getIdentifier(selected.getIcon().getLinking(), "drawable", getPackageName());
             iconCategory.setImageResource(resourceId);
         }
+    }
+    public void resetData()
+    {
+        addTransactionViewModel.category.set(null);
+        addTransactionViewModel.borrower.set(null);
+        addTransactionViewModel.node.set(null);
+        iconCategory.setImageResource(R.drawable.ic_category);
     }
 }
