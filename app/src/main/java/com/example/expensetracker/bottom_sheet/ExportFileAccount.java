@@ -98,7 +98,7 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_export);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
         rvTransaction.setLayoutManager(linearLayoutManager);
-        transactionAdapter = new TransactionAdapter(allTransactions, this);
+        transactionAdapter = new TransactionAdapter(getContext(),allTransactions, this);
         getTransactionsForUser(user.getId());
         rvTransaction.setAdapter(transactionAdapter);
 

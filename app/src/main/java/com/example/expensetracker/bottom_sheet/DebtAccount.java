@@ -109,7 +109,7 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
         RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
         rvTransaction.setLayoutManager(linearLayoutManager);
-        transactionAdapter = new TransactionAdapter(allTransactions, this);
+        transactionAdapter = new TransactionAdapter(getContext(), allTransactions, this);
         getTransactionsForUser(user.getId(),1);
         rvTransaction.setAdapter(transactionAdapter);
         return bottomSheetDialog;
