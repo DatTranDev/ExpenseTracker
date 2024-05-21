@@ -113,7 +113,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         RecyclerView rvTransaction = view.findViewById(R.id.transaction_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
         rvTransaction.setLayoutManager(linearLayoutManager);
-        transactionAdapter = new TransactionAdapter(transactions, this);
+        transactionAdapter = new TransactionAdapter(getContext(), transactions, this);
         getTransactionsForUser(user.getId());
         rvTransaction.setAdapter(transactionAdapter);
 
