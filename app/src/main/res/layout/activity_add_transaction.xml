@@ -53,7 +53,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextNumber2"
+            android:id="@+id/edit_text_money"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -62,6 +62,7 @@
             android:gravity="center"
             android:inputType="number"
             android:textSize="40sp"
+            android:text="@={AddTransactionViewModel.money}"
             android:textStyle="normal" />
 
         <TextView
@@ -214,7 +215,7 @@
             android:src="@drawable/black_line" />
 
         <ImageView
-            android:id="@+id/a"
+            android:id="@+id/icon_category"
             android:layout_width="41dp"
             android:layout_height="41dp"
             android:layout_alignParentStart="true"
@@ -501,6 +502,7 @@
         android:layout_marginTop="40dp"
         android:backgroundTint="#00DDB0"
         android:fontFamily="@font/inter_semibold"
+        android:onClick="@{()->AddTransactionViewModel.addTransaction()}"
         android:text="Lưu"
         android:textSize="15sp" />
 

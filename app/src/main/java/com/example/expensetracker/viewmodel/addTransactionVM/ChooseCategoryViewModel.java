@@ -24,22 +24,62 @@ public class ChooseCategoryViewModel extends BaseObservable {
 
     private final MutableLiveData<List<Category>> listCategory;
     AppUser user;
-    public ChooseCategoryViewModel(Context context) {
-        SharedPreferences sharedPreferences= context.getSharedPreferences("user",Context.MODE_PRIVATE);
-
-
+    public ChooseCategoryViewModel(Context context, String typeTransaction) {
+        SharedPreferences sharedPreferences= context.getSharedPreferences("categories",Context.MODE_PRIVATE);
         String categoryString= sharedPreferences.getString("categories","null");
-
+        Log.d("1",categoryString);
         listCategory = new MutableLiveData<>();
         if(categoryString!="null")
         {
             Gson gson = new Gson();
             Type type = new TypeToken<List<Category>>() {}.getType();
             List<Category> list= gson.fromJson(categoryString,type);
-            listCategory.setValue(list);
+            List<Category> classify = new ArrayList<>();
+            if(typeTransaction.equals("spend"))
+            {
+                for(int i=0; i<list.size();i++)
+                {
+                    if(list.get(i).getType().equals("Khoản chi"))
+                    {
+                        classify.add(list.get(i));
+                    }
+                }
+            }
+            if(typeTransaction.equals("revenue"))
+            {
+                for(int i=0; i<list.size();i++)
+                {
+                    if(list.get(i).getType().equals("Khoản thu"))
+                    {
+                        classify.add(list.get(i));
+                    }
+                }
+            }
+            if(typeTransaction.equals("loan"))
+            {
+                for(int i=0; i<list.size();i++)
+                {
+                    if(!list.get(i).getType().equals("Khoản thu") && !list.get(i).getType().equals("Khoản chi"))
+                    {
+                        classify.add(list.get(i));
+                    }
+                }
+            }
+//            for(int i=0; i<classify.size();i++)
+//            {
+//                String id= classify.get(i).getId();
+//                int stt=i+1;
+//                for(int j=i+1;j<classify.size();j++)
+//                {
+//                    if(classify.get(j).getParentCategoryId()==id)
+//                    {
+//
+//                    }
+//                }
+//            }
+
+            listCategory.setValue(classify);
         }
-
-
     }
 
     public LiveData<List<Category>> getListCategory() {

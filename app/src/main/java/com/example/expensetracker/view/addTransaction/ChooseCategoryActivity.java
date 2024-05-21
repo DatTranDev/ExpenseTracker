@@ -34,13 +34,15 @@ import java.util.List;
 public class ChooseCategoryActivity extends AppCompatActivity {
     private  ImageView btnBack;
     private AppCompatButton test;
-    Intent intent= getIntent();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_category);
+        Intent intent = getIntent();
+        String type= intent.getStringExtra("typeTrans");
+        Log.d("lỗi",type);
         ActivityChooseCategoryBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_choose_category);
-        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this);
+        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this,type);
         binding.setChooseCategoryViewModel(chooseCategoryViewModel);
 
         btnBack=findViewById(R.id.btnBackCategory);
@@ -80,6 +82,7 @@ public class ChooseCategoryActivity extends AppCompatActivity {
                 Category clickedItem = chooseCategoryViewModel.getListCategory().getValue().get(position);
                 Gson gson= new Gson();
                 String json = gson.toJson(clickedItem);
+                Log.d("testttt",json);
                 intent.putExtra("selectedString",json);
                 setResult(1,intent);
                 finish();

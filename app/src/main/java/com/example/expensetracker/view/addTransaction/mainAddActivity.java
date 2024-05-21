@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,10 +36,11 @@ public class mainAddActivity extends AppCompatActivity {
     private CategoryAdapter myAdapter;
 
     private ImageButton btnSpend, btnRevenue, btnLoan;
-    private String typeTransaction="Spend";
+    private String typeTransaction="spend";
     private  RelativeLayout layCategory, layTime, layNote, layWallet, layBorrower;
-    private ImageView btnBack;
+    private ImageView btnBack, iconCategory;
     private TextView timeTran;
+    private EditText money;
     Intent intent= getIntent();
     AddTransactionViewModel addTransactionViewModel;
     @Override
@@ -46,7 +49,7 @@ public class mainAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
         ActivityAddTransactionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_transaction);
-        addTransactionViewModel = new AddTransactionViewModel();
+        addTransactionViewModel = new AddTransactionViewModel(this);
         binding.setAddTransactionViewModel(addTransactionViewModel);
         ImageButton btnChoose;
         btnSpend = findViewById(R.id.btn_spend);
@@ -59,6 +62,8 @@ public class mainAddActivity extends AppCompatActivity {
         layWallet= findViewById(R.id.chooseWallet);
         btnBack= findViewById(R.id.btnBack1);
         timeTran= findViewById(R.id.timeTran);
+        iconCategory=findViewById(R.id.icon_category);
+        money= findViewById(R.id.edit_text_money);
 //        btnChoose=btnSpend;
 //        btnChoose.setBackgroundResource(R.drawable.choose_type_button);
         btnSpend.setOnClickListener(v -> {
@@ -102,7 +107,7 @@ public class mainAddActivity extends AppCompatActivity {
                     Calendar selectedCalendar = Calendar.getInstance();
                     selectedCalendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
                     selectedCalendar.set(Calendar.MILLISECOND, 0);
-                    addTransactionViewModel.setTimeTransaction(new Timestamp(selectedCalendar.getTimeInMillis()));
+                    addTransactionViewModel.timeTransaction.set(new Timestamp(selectedCalendar.getTimeInMillis()));
 //                    System.out.println("Selected Timestamp: " + addTransactionViewModel.getTimeTransaction().toString());
                 }
             }, year, month, day);
@@ -123,6 +128,14 @@ public class mainAddActivity extends AppCompatActivity {
                 }
             });
         });
+        money.addTextChangedListener(new ThousandSeparatorTextWatcher(money));
+        addTransactionViewModel.message.observe(this, message -> {
+            if (message != null) {
+                // Hiển thị thông báo
+                Toast.makeText(mainAddActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
 
@@ -136,11 +149,13 @@ public class mainAddActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==69 && resultCode==1)
+        if(requestCode==69 && resultCode==1)
         {
             Gson gson= new Gson();
             Category selected= gson.fromJson(data.getStringExtra("selectedString"),Category.class);
             addTransactionViewModel.category.set(selected);
+            int resourceId = getResources().getIdentifier(selected.getIcon().getLinking(), "drawable", getPackageName());
+            iconCategory.setImageResource(resourceId);
         }
     }
 }
