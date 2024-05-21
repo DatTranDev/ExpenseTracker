@@ -5,11 +5,16 @@ import androidx.databinding.ObservableField;
 
 import com.example.expensetracker.BR;
 import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.Wallet;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class AddTransactionViewModel extends BaseObservable {
-    public ObservableField<Category> category = new ObservableField<>(new Category("5", "Mua nhà", true, "aa","aa", "0", "Chi tiêu"));
+    public ObservableField<Category> category = new ObservableField<>();
+    public ObservableField<Wallet> wallet = new ObservableField<>();
+    public ObservableField<String> node= new ObservableField<>();
+    public ObservableField<String> borrower= new ObservableField<>();
     private Timestamp timeTransaction;
     @Bindable
     public Timestamp getTimeTransaction(){return  timeTransaction;}
@@ -17,6 +22,17 @@ public class AddTransactionViewModel extends BaseObservable {
     {
         this.timeTransaction=a;
         notifyPropertyChanged(BR.timeTransaction);
+    }
+
+
+    public void addTransaction()
+    {
+        if(timeTransaction==null)
+        {
+            final Calendar calendar = Calendar.getInstance();
+            timeTransaction= new Timestamp(calendar.getTimeInMillis());
+        }
+
     }
 
 }

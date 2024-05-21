@@ -39,7 +39,7 @@
             android:gravity="center"
             android:layout_marginLeft="80dp"
 
-            android:text="Thêm chi tiêu"
+            android:text="Thêm giao dịch"
             android:textSize="22sp" />
     </LinearLayout>
 
@@ -377,39 +377,40 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/background_border_white"
         android:backgroundTint="@null">
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textSize="16sp"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="30dp">
-        </Spinner>
-
-<!--        <TextView-->
-<!--            android:id="@+id/wallet"-->
+<!--        <Spinner-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
 <!--            android:layout_alignParentStart="true"-->
 <!--            android:layout_alignParentTop="true"-->
+<!--            android:textSize="16sp"-->
 <!--            android:layout_marginStart="75dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:fontFamily="@font/inter_semibold"-->
-<!--            android:text="Ví tiền mặt 1"-->
-<!--            android:textSize="16sp" />-->
+<!--            android:layout_marginTop="30dp">-->
+<!--        </Spinner>-->
+
+        <TextView
+            android:id="@+id/wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/inter_semibold"
+            android:text="@{AddTransactionViewModel.wallet.getName()}"
+            android:textSize="16sp" />
 
 
-        <!--        <ImageView-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginEnd="165dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:src="@drawable/black_line" />-->
+                <ImageView
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/black_line"
+            android:visibility="@{(AddTransactionViewModel.wallet==null) ? View.VISIBLE : View.GONE}"        />
 
         <ImageView
             android:layout_width="35dp"
@@ -429,7 +430,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="75dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/inter_regular"
             android:text="Loại ví"
             android:textSize="14sp" />
@@ -437,7 +438,7 @@
 
     <RelativeLayout
         android:id="@+id/borrower"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="320dp"
         android:layout_height="65dp"
         android:layout_gravity="center"

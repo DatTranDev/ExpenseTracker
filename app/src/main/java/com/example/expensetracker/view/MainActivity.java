@@ -1,5 +1,6 @@
 package com.example.expensetracker.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.databinding.ActivityMainBinding;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.repository.IconRepository;
+import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(icon.getLinking());
                 }
             }
+
             @Override
             public void onError(String message) {
                 System.out.println(message);
@@ -282,6 +285,10 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, mainAddActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void navigateToTransactions() {
@@ -294,5 +301,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(fragment.getTag());
         fragmentTransaction.commit();
     }
+
+
 
 }

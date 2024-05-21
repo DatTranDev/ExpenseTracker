@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:background="@drawable/background_border_white"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp">
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="walletImage"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_wallet2"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/walletname"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Ví của tôi"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/montserrat"/>
+        <TextView
+            android:id="@+id/walletamount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:fontFamily="@font/montserrat"
+            android:text="10,000,000.00 VND"/>
+    </LinearLayout>
+
+</LinearLayout>

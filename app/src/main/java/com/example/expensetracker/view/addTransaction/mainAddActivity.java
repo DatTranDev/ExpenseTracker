@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableField;
@@ -18,7 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityAddTransactionBinding;
+import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.viewmodel.AddTransactionViewModel;
+import com.google.gson.Gson;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -35,13 +39,14 @@ public class mainAddActivity extends AppCompatActivity {
     private ImageView btnBack;
     private TextView timeTran;
     Intent intent= getIntent();
+    AddTransactionViewModel addTransactionViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
         ActivityAddTransactionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_transaction);
-        AddTransactionViewModel addTransactionViewModel = new AddTransactionViewModel();
+        addTransactionViewModel = new AddTransactionViewModel();
         binding.setAddTransactionViewModel(addTransactionViewModel);
         ImageButton btnChoose;
         btnSpend = findViewById(R.id.btn_spend);
@@ -79,7 +84,8 @@ public class mainAddActivity extends AppCompatActivity {
         });
         layCategory.setOnClickListener(v -> {
             Intent intent2= new Intent(mainAddActivity.this,ChooseCategoryActivity.class);
-            startActivity(intent2);
+            intent2.putExtra("typeTrans",typeTransaction);
+            startActivityForResult(intent2,69);
         });
         layTime.setOnClickListener(v -> {
             final Calendar calendar = Calendar.getInstance();
@@ -107,6 +113,16 @@ public class mainAddActivity extends AppCompatActivity {
 //        String a="ic_cho_vay";
 //        int resourceId = getResources().getIdentifier(a, "drawable", getPackageName());
 //        btnBack.setImageResource(resourceId);
+        layWallet.setOnClickListener(v -> {
+            ChooseWalletFragment chooseWalletFragment= new ChooseWalletFragment();
+            chooseWalletFragment.show(getSupportFragmentManager(), "listWallet");
+            chooseWalletFragment.setSend(new ChooseWalletFragment.sendWallet() {
+                @Override
+                public void selectedWallet(Wallet selected) {
+                    addTransactionViewModel.wallet.set(selected);
+                }
+            });
+        });
 
 
 
@@ -114,5 +130,17 @@ public class mainAddActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==69 && resultCode==1)
+        {
+            Gson gson= new Gson();
+            Category selected= gson.fromJson(data.getStringExtra("selectedString"),Category.class);
+            addTransactionViewModel.category.set(selected);
+        }
     }
 }

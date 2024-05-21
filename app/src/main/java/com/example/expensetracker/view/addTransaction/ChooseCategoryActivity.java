@@ -47,7 +47,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+               setResult(0,intent);
+                finish();
             }
         });
 
@@ -77,6 +78,10 @@ public class ChooseCategoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Category clickedItem = chooseCategoryViewModel.getListCategory().getValue().get(position);
+                Gson gson= new Gson();
+                String json = gson.toJson(clickedItem);
+                intent.putExtra("selectedString",json);
+                setResult(1,intent);
                 finish();
             }
         });

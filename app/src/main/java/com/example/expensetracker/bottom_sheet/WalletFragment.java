@@ -38,7 +38,7 @@ import java.util.List;
 public class WalletFragment extends BottomSheetDialogFragment implements WalletUpdateListener, WalletShowAdapter.OnWalletModifyClickListener {
     private static final String KEY_WALLET_LIST = "wallet_list";
     private TextView btnCancel;
-    private Button btnAdd;
+    private Button btnAdd ;
     private RecyclerView recyclerView;
     private WalletShowAdapter walletAdapter;
     private WalletUpdateListener walletUpdateListener;

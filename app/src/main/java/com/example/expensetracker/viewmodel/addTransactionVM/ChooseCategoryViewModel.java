@@ -12,7 +12,9 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,29 +28,16 @@ public class ChooseCategoryViewModel extends BaseObservable {
         SharedPreferences sharedPreferences= context.getSharedPreferences("user",Context.MODE_PRIVATE);
 
 
-        String userString= sharedPreferences.getString("user","null");
+        String categoryString= sharedPreferences.getString("categories","null");
 
-        if(userString!="null")
+        listCategory = new MutableLiveData<>();
+        if(categoryString!="null")
         {
             Gson gson = new Gson();
-            user= gson.fromJson(userString,AppUser.class);
+            Type type = new TypeToken<List<Category>>() {}.getType();
+            List<Category> list= gson.fromJson(categoryString,type);
+            listCategory.setValue(list);
         }
-        listCategory = new MutableLiveData<>();
-        // Thêm dữ liệu vào danh sách
-        List<Category> items ;
-        AppUserRepository.getInstance().getCategory(user.getId(), new ApiCallBack<List<Category>>() {
-            @Override
-            public void onSuccess(List<Category> categories) {
-
-                listCategory.setValue(categories);
-                Log.i("test",listCategory.getValue().get(0).getName());
-
-            }
-            @Override
-            public void onError(String message) {
-                Log.i("test"," lấy danh mục lỗi");
-            }
-        });
 
 
     }
