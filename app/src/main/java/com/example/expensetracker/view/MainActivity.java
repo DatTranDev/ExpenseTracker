@@ -287,6 +287,10 @@ public class MainActivity extends AppCompatActivity {
     public void navigateToTransactions() {
         viewPager.setCurrentItem(1, true);
     }
+
+    public void navigateToHome() {
+        viewPager.setCurrentItem(0, true);
+    }
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

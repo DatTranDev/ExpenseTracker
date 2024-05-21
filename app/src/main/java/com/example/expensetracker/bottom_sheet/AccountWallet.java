@@ -9,30 +9,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.expensetracker.R;
-import com.example.expensetracker.adapter.WalletAdapter;
 import com.example.expensetracker.adapter.WalletShowAdapter;
-import com.example.expensetracker.model.AppUser;
-import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
-import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +28,9 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
 
     private static final String KEY_WALLET_LIST = "wallet_list";
     private ImageButton btnCancel;
-    private FloatingActionButton btnAdd;
-    private RecyclerView recyclerView;
+    private Button btnAdd;
     private WalletShowAdapter walletAdapter;
     private WalletUpdateListener walletUpdateListener;
-    private TextView total;
     private List<Wallet> wallets;
 
     public static AccountWallet newInstance(List<Wallet> walletList) {
@@ -73,20 +58,12 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
         initView(viewDialog);
         setData();
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                if (mainActivity != null) {
-                    addWallet();
-                }
+        btnAdd.setOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null) {
+                addWallet();
             }
         });
 
@@ -103,7 +80,7 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
 
                     ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                     if (layoutParams != null) {
-                        layoutParams.height = maxHeight;;
+                        layoutParams.height = maxHeight;
                         bottomSheet.setLayoutParams(layoutParams);
                     }
                 }
@@ -115,7 +92,7 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
     private void initView(View view) {
         btnAdd = view.findViewById(R.id.account_add_wallet);
         btnCancel = view.findViewById(R.id.wallet_back);
-        recyclerView = view.findViewById(R.id.account_wallet_list);
+        RecyclerView recyclerView = view.findViewById(R.id.account_wallet_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         walletAdapter = new WalletShowAdapter(wallets, this);
 //        total = view.findViewById(R.id.wallet_total_amount);
@@ -129,8 +106,7 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
             result = result.add(wallets.get(i).getAmount());
         }
 
-        String currency = wallets.get(0).getCurrency();
-//        total.setText(String.format("%s %s", Helper.formatCurrency(result), currency));
+        //String currency = wallets.get(0).getCurrency();
     }
 
     private void addWallet() {

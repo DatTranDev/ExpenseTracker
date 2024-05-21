@@ -1,7 +1,6 @@
 package com.example.expensetracker.fragment;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Context;
@@ -9,13 +8,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,18 +26,19 @@ import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.bottom_sheet.AccountWallet;
 import com.example.expensetracker.bottom_sheet.CategoryAccount;
 import com.example.expensetracker.bottom_sheet.DebtAccount;
+import com.example.expensetracker.bottom_sheet.ExportFileAccount;
 import com.example.expensetracker.bottom_sheet.NotifictionAccount;
 import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
-import com.example.expensetracker.utils.Helper;
+
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.login.LoginActivity;
 import com.google.gson.Gson;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 
 
@@ -49,7 +49,7 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
     //private TransactionAdapter transactionAdapter;
     //private List<TransactionExp> transactionList;
     private List<Wallet> walletList;
-    private TextView totalBalance;
+    private ImageButton back;
 
     private AppUser user;
 
@@ -58,9 +58,10 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
     private LinearLayout account_debt;
     private LinearLayout account_category;
     private LinearLayout account_notification;
+    private LinearLayout account_export;
     private TextView userName;
 
-    public static AccountFragment newInstance(String param1, String param2) {
+    public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -88,50 +89,48 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
         userName = view.findViewById(R.id.account_name);
         userName.setText(user.getUserName());
 
+        back = view.findViewById(R.id.back);
+        back.setOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null) {
+                mainActivity.navigateToHome();
+            }
+        });
+
         walletAdapter = new WalletAdapter(walletList);
         getWalletList();
         walletLayout = view.findViewById(R.id.linearLayout_wallet);
-        walletLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAllWallet(walletList);
-            }
-        });
+        walletLayout.setOnClickListener(v -> showAllWallet(walletList));
 
         account_debt = view.findViewById(R.id.account_debt);
-        account_debt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DebtAccount debtAccount = new DebtAccount();
-                debtAccount.show(getActivity().getSupportFragmentManager(), debtAccount.getTag());
-            }
+        account_debt.setOnClickListener(v -> {
+            DebtAccount debtAccount = new DebtAccount();
+            debtAccount.show(getActivity().getSupportFragmentManager(), debtAccount.getTag());
         });
 
         account_category = view.findViewById(R.id.account_category);
-        account_category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CategoryAccount categoryAccount = new CategoryAccount();
-                categoryAccount.show(getActivity().getSupportFragmentManager(), categoryAccount.getTag());
-            }
+        account_category.setOnClickListener(v -> {
+            CategoryAccount categoryAccount = new CategoryAccount();
+            categoryAccount.show(getActivity().getSupportFragmentManager(), categoryAccount.getTag());
         });
 
         account_notification = view.findViewById(R.id.account_notifiication_layout);
-        account_notification.setOnClickListener(new View.OnClickListener() {
+        account_notification.setOnClickListener(v -> {
+            NotifictionAccount notifictionAccount = new NotifictionAccount();
+            notifictionAccount.show(getActivity().getSupportFragmentManager(), notifictionAccount.getTag());
+        });
+
+        account_export = view.findViewById(R.id.account_export_file);
+        account_export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotifictionAccount notifictionAccount = new NotifictionAccount();
-                notifictionAccount.show(getActivity().getSupportFragmentManager(), notifictionAccount.getTag());
+                ExportFileAccount exportFileAccount = new ExportFileAccount();
+                exportFileAccount.show(getActivity().getSupportFragmentManager(), exportFileAccount.getTag());
             }
         });
 
         btnlogout=view.findViewById(R.id.logout);
-        btnlogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogoutConfirmationDialog();
-            }
-        });
+        btnlogout.setOnClickListener(v -> showLogoutConfirmationDialog());
 
         return view;
     }
@@ -148,12 +147,8 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
             @Override
             public void onSuccess(List<Wallet> wallets) {
                 walletList = wallets;
-                String currency = wallets.get(0).getCurrency();
-                //totalBalance.setText(String.format("%s %s", Helper.formatCurrency(getTotalBalance(wallets)), currency));
-
 //                walletAdapter.updateWallet(wallets);
 //                walletAdapter.notifyDataSetChanged();
-
             }
 
             @Override
