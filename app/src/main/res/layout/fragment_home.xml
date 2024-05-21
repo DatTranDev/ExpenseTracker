@@ -227,12 +227,6 @@
                                         android:fontFamily="@font/montserrat"
                                         android:textSize="14sp"
                                         android:layout_marginEnd="30dp"/>
-                                    <ImageView
-                                        android:id="@+id/imageView18"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        app:srcCompat="@drawable/ic_more" />
                                 </LinearLayout>
                                 <TextView
                                     android:id="@+id/stats_income_val"
@@ -289,12 +283,6 @@
                                         android:fontFamily="@font/montserrat"
                                         android:text="Chi tiêu"
                                         android:textSize="14sp" />
-                                    <ImageView
-                                        android:id="@+id/imageView19"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        app:srcCompat="@drawable/ic_more" />
                                 </LinearLayout>
                                 <TextView
                                     android:id="@+id/stats_outcome_val"
