@@ -46,7 +46,7 @@
 
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/filter"
+            android:id="@+id/debt_filter"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -88,25 +88,33 @@
         android:contentDescription="Add Transaction"
         android:src="@drawable/ic_plus"
         app:fabCustomSize="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/transaction_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
+        android:layout_marginTop="-25dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
         app:shapeAppearanceOverlay="@style/fab_rounded"
         app:tint="@color/white" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/transaction_list"
+    <ScrollView
+        android:id="@+id/scrollView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-
-        android:background="@drawable/rounded_background_20"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:padding="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-        tools:listitem="@layout/account_debt_item" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/account_transaction_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background_20"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+            tools:listitem="@layout/account_debt_item" />
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/debt_empty"
@@ -117,8 +125,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/transaction_list"
-        app:layout_constraintVertical_bias="0.414">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <ImageView
             android:layout_width="wrap_content"

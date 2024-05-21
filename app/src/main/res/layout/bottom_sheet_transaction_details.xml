@@ -85,7 +85,7 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/transaction_currency"
-                    android:layout_width="24dp"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_vnd"
                     android:contentDescription="Currency" />
@@ -112,7 +112,39 @@
                         android:text="Khoản chi"
                         android:textSize="16sp"
                         android:fontFamily="@font/montserrat"
-                        android:id="@+id/transaction_category"/>
+                        android:id="@+id/transaction_type"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wallet"
+                android:visibility="visible"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView18"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_wallet2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/wallet_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Khoản chi"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp" />
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -123,23 +155,24 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/transaction_category_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     app:srcCompat="@drawable/ic_transaction_item" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/transaction_type"
+                        android:id="@+id/transaction_category"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:fontFamily="@font/montserrat"
                         android:text="Ăn uống"
+                        android:gravity="center_vertical"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -153,17 +186,18 @@
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     app:srcCompat="@drawable/ic_note" />
 
                 <TextView
                     android:id="@+id/transaction_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
                     android:fontFamily="@font/montserrat"
                     android:text="Đi ăn Haidilao"
+                    android:gravity="center_vertical"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -176,17 +210,18 @@
 
                 <ImageView
                     android:id="@+id/imageView15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     app:srcCompat="@drawable/ic_calendar" />
 
                 <TextView
                     android:id="@+id/transaction_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
                     android:fontFamily="@font/montserrat"
                     android:text="Thứ 5, 4 tháng 4 2024"
+                    android:gravity="center_vertical"
                     android:textSize="16sp" />
 
             </LinearLayout>

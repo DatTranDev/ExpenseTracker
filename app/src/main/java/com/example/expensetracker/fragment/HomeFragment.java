@@ -162,7 +162,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(mainActivity);
         RecyclerView rvTransaction = view.findViewById(R.id.transaction_list_recent);
         rvTransaction.setLayoutManager(transactionLayoutManager);
-        transactionAdapter = new TransactionAdapter(transactionList, this);
+        transactionAdapter = new TransactionAdapter(getContext(), transactionList, this);
         rvTransaction.setAdapter(transactionAdapter);
 
         showTransaction = view.findViewById(R.id.show_transaction);

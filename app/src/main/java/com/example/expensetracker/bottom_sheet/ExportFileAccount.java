@@ -1,23 +1,33 @@
 package com.example.expensetracker.bottom_sheet;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.multidex.BuildConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.enums.Type;
+import com.example.expensetracker.exportfile.PDFExporter;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
@@ -25,29 +35,26 @@ import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+public class ExportFileAccount extends BottomSheetDialogFragment implements TransactionAdapter.OnItemClickListener{
 
-public class DebtAccount extends BottomSheetDialogFragment implements TransactionAdapter.OnItemClickListener{
     private static final String KEY_WALLET_LIST = "wallet_list";
-    private ImageButton btnCancel;
-    private FloatingActionButton btnAdd;
-    private TransactionAdapter transactionAdapter;
-    private List<TransactionExp> needtoreceive = new ArrayList<>();
+    private Button pdfButton;
 
-    private List<TransactionExp> needtopay = new ArrayList<>();
+    private ImageButton btnback;
+
+    private TransactionAdapter transactionAdapter;
+
     private List<TransactionExp> allTransactions = new ArrayList<>();
-    private TabLayout tabLayoutFilter;
 
     private LinearLayout transactionEmpty;
 
-    private View view;
 
-    public DebtAccount(){}
+    public ExportFileAccount(){}
 
 
     @Override
@@ -62,8 +69,9 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.account_debt, null);
+        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.account_export, null);
         bottomSheetDialog.setContentView(viewDialog);
+
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user", "");
@@ -71,104 +79,53 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
 
         initView(viewDialog);
 
-        btnCancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
-        tabLayoutFilter.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                filterTransactions(user.getId());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                filterTransactions(user.getId());
-            }
-        });
-
         bottomSheetDialog.setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
             FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             if (bottomSheet != null) {
                 BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
                 int maxHeight = getResources().getDisplayMetrics().heightPixels;
-
                 ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                 if (layoutParams != null) {
-                    layoutParams.height = maxHeight;;
+                    layoutParams.height = maxHeight;
                     bottomSheet.setLayoutParams(layoutParams);
                 }
             }
         });
 
         MainActivity mainActivity = (MainActivity)getActivity();
-        RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_list);
+        RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_export);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
         rvTransaction.setLayoutManager(linearLayoutManager);
-        transactionAdapter = new TransactionAdapter(getContext(), allTransactions, this);
-        getTransactionsForUser(user.getId(),1);
+        transactionAdapter = new TransactionAdapter(getContext(),allTransactions, this);
+        getTransactionsForUser(user.getId());
         rvTransaction.setAdapter(transactionAdapter);
+
+        pdfButton.setOnClickListener(v -> {
+            String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
+            PDFExporter.exportToPDF(getContext(), allTransactions);
+
+            Toast.makeText(getContext(), "PDF exported in downloads", Toast.LENGTH_SHORT).show();
+//            File file = new File(filePath);
+//            viewFile(getContext(), file, "application/pdf");
+        });
+
+        btnback.setOnClickListener(v -> bottomSheetDialog.dismiss());
         return bottomSheetDialog;
     }
 
-    private void filterTransactions(String userId) {
-        int check = 0;
-        switch (getFilter()) {
-            case "Cần trả":
-                check = 1;
-                break;
-            case "Cần thu":
-                check = 2;
-                break;
-        }
-
-        getTransactionsForUser(userId, check);
-    }
-
-    private String getFilter() {
-        TabLayout.Tab tab = tabLayoutFilter.getTabAt(tabLayoutFilter.getSelectedTabPosition());
-        String period = tab.getText().toString();
-        return period;
-    }
-
-
-    private void initView(View view) {
-        btnAdd = view.findViewById(R.id.add_debt);
-        btnCancel = view.findViewById(R.id.debt_back);
-        transactionEmpty = view.findViewById(R.id.debt_empty);
-        tabLayoutFilter = view.findViewById(R.id.debt_filter);
-
-    }
-
-    private void getTransactionsForUser(String userId, int check) {
-        List<TransactionExp> filteredTransactions = new ArrayList<>();
+    private void getTransactionsForUser(String userId) {
         AppUserRepository repository = AppUserRepository.getInstance();
         repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
                 allTransactions = transactions;
-                for (TransactionExp transaction : allTransactions) {
-                    if (check ==1){
-                        List<String> income = Arrays.asList(Type.TRA_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
-                        if (income.contains(transaction.getCategory().getType())) {
-                            filteredTransactions.add(transaction);
-                        }
-                    } else if (check == 2){
-                        List<String> income1 = Arrays.asList(Type.THU_NO.getDisplayName(), Type.CHO_VAY.getDisplayName());
-                        if (income1.contains(transaction.getCategory().getType()))
-                            filteredTransactions.add(transaction);
-                    }
 
-                }
-
-                transactionAdapter.updateTransaction(filteredTransactions);
+                transactionAdapter.updateTransaction(allTransactions);
                 transactionAdapter.notifyDataSetChanged();
 
-                if (!filteredTransactions.isEmpty()) {
+                if (!allTransactions.isEmpty()) {
                     transactionEmpty.setVisibility(View.GONE);
                 } else {
                     transactionEmpty.setVisibility(View.VISIBLE);
@@ -179,8 +136,27 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
 
             }
         });
-
     }
+
+    private void initView(View view) {
+        pdfButton = view.findViewById(R.id.account_pdf);
+        btnback = view.findViewById(R.id.back);
+        transactionEmpty = view.findViewById(R.id.export_empty);
+    }
+
+    private void viewFile(Context context, File file, String mimeType) {
+        Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, mimeType);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No application found to open this file type.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public void onItemClick(TransactionExp transactionExp) {

@@ -109,13 +109,16 @@
 package com.example.expensetracker.bottom_sheet;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -123,17 +126,21 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.example.expensetracker.R;
+import com.example.expensetracker.model.AppUser;
+import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.gson.Gson;
 
 public class TransactionDetailsFragment extends BottomSheetDialogFragment {
     private static final String KEY_TRANSACTION = "transaction_info";
     private TransactionExp transactionExp;
-    private TextView transactionType, transactionCategory, transactionTime, transactionNote, transactionAmount;
-    private ImageView transactionCurrency;
+    private TextView transactionType, transactionCategory, transactionTime, transactionNote, transactionAmount, walletName;
+    private ImageView transactionCurrency, transactionCategoryIcon;
+    private LinearLayout wallet;
     private TextView btnCancel;
     private TextView btnModify;
 
@@ -214,6 +221,9 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         transactionTime = view.findViewById(R.id.transaction_time);
         transactionAmount = view.findViewById(R.id.transaction_price);
         btnModify = view.findViewById(R.id.modify_transaction);
+        walletName = view.findViewById(R.id.wallet_name);
+        wallet = view.findViewById(R.id.wallet);
+        transactionCategoryIcon = view.findViewById(R.id.transaction_category_icon);
 //        btnCancel = view.findViewById(R.id.cancelModify);
     }
 
@@ -227,10 +237,22 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         } else {
             transactionCurrency.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_dollar));
         }
+
         transactionNote.setText(transactionExp.getNote());
         transactionAmount.setText(Helper.formatCurrency(transactionExp.getSpend()));
         transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-        transactionCategory.setText(String.valueOf(transactionExp.getCategory().getType()));
-        transactionType.setText(String.valueOf(transactionExp.getCategory().getName()));
+        transactionCategory.setText(String.valueOf(transactionExp.getCategory().getName()));
+        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
+
+        String iconName = transactionExp.getCategory().getIcon().getLinking();
+        int iconId = getResources().getIdentifier(iconName, "drawable", getContext().getPackageName());
+        transactionCategoryIcon.setImageResource(iconId);
+
+        if (transactionExp.getWallet() != null) {
+            wallet.setVisibility(View.VISIBLE);
+            walletName.setText(transactionExp.getWallet().getName());
+        } else {
+            wallet.setVisibility(View.GONE);
+        }
     }
 }

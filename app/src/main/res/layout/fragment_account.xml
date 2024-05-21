@@ -15,7 +15,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
 
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:src="@drawable/ic_wallet2" />
+            android:src="@drawable/wallet_svgrepo_com" />
 
         <TextView
             android:id="@+id/textView10"
@@ -126,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:src="@drawable/ic_group" />
+            android:src="@drawable/group_share_svgrepo_com" />
 
         <TextView
             android:id="@+id/textView11"
@@ -162,7 +161,7 @@
             android:id="@+id/imageView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_saving" />
+            android:src="@drawable/money_pay_line_svgrepo_com" />
 
         <TextView
             android:id="@+id/textView12"
@@ -198,7 +197,7 @@
             android:id="@+id/imageView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_bell" />
+            android:src="@drawable/notification_bell_1397_svgrepo_com" />
 
         <TextView
             android:id="@+id/textView13"
@@ -218,7 +217,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/logout"
+        android:id="@+id/account_export_file"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -228,13 +227,49 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_notifiication_layout"
+        app:layout_constraintVertical_bias="0.093">
+
+        <ImageView
+            android:id="@+id/export"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/export_3_svgrepo_com" />
+
+        <TextView
+            android:id="@+id/exporttext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:text="Xuất file các giao dịch"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/exporticon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_export_file"
         app:layout_constraintVertical_bias="0.176">
 
         <ImageView
             android:id="@+id/imageView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_logout" />
+            android:src="@drawable/logout_svgrepo_com" />
 
         <TextView
             android:id="@+id/textView14"

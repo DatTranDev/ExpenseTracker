@@ -1,10 +1,12 @@
 package com.example.expensetracker.adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,8 +28,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     private List<TransactionExp> transactionExps;
     private static final String KEY_TRANSACTION = "transaction_info";
     private OnItemClickListener listener;
+    private Context context;
 
-    public TransactionAdapter(List<TransactionExp> transactionExps, OnItemClickListener listener) {
+    public TransactionAdapter(Context context, List<TransactionExp> transactionExps, OnItemClickListener listener) {
+        this.context = context;
         this.transactionExps = transactionExps;
         this.listener = listener;
     }
@@ -58,6 +62,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
         holder.transactionName.setText(String.valueOf(transactionExp.getCategory().getName()));
         holder.transactionType.setText(String.valueOf(transactionExp.getNote()));
+
+        String iconName = transactionExp.getCategory().getIcon().getLinking();
+        int iconId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+
+        holder.transactionIcon.setImageResource(iconId);
         holder.itemView.setOnClickListener(v -> listener.onItemClick(transactionExp));
     }
     @Override
@@ -88,12 +97,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         private TextView transactionName;
         private TextView transactionType;
         private TextView transactionTime;
+        private ImageView transactionIcon;
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);
             transactionPrice = itemView.findViewById(R.id.transaction_price);
             transactionName = itemView.findViewById(R.id.transaction_name);
             transactionType = itemView.findViewById(R.id.transaction_type);
             transactionTime = itemView.findViewById(R.id.transaction_time);
+            transactionIcon = itemView.findViewById(R.id.transaction_icon);
         }
     }
 }
