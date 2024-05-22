@@ -52,12 +52,13 @@ public class AppUserRepository {
         appUserApi.register(appUser).enqueue(new Callback<DataResponse<AppUser>>() {
             @Override
             public void onResponse(Call<DataResponse<AppUser>> call, retrofit2.Response<DataResponse<AppUser>> response) {
+                DataResponse<AppUser> loginResponse = response.body();
                 if (response.isSuccessful()) {
-                    DataResponse<AppUser> loginResponse = response.body();
                     AppUser appUser = loginResponse.getData();
                     userApiCallBack.onSuccess(appUser);
                 } else {
-                    userApiCallBack.onError("Registration failed");
+
+                    userApiCallBack.onError("Email already exists or invalid email format");
                 }
             }
             @Override
