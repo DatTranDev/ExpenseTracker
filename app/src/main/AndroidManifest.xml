@@ -59,6 +59,8 @@
         <activity
             android:name=".view.addTransaction.ChooseCategoryActivity"
             android:exported="true"></activity>
+        <activity android:name=".view.budget.AddBudgetActivity"
+            android:exported="true"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

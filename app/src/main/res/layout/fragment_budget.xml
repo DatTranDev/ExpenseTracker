@@ -130,7 +130,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonAddBudget"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:paddingStart="10dp"
@@ -142,7 +142,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/inter_semibold"/>
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/image_test"
         android:layout_width="210dp"
         android:layout_height="1.2dp"
         android:layout_gravity="center_horizontal"

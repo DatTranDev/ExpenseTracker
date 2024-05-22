@@ -98,7 +98,9 @@
             android:id="@+id/tab_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Năm" />
+            android:text="Năm"
+            tools:layout_editor_absoluteX="310dp"
+            tools:layout_editor_absoluteY="127dp" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
