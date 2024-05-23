@@ -54,9 +54,9 @@ public class LoginViewModel extends BaseObservable {
                 @Override
                 public void onSuccess(AppUser appUser) {
                     toastMessage.postValue("Welcome " + appUser.getUserName());
-                    isLoggedIn.postValue(true);
-                    appUserLiveData.postValue(appUser);
                     isLoading.postValue(false);
+                    appUserLiveData.postValue(appUser);
+                    isLoggedIn.postValue(true);
                 }
                 @Override
                 public void onError(String message) {

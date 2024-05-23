@@ -17,16 +17,16 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
-        String json = sharedPreferences.getString("user", "");
-
-        // If user data is present in SharedPreferences, navigate to MainActivity
-        if (!json.isEmpty()) {
-            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
+//        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+//        String json = sharedPreferences.getString("user", "");
+//
+//        // If user data is present in SharedPreferences, navigate to MainActivity
+//        if (!json.isEmpty()) {
+//            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//            return;
+//        }
         Button btn = (Button)findViewById(R.id.btnRegister);
         btn.setOnClickListener(v -> {
             Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
