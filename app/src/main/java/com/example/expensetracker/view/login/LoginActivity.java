@@ -20,6 +20,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityLoginBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.view.register.RegisterActivity;
 import com.example.expensetracker.viewmodel.LoginViewModel;
 import com.google.gson.Gson;
 
@@ -32,10 +33,20 @@ public class LoginActivity extends AppCompatActivity {
         LoginViewModel loginViewModel = new LoginViewModel();
         binding.setLoginViewModel(loginViewModel);
         AppCompatButton loginButton = findViewById(R.id.btnFacebookLogin);
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this, "Tính năng đang được phát triển...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        TextView textView = findViewById(R.id.textViewRegister);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
 

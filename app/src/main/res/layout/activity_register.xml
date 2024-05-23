@@ -126,7 +126,7 @@
         android:text="Tôi đồng ý với điều khoản sử dụng"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:checked="true"
+        android:checked="@={RegisterViewModel.isCheck}"
         android:fontFamily="@font/montserrat_semibold"
         android:layout_marginTop="10dp"
         android:buttonTint="@color/light_gray"
