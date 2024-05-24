@@ -1,403 +1,410 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment">
-    <!-- TODO: Update blank fragment layout -->
-    <ScrollView
+<layout>
+    <data>
+        <variable
+            name="walletViewModel"
+            type="com.example.expensetracker.viewmodel.WalletViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
-            android:id="@+id/container"
+        tools:context=".fragment.HomeFragment">
+        <!-- TODO: Update blank fragment layout -->
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F6F8FC"
-            android:orientation="vertical"
-            android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!-- Account -->
             <LinearLayout
-                android:id="@+id/profile"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@drawable/rounded_background"
-                android:orientation="horizontal"
-                android:padding="4dp">
-                <ImageView
-                    android:id="@+id/avatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="profilePicture"
-                    android:src="@drawable/avatar" />
-                <LinearLayout
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat"
-                        android:text="Chào mừng trở lại," />
-                    <TextView
-                        android:id="@+id/user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:text="Quark" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/notification_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="end"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:id="@+id/notification"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/rounded_background_icon"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_notification" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-            <!-- Content -->
-            <LinearLayout
-                android:id="@+id/main_content"
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#F6F8FC"
                 android:orientation="vertical"
-                android:layout_marginTop="32dp">
-                <!-- Balance -->
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <!-- Account -->
                 <LinearLayout
-                    android:id="@+id/total_balance_container"
+                    android:id="@+id/profile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    tools:ignore="UselessParent">
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat"
-                        android:textSize="12sp"
-                        android:text="Tổng số dư" />
+                    android:layout_height="56dp"
+                    android:background="@drawable/rounded_background"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+                    <ImageView
+                        android:id="@+id/avatar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="profilePicture"
+                        android:src="@drawable/avatar" />
                     <LinearLayout
-                        android:id="@+id/total_balance_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
                         <TextView
-                            android:id="@+id/total_balance"
-                            android:layout_width="0dp"
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="0 đ"
-                            android:textSize="16sp" />
+                            android:fontFamily="@font/montserrat"
+                            android:text="Chào mừng trở lại," />
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Quark" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/notification_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="end"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:id="@+id/notification"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/rounded_background_icon"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_notification" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- Content -->
+                <LinearLayout
+                    android:id="@+id/main_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="32dp">
+                    <!-- Balance -->
+                    <LinearLayout
+                        android:id="@+id/total_balance_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/rounded_background_20">
+                        tools:ignore="UselessParent">
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat"
+                            android:textSize="12sp"
+                            android:text="Tổng số dư" />
+                        <LinearLayout
+                            android:id="@+id/total_balance_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/total_balance"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="0 đ"
+                                android:textSize="16sp" />
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="Ví của tôi"
-                                android:textSize="16sp"
-                                android:fontFamily="@font/montserrat_medium"/>
-                            <TextView
-                                android:id="@+id/show_wallet"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="Xem tất cả"
-                                android:fontFamily="@font/montserrat_medium"
-                                android:textSize="16sp"
-                                android:textColor="@color/accent_green"
-                                android:layout_gravity="center"
-                                android:gravity="end"/>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/wallet_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
                             android:orientation="vertical"
-                            tools:listitem="@layout/wallet_item">
-                        </androidx.recyclerview.widget.RecyclerView>
-                        <TextView
-                            android:id="@+id/wallet_empty"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Không có ví nào"
-                            android:textSize="16sp"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:textAlignment="center"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
-                            android:visibility="gone"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <!-- Stats -->
-                <LinearLayout
-                    android:id="@+id/stats_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="24dp">
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Thống kê"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="12dp"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:layout_weight="3"
-                            android:layout_gravity="start"
+                            android:layout_marginTop="12dp"
                             android:background="@drawable/rounded_background_20">
                             <LinearLayout
-                                android:id="@+id/linearLayout8"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-                                <ImageView
-                                    android:id="@+id/imageView16"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:srcCompat="@drawable/ic_income" />
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:paddingTop="12dp"
+                                android:paddingBottom="12dp">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:text="Ví của tôi"
+                                    android:textSize="16sp"
+                                    android:fontFamily="@font/montserrat_medium"/>
+                                <TextView
+                                    android:id="@+id/show_wallet"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:text="Xem tất cả"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/accent_green"
+                                    android:layout_gravity="center"
+                                    android:gravity="end"/>
                             </LinearLayout>
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/wallet_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+                                tools:listitem="@layout/wallet_item">
+                            </androidx.recyclerview.widget.RecyclerView>
+                            <TextView
+                                android:id="@+id/wallet_empty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Không có ví nào"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:textAlignment="center"
+                                android:paddingTop="20dp"
+                                android:paddingBottom="20dp"
+                                android:visibility="gone"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!-- Stats -->
+                    <LinearLayout
+                        android:id="@+id/stats_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="24dp">
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Thống kê"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:padding="16dp"
+                                android:layout_weight="3"
+                                android:layout_gravity="start"
+                                android:background="@drawable/rounded_background_20">
                                 <LinearLayout
+                                    android:id="@+id/linearLayout8"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:orientation="horizontal"
-                                    android:layout_marginTop="10dp">
-                                    <TextView
-                                        android:id="@+id/textView17"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+                                    <ImageView
+                                        android:id="@+id/imageView16"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Thu nhập"
-                                        android:fontFamily="@font/montserrat"
-                                        android:textSize="14sp"
-                                        android:layout_marginEnd="30dp"/>
+                                        app:srcCompat="@drawable/ic_income" />
                                 </LinearLayout>
-                                <TextView
-                                    android:id="@+id/stats_income_val"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="0 VND"
-                                    android:textSize="14sp"
-                                    android:fontFamily="@font/montserrat_semibold"/>
-                            </LinearLayout>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:minHeight="1dp" />
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_weight="3"
-                            android:background="@drawable/rounded_background_20"
-                            android:padding="16dp">
-                            <LinearLayout
-                                android:id="@+id/linearLayout9"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-                                <ImageView
-                                    android:id="@+id/imageView17"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:srcCompat="@drawable/ic_outcome" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginTop="10dp"
-                                    android:orientation="horizontal">
+                                    android:orientation="vertical"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="horizontal"
+                                        android:layout_marginTop="10dp">
+                                        <TextView
+                                            android:id="@+id/textView17"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Thu nhập"
+                                            android:fontFamily="@font/montserrat"
+                                            android:textSize="14sp"
+                                            android:layout_marginEnd="30dp"/>
+                                    </LinearLayout>
                                     <TextView
-                                        android:id="@+id/textView18"
+                                        android:id="@+id/stats_income_val"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="0 VND"
+                                        android:textSize="14sp"
+                                        android:fontFamily="@font/montserrat_semibold"/>
+                                </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:minHeight="1dp" />
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_weight="3"
+                                android:background="@drawable/rounded_background_20"
+                                android:padding="16dp">
+                                <LinearLayout
+                                    android:id="@+id/linearLayout9"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+                                    <ImageView
+                                        android:id="@+id/imageView17"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginEnd="30dp"
-                                        android:fontFamily="@font/montserrat"
-                                        android:text="Chi tiêu"
-                                        android:textSize="14sp" />
+                                        app:srcCompat="@drawable/ic_outcome" />
                                 </LinearLayout>
-                                <TextView
-                                    android:id="@+id/stats_outcome_val"
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="14sp"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:text="0 VND" />
-                            </LinearLayout>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginTop="10dp"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:id="@+id/textView18"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginEnd="30dp"
+                                            android:fontFamily="@font/montserrat"
+                                            android:text="Chi tiêu"
+                                            android:textSize="14sp" />
+                                    </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/stats_outcome_val"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="14sp"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:text="0 VND" />
+                                </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                <!-- Analysis -->
-                <LinearLayout
-                    android:id="@+id/analysis_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="24dp">
+                    <!-- Analysis -->
                     <LinearLayout
+                        android:id="@+id/analysis_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="24dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Báo cáo"
-                            android:layout_weight="1"
-                            android:textSize="16sp"
-                            android:fontFamily="@font/montserrat_medium"/>
-                        <TextView
-                            android:layout_width="0dp"
-                            android:id="@+id/show_report"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Báo cáo"
+                                android:layout_weight="1"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/montserrat_medium"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:id="@+id/show_report"
+                                android:layout_height="wrap_content"
+                                android:text="Xem báo cáo chi tiết"
+                                android:layout_weight="1"
+                                android:textSize="16sp"
+                                android:textColor="@color/accent_green"
+                                android:gravity="end|center"
+                                android:fontFamily="@font/montserrat_medium"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Xem báo cáo chi tiết"
-                            android:layout_weight="1"
-                            android:textSize="16sp"
-                            android:textColor="@color/accent_green"
-                            android:gravity="end|center"
-                            android:fontFamily="@font/montserrat_medium"/>
+                            android:orientation="vertical"
+                            android:background="@drawable/rounded_background_20"
+                            android:padding="20dp"
+                            android:layout_marginTop="12dp">
+                            <com.google.android.material.tabs.TabLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                app:tabBackground="@color/white"
+                                android:id="@+id/filter"
+                                app:tabIndicatorColor="@color/accent_green"
+                                app:tabIndicatorFullWidth="true"
+                                app:tabSelectedTextColor="@color/accent_green"
+                                app:tabTextAppearance="@style/tab_text">
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_week"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tuần" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_month"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tháng" />
+                            </com.google.android.material.tabs.TabLayout>
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:id="@+id/analysis_view"
+                                android:layout_marginTop="12dp"/>
+                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:background="@drawable/rounded_background_20"
-                        android:padding="20dp"
-                        android:layout_marginTop="12dp">
-                        <com.google.android.material.tabs.TabLayout
+                        android:layout_marginTop="24dp">
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            app:tabBackground="@color/white"
-                            android:id="@+id/filter"
-                            app:tabIndicatorColor="@color/accent_green"
-                            app:tabIndicatorFullWidth="true"
-                            app:tabSelectedTextColor="@color/accent_green"
-                            app:tabTextAppearance="@style/tab_text">
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_week"
-                                android:layout_width="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:text="Tuần" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_month"
-                                android:layout_width="wrap_content"
+                                android:text="Giao dịch gần đây"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:textSize="16sp"/>
+                            <TextView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Tháng" />
-                        </com.google.android.material.tabs.TabLayout>
-                        <com.github.mikephil.charting.charts.BarChart
+                                android:layout_weight="1"
+                                android:text="Xem tất cả"
+                                android:textSize="16sp"
+                                android:id="@+id/show_transaction"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:gravity="end"
+                                android:textColor="@color/accent_green"/>
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/transaction_list_recent"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/rounded_background_20"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:id="@+id/analysis_view"
-                            android:layout_marginTop="12dp"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="24dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="Giao dịch gần đây"
-                            android:fontFamily="@font/montserrat_medium"
-                            android:textSize="16sp"/>
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Xem tất cả"
-                            android:textSize="16sp"
-                            android:id="@+id/show_transaction"
-                            android:fontFamily="@font/montserrat_medium"
-                            android:gravity="end"
-                            android:textColor="@color/accent_green"/>
+                            tools:listitem="@layout/transaction_item"/>
                     </LinearLayout>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/transaction_list_recent"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/rounded_background_20"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:listitem="@layout/transaction_item"/>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

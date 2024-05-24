@@ -12,14 +12,15 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WalletShowAdapter extends RecyclerView.Adapter<WalletShowAdapter.WalletShowViewHolder> {
     private List<Wallet> walletList;
     private OnWalletModifyClickListener walletModifyListener;
 
-    public WalletShowAdapter(List<Wallet> walletList, OnWalletModifyClickListener listener) {
-        this.walletList = walletList;
+    public WalletShowAdapter(List<Wallet> wallets, OnWalletModifyClickListener listener) {
+        this.walletList = wallets;
         this.walletModifyListener = listener;
     }
 
@@ -41,7 +42,6 @@ public class WalletShowAdapter extends RecyclerView.Adapter<WalletShowAdapter.Wa
             return;
         }
 
-        String currency = wallet.getCurrency();
         holder.walletAmount.setText(Helper.formatCurrency(wallet.getAmount()));
         holder.walletName.setText(wallet.getName());
 
@@ -75,13 +75,7 @@ public class WalletShowAdapter extends RecyclerView.Adapter<WalletShowAdapter.Wa
     }
 
     public void updateWallet(List<Wallet> wallets) {
-        if (walletList != null) {
-            walletList.clear();
-            walletList.addAll(wallets);
-            notifyDataSetChanged();
-        } else {
-            walletList = wallets;
-            notifyDataSetChanged();
-        }
+        this.walletList = new ArrayList<>(wallets);
+        notifyDataSetChanged();
     }
 }
