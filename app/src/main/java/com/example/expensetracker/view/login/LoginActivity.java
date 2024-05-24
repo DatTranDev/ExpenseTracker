@@ -20,6 +20,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityLoginBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.view.SplashScreenActivity;
 import com.example.expensetracker.view.register.RegisterActivity;
 import com.example.expensetracker.viewmodel.LoginViewModel;
 import com.google.gson.Gson;
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Boolean isLoggedIn) {
                 if(isLoggedIn){
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
                     startActivity(intent);
                     finish();
                 }
