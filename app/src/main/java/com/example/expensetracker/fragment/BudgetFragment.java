@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.databinding.FragmentBudgetBinding;
+//import com.example.expensetracker.databinding.FragmentBudgetBinding;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
@@ -55,11 +55,11 @@ public class BudgetFragment extends Fragment {
    private Button btnAddBudget;
    private TabLayout tabLayout;
    RecyclerView recycler;
-   LinearLayout  transactionEmpty;
+   LinearLayout  transactionEmpty, layoutStatus;
    Intent intent;
    Context context;
    private ImageView test;
-   private TextView time;
+   private TextView time,status,total_amount,total_money_enable,total_spend;
    ProgressBar test2;
     BudgetAdapter adapter;
   MainBudgetViewModel mainBudgetViewModel;
@@ -86,7 +86,7 @@ public class BudgetFragment extends Fragment {
          btnAddBudget= view.findViewById(R.id.buttonAddBudget);
 //        allTransactions= mainBudgetViewModel.listTransaction.get();
 //        allBudgets= mainBudgetViewModel.listBudget.get();
-            getData();
+
 
         tabLayout= view.findViewById(R.id.filter);
          time= view.findViewById(R.id.timeBudget);
@@ -95,6 +95,13 @@ public class BudgetFragment extends Fragment {
          recycler.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
          adapter= new BudgetAdapter(new ArrayList<>());
          recycler.setAdapter(adapter);
+         status= view.findViewById(R.id.status_text);
+         total_spend= view.findViewById(R.id.total_spend);
+         total_amount= view.findViewById(R.id.total_amount);
+         total_money_enable= view.findViewById(R.id.total_money_enable);
+         layoutStatus= view.findViewById(R.id.layout1);
+         adjustTimePeriod(0);
+         getData();
          btnAddBudget.setOnClickListener(v -> {
              intent= new Intent(getActivity(), AddBudgetActivity.class);
              startActivity(intent);
@@ -103,16 +110,13 @@ public class BudgetFragment extends Fragment {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d("testt", "đã tới 6");
                 updateDateRange();
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.d("testt", "đã tới 7");
                 updateDateRange();
             }
         });
@@ -137,9 +141,15 @@ public class BudgetFragment extends Fragment {
         return view;
     }
     private String getFilter() {
-        TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
-        String period = tab.getText().toString();
-        return period;
+        try{
+            TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
+            String period = tab.getText().toString();
+            return period;
+        }
+        catch (Exception ex)
+        {
+            return "Tuần";
+        }
     }
     private void updateDateRange() {
         Calendar calendarStart = Calendar.getInstance(Locale.US);
@@ -196,8 +206,6 @@ public class BudgetFragment extends Fragment {
             String newStartDate = Helper.formatDate(calendarStart.getTime());
             String newEndDate = Helper.formatDate(calendarEnd.getTime());
             time.setText(newStartDate + " - " + newEndDate);
-
-            filterBudgets(calendarStart.getTime(), calendarEnd.getTime());
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -265,6 +273,7 @@ public class BudgetFragment extends Fragment {
                 @Override
                 public void onSuccess(List<TransactionExp> transactions) {
                     allTransactions=(transactions);
+                    updateDateRange();
                 }
 
                 @Override
@@ -276,6 +285,7 @@ public class BudgetFragment extends Fragment {
                 public void onSuccess(List<Budget> budgets) {
 
                     allBudgets=(budgets);
+                    updateDateRange();
                 }
 
                 @Override
@@ -283,7 +293,6 @@ public class BudgetFragment extends Fragment {
 
                 }
             });
-
         }
     }
 }
