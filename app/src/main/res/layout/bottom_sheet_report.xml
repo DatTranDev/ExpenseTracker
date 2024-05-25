@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="walletViewModel"
+            type="com.example.expensetracker.viewmodel.WalletViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:background="@drawable/bottom_sheet_background">
+
+        <LinearLayout
+            android:id="@+id/linearLayout10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_close"
+                android:id="@+id/close_report"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Số dư"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/total_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="122,121"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout14"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout10"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/white">
+
+            <ImageButton
+                android:id="@+id/previous_time"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_more"
+                android:rotation="180" />
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="13/5/2024 - 19/5/2024"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textSize="18sp" />
+            <ImageButton
+                android:id="@+id/next_time"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_more"/>
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout14"
+            app:tabBackground="@color/white"
+            android:id="@+id/filter"
+            app:tabIndicatorColor="@color/accent_green"
+            app:tabIndicatorFullWidth="true"
+            app:tabSelectedTextColor="@color/accent_green"
+            app:tabTextAppearance="@style/tab_text"
+            >
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tuần" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tháng" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Năm" />
+        </com.google.android.material.tabs.TabLayout>
+
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter"
+            app:layout_constraintStart_toStartOf="parent"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/linearLayout16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/filter">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montserrat"
+                            android:text="Số dư đầu"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/opening_balance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montserrat"
+                            android:gravity="end"
+                            android:text="123,123 đ"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montserrat"
+                            android:text="Số dư cuối"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/ending_balance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montserrat"
+                            android:gravity="end"
+                            android:text="+123,123 đ"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="40dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_background_20">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="Thu nhập ròng"/>
+                            <TextView
+                                android:id="@+id/net_income_amount"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="123,123"
+                                android:textSize="14sp"
+                                android:gravity="end"
+                                android:fontFamily="@font/montserrat_medium"/>
+                        </LinearLayout>
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/net_income_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="360dp">
+
+                        </com.github.mikephil.charting.charts.BarChart>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_background_20">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="Khoản chi"/>
+                            <TextView
+                                android:id="@+id/outcome_amount"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="123,123"
+                                android:textSize="14sp"
+                                android:gravity="end"
+                                android:fontFamily="@font/montserrat_medium"/>
+                        </LinearLayout>
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/outcome_chart"
+                            android:layout_marginTop="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp">
+
+                        </com.github.mikephil.charting.charts.PieChart>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_background_20">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="Khoản thu"/>
+                            <TextView
+                                android:id="@+id/income_amount"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="123,123"
+                                android:textSize="14sp"
+                                android:gravity="end"
+                                android:fontFamily="@font/montserrat_medium"/>
+                        </LinearLayout>
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/income_chart"
+                            android:layout_marginTop="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                        </com.github.mikephil.charting.charts.PieChart>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

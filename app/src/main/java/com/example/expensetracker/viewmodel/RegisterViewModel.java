@@ -12,10 +12,17 @@ public class RegisterViewModel extends BaseObservable {
     private String email;
     private String password;
     private String userName;
+    private boolean isCheck;
 
     private MutableLiveData<String> toastMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> isRegistered = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    public boolean getIsCheck() {
+        return isCheck;
+    }
+    public void setIsCheck(boolean check) {
+        isCheck = check;
+    }
     public String getEmail() {
         return email;
     }
@@ -45,6 +52,14 @@ public class RegisterViewModel extends BaseObservable {
     }
     public void onClickRegister(){
         if(Helper.isValidEmail(getEmail())){
+            if (getPassword().length() < 6){
+                toastMessage.postValue("Mật khẩu phải có ít nhất 6 ký tự");
+                return;
+            }
+            if (isCheck == false){
+                toastMessage.postValue("Vui lòng đồng ý với điều khoản sử dụng");
+                return;
+            }
             isLoading.postValue(true);
             AppUser appUser = new AppUser();
             appUser.setEmail(getEmail());

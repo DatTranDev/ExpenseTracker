@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 
 public class Budget {
     private String userId;
+    private AppUser user;
+    private Category category;
     private String categoryId;
     private BigDecimal amount;
+    private String currency;
     private String period;
+    public Budget() {
+    }
 
     // Constructor
     public Budget(String userId, String categoryId, BigDecimal amount, String period) {
@@ -17,6 +22,24 @@ public class Budget {
     }
 
     // Getters and setters
+    public String getCurrency() {
+        return currency;
+    }
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+    public AppUser getUser() {
+        return user;
+    }
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
     public String getUserId() {
         return userId;
     }

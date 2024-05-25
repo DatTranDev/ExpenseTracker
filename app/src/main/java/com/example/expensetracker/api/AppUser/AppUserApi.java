@@ -1,7 +1,6 @@
 package com.example.expensetracker.api.AppUser;
 
 import com.example.expensetracker.api.DataResponse;
-import com.example.expensetracker.api.ResMessage;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.Category;
@@ -26,20 +25,20 @@ public interface AppUserApi {
     Call<DataResponse<AppUser>> changePassword(@Body AppUser appUser);
     @PATCH("user/update/{id}")
     Call<DataResponse<AppUser>> update(@Path ("id") String id, @Body AppUser appUser);
-    @GET("user/find/email")
-    Call<DataResponse<AppUser>> findByEmail(@Body AppUser appUser);
+    @GET("user/findbyemail/{email}")
+    Call<DataResponse<AppUser>> findByEmail(@Path("email") String email);
     @GET("user/findbyid/{id}")
     Call<DataResponse<AppUser>> findById(@Path ("id") String id);
 
     //Find feature
-    @GET("user/getcategory/:id")
+    @GET("user/getcategory/{id}")
     Call<DataResponse<List<Category>>> getCategory(@Path ("id") String id);
-    @GET("user/getwallet/:id")
+    @GET("user/getwallet/{id}")
     Call<DataResponse<List<Wallet>>> getWallet(@Path ("id") String id);
-    @GET("user/getsharingwallet/:id")
+    @GET("user/getsharingwallet/{id}")
     Call<DataResponse<List<Wallet>>> getSharingWallet(@Path ("id") String id);
-    @GET("user/gettransaction/:id")
+    @GET("user/gettransaction/{id}")
     Call<DataResponse<List<TransactionExp>>> getTransaction(@Path ("id") String id);
-    @GET("user/getbudget/:id")
+    @GET("user/getbudget/{id}")
     Call<DataResponse<List<Budget>>> getBudget(@Path ("id") String id);
 }

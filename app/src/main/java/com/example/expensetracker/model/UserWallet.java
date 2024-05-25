@@ -1,31 +1,33 @@
 package com.example.expensetracker.model;
 
 public class UserWallet {
-    private int walletId;
-    private int userId;
+    private String walletId;
+    private String userId;
     private boolean isDeleted;
 
     // Constructor
-    public UserWallet(int walletId, int userId, boolean isDeleted) {
+    public UserWallet() {
+    }
+    public UserWallet(String walletId, String userId, boolean isDeleted) {
         this.walletId = walletId;
         this.userId = userId;
         this.isDeleted = isDeleted;
     }
 
     // Getters and setters
-    public int getWalletId() {
+    public String getWalletId() {
         return walletId;
     }
 
-    public void setWalletId(int walletId) {
+    public void setWalletId(String walletId) {
         this.walletId = walletId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

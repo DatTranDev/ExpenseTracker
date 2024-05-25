@@ -7,6 +7,16 @@
     android:background="#F6F8FC"
     tools:context=".view.MainActivity">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/navBar"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toTopOf="@+id/navBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contentLayout" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navBar"
         android:layout_width="match_parent"
@@ -14,6 +24,7 @@
         android:background="@drawable/top_rounded_corner"
         app:itemActiveIndicatorStyle="@style/Widget.Design.BottomNavigationView"
         app:itemIconTint="@color/nav_bar_item_color"
+        app:itemPaddingTop="20dp"
         app:itemRippleColor="@color/white"
         app:itemTextColor="@color/nav_bar_item_color"
         app:labelVisibilityMode="labeled"

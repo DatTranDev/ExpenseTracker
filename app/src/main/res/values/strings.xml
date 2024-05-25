@@ -4,4 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="show_all"><u>Hiện tất cả</u></string>
     <string name="facebook">Facebook</string>
+    <string name="spend_button_description">Spend Button</string>
+    <string name="revenue_button_description">Revenue Button</string>
+    <string name="loan_button_description">Loan Button</string>
+    <string name="number_content_description">Input money</string>
 </resources>
