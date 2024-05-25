@@ -3,6 +3,7 @@ package com.example.expensetracker.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -212,6 +213,9 @@ public class BudgetFragment extends Fragment {
         }
     }
     public void filterBudgets(Date startDate, Date endDate) {
+        BigDecimal totalBudget=new BigDecimal(0);
+        BigDecimal moneyEnable= new BigDecimal(0);
+        BigDecimal totalSpend = new BigDecimal(0);
         List<TransactionExp> filteredTransactions = new ArrayList<>();
         List<BudgetItem> filterBudget= new ArrayList<>();
         startDate = Helper.normalizeDate(startDate, true);
@@ -231,6 +235,7 @@ public class BudgetFragment extends Fragment {
         for(Budget budget: allBudgets){
             if(budget.getPeriod().equals(getFilter()))
             {
+                totalBudget=totalBudget.add(budget.getAmount());//tính tổng ngân sách
                 BigDecimal spendBudget= new BigDecimal(0);
                 int progress=0;
                 BigDecimal enable= new BigDecimal(0);
@@ -240,6 +245,7 @@ public class BudgetFragment extends Fragment {
                        spendBudget=spendBudget.add(transaction.getSpend());
                    }
                 }
+                totalSpend=totalSpend.add(spendBudget);//Tính tổng chi
                 BigDecimal result = spendBudget.divide(budget.getAmount(), 10, RoundingMode.HALF_UP); // Làm tròn kết quả với độ chính xác 10 chữ số thập phân
                 result = result.multiply(new BigDecimal("100"));
                 progress = result.setScale(0, RoundingMode.HALF_UP).intValue();
@@ -257,6 +263,44 @@ public class BudgetFragment extends Fragment {
                 }
             }
         }
+
+        total_amount.setText(Helper.formatMoney(totalBudget));
+        total_spend.setText(Helper.formatMoney(totalSpend));
+        if(totalBudget.compareTo(new BigDecimal(0))>=1)
+        {
+            BigDecimal result2 = totalSpend.divide(totalBudget, 10, RoundingMode.HALF_UP); // Làm tròn kết quả với độ chính xác 10 chữ số thập phân
+            result2 = result2.multiply(new BigDecimal("100"));
+            int curency = result2.setScale(0, RoundingMode.HALF_UP).intValue();
+            if(curency<=100)
+            {
+                status.setText("Còn lại");
+                moneyEnable=totalBudget.subtract(totalSpend);//Còn lại
+                total_money_enable.setText(Helper.formatMoney(moneyEnable));
+                layoutStatus.setBackgroundResource(R.drawable.background_border_green);
+                if(60<curency && curency<90)
+                {
+                    layoutStatus.setBackgroundResource(R.drawable.background_border_orange);
+                }
+                if(curency>=90)
+                {
+                    layoutStatus.setBackgroundResource(R.drawable.background_border_red);
+                }
+            }
+            else
+            {
+                moneyEnable=totalSpend.subtract(totalBudget);
+                total_money_enable.setText(Helper.formatMoney(moneyEnable));
+                status.setText("Vượt quá");
+                layoutStatus.setBackgroundResource(R.drawable.background_border_red);
+
+            }
+        }
+        else
+        {
+            layoutStatus.setBackgroundResource(R.drawable.background_border_green);
+            total_money_enable.setText("0");
+        }
+
         adapter.updateBudgets(filterBudget);
         if (!filterBudget.isEmpty()) {
             transactionEmpty.setVisibility(View.GONE);

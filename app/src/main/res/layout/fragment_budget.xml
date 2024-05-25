@@ -99,8 +99,7 @@
                     android:layout_marginTop="13dp"
                     android:layout_width="340dp"
                     android:layout_height="130dp"
-                    android:backgroundTint="#67F65B"
-                    android:background="@drawable/background_border_white"
+                    android:background="@drawable/background_border_green"
                     android:layout_gravity="center"
                     android:orientation="vertical"
                     android:id="@+id/layout1"
@@ -128,7 +127,7 @@
                         android:textSize="35sp"
                         android:textColor="@color/white"
                         android:layout_height="wrap_content"
-                        android:text="5.000.000" />
+                        android:text="0" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -161,7 +160,7 @@
                                 android:textSize="14sp"
                                 android:fontFamily="@font/inter_regular"
                                 android:layout_marginTop="3dp"
-                                android:text="6.000.000"
+                                android:text="0"
                                 android:gravity="center"/>
                         </LinearLayout>
 
@@ -194,7 +193,7 @@
                                 android:textColor="@color/black"
                                 android:gravity="center"
                                 android:fontFamily="@font/inter_regular"
-                                android:text="1.000.000"
+                                android:text="0"
                                 android:layout_marginTop="3dp"/>
                         </LinearLayout>
                     </LinearLayout>
