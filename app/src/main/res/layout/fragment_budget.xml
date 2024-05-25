@@ -1,151 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F6F8FC"
-    android:backgroundTint="#F6F8FC">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView18"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/inter_semibold"
-        android:textSize="22sp"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:text="Ngân sách" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="145dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="14dp" />
-
-    <ImageView
-        android:layout_width="210dp"
-        android:layout_height="1.2dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/gray_line" />
-
-    <LinearLayout
-        android:layout_marginTop="13dp"
-        android:layout_width="340dp"
-        android:layout_height="130dp"
-        android:backgroundTint="#67F65B"
-        android:background="@drawable/background_border_white"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@color/light_blue">
 
         <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView18"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_gravity="center"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/inter_regular"
-            android:text="Còn lại" />
-
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/inter_regular"
-            android:layout_gravity="center"
-            android:textSize="35sp"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"
-            android:text="5.000.000" />
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_semibold"
+            android:gravity="center"
+            android:text="Ngân sách"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout14"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="3dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView18">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+
+
+            <TextView
+                android:id="@+id/timeBudget"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="25dp">
-
-                <TextView
-                    android:id="@+id/textView21"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    android:gravity="center"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Tổng ngân sách" />
-
-                <TextView
-                    android:id="@+id/textView22"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/inter_regular"
-                    android:layout_marginTop="3dp"
-                    android:text="6.000.000"
-                    android:gravity="center"/>
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="1.2dp"
-                android:layout_height="27dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/black_line" />
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_medium"
+                android:gravity="center"
+                android:text="13/5/2024 - 19/5/2024"
+                android:textSize="18sp" />
 
-            <LinearLayout
+
+        </LinearLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout14"
+                    app:tabBackground="@color/white"
+                    android:id="@+id/filter"
+                    app:tabIndicatorColor="@color/accent_green"
+                    app:tabIndicatorFullWidth="true"
+                    app:tabSelectedTextColor="@color/accent_green"
+                    app:tabTextAppearance="@style/tab_text"
+                    >
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tab_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuần" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tab_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tháng" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tab_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Năm"
+                        tools:layout_editor_absoluteX="277dp"
+                        tools:layout_editor_absoluteY="163dp" />
+                </com.google.android.material.tabs.TabLayout>
+
+        <ImageView
+            android:layout_width="210dp"
+            android:layout_height="1.2dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/line4"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/gray_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter" />
+
+                <LinearLayout
+                    android:layout_marginTop="13dp"
+                    android:layout_width="340dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/background_border_green"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:id="@+id/layout1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line4">
+
+
+                    <TextView
+                        android:id="@+id/status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Còn lại" />
+
+                    <TextView
+                        android:id="@+id/total_money_enable"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/inter_regular"
+                        android:layout_gravity="center"
+                        android:textSize="35sp"
+                        android:textColor="@color/white"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="25dp">
+
+                            <TextView
+                                android:id="@+id/textView21"
+                                android:textColor="@color/black"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="10sp"
+                                android:gravity="center"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Tổng ngân sách" />
+
+                            <TextView
+                                android:id="@+id/total_amount"
+                                android:textColor="@color/black"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/inter_regular"
+                                android:layout_marginTop="3dp"
+                                android:text="0"
+                                android:gravity="center"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="1.2dp"
+                            android:layout_height="27dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/black_line" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="25dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="10sp"
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Tổng đã chi" />
+
+                            <TextView
+                                android:id="@+id/total_spend"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="0"
+                                android:layout_marginTop="3dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout2"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout1">
+            <Button
+                android:id="@+id/buttonAddBudget"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Thêm ngân sách"
+                android:backgroundTint="#00DDB0"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_semibold"
+                />
+            <ImageView
+                android:id="@+id/image_test"
+                android:layout_width="210dp"
+                android:layout_height="1.2dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/gray_line" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="25dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Tổng đã chi" />
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Danh sách ngân sách"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+               />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="1.000.000"
-                    android:layout_marginTop="3dp"/>
-            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonAddBudget"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="Thêm ngân sách"
-        android:backgroundTint="#00DDB0"
-        android:textSize="16sp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/inter_semibold"/>
-    <ImageView
-        android:id="@+id/image_test"
-        android:layout_width="210dp"
-        android:layout_height="1.2dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/gray_line" />
-</LinearLayout>
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:scrollbars="none"
+                    app:layout_constraintTop_toBottomOf="@+id/layout2">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/layout3"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/budget_list"
+                            android:layout_width="match_parent"
+                            android:background="@color/light_blue"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/layout3"
+                            tools:listitem="@layout/layout_budget" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="60dp"
+                            android:id="@+id/transaction_empty"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/layout3">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_empty"
+                                android:layout_gravity="center_horizontal"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:layout_gravity="center_horizontal"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:textSize="20sp"
+                                android:text="Không có ngân sách"/>
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

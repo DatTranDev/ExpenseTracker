@@ -65,18 +65,7 @@ public class ChooseCategoryViewModel extends BaseObservable {
                     }
                 }
             }
-//            for(int i=0; i<classify.size();i++)
-//            {
-//                String id= classify.get(i).getId();
-//                int stt=i+1;
-//                for(int j=i+1;j<classify.size();j++)
-//                {
-//                    if(classify.get(j).getParentCategoryId()==id)
-//                    {
-//
-//                    }
-//                }
-//            }
+
 
             listCategory.setValue(classify);
         }
