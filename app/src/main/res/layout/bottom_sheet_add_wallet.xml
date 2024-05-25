@@ -1,150 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bottom_sheet_background">
-
-    <LinearLayout
-        android:id="@+id/linearLayout13"
+<layout>
+    <data>
+        <variable
+            name="walletViewModel"
+            type="com.example.expensetracker.viewmodel.WalletViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingTop="12dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="Hủy"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:id="@+id/title"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="Thêm ví"
-            android:textAlignment="center"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view">
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_background">
 
         <LinearLayout
+            android:id="@+id/linearLayout13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingTop="12dp"
             android:paddingRight="20dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_wallet2" />
-
-            <EditText
-                android:id="@+id/wallet_name"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="28dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:fontFamily="@font/montserrat"
-                android:hint="Tên"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/beige" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingTop="12dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="12dp">
-
-            <ImageView
+            <TextView
+                android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_money_bag" />
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Hủy"
+                android:textSize="16sp" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:id="@+id/title"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Thêm ví"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Số tiền hiện có" />
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="12dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="12dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_wallet2" />
 
                 <EditText
-                    android:id="@+id/wallet_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:id="@+id/wallet_name"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="28dp"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:hint="000"
-                    android:inputType="numberDecimal"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Tên"
                     android:textSize="20sp" />
             </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/save_wallet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/accent_green"
-        android:fontFamily="@font/montserrat_semibold"
-        android:text="Lưu"
-        android:layout_marginEnd="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout15" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/beige" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="12dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_money_bag" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Số tiền hiện có" />
+
+                    <EditText
+                        android:id="@+id/wallet_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:hint="000"
+                        android:inputType="numberDecimal"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/save_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent_green"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Lưu"
+            android:textColor="@color/white"
+            android:layout_marginEnd="60dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout15" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
