@@ -16,7 +16,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.SSLSession;
 
@@ -67,12 +69,41 @@ public class ChooseCategoryViewModel extends BaseObservable {
             }
 
 
-            listCategory.setValue(classify);
+
+            listCategory.setValue(sortCategories(classify));
         }
     }
 
     public LiveData<List<Category>> getListCategory() {
         return listCategory;
+    }
+    public static List<Category> sortCategories(List<Category> categories) {
+        List<Category> sortedCategories = new ArrayList<>();
+        Map<String, Category> parentMap = new HashMap<>();
+        Map<String, List<Category>> childMap = new HashMap<>();
+
+        // Phân loại các category vào parentMap và childMap
+        for (Category category : categories) {
+            if (category.getParentCategoryId()==null) {
+                parentMap.put(category.getId(), category);
+            } else {
+                childMap.computeIfAbsent(category.getParentCategoryId(), k -> new ArrayList<>()).add(category);
+            }
+        }
+
+        // Sắp xếp các parent category và thêm vào sortedCategories
+        for (Map.Entry<String, Category> entry : parentMap.entrySet()) {
+            Category parent = entry.getValue();
+            sortedCategories.add(parent);
+
+            // Thêm các child category tương ứng nếu có
+            List<Category> children = childMap.get(parent.getId());
+            if (children != null) {
+                sortedCategories.addAll(children);
+            }
+        }
+
+        return sortedCategories;
     }
 
 

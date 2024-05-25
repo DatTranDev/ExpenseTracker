@@ -28,6 +28,7 @@ import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
+import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
@@ -38,6 +39,7 @@ import com.example.expensetracker.view.budget.BudgetItem;
 import com.example.expensetracker.viewmodel.budgetVM.MainBudgetViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -49,6 +51,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+//import java.lang.reflect.Type;
 
 
 public class BudgetFragment extends Fragment {
@@ -309,34 +312,55 @@ public class BudgetFragment extends Fragment {
         }
     }
     public void getData(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        AppUser user = new Gson().fromJson(userJson, AppUser.class);
-        if(user!=null) {
-            AppUserRepository.getInstance().getTransaction(user.getId(), new ApiCallBack<List<TransactionExp>>() {
-                @Override
-                public void onSuccess(List<TransactionExp> transactions) {
-                    allTransactions=(transactions);
-                    updateDateRange();
-                }
+        SharedPreferences sharedPreferences = context.getSharedPreferences("budgets", Context.MODE_PRIVATE);
+        String budgetsJson = sharedPreferences.getString("budgets", "null");
+        if(!budgetsJson.equals("null")) {
 
-                @Override
-                public void onError(String errorMessage) {
-                }
-            });
-            AppUserRepository.getInstance().getBudget(user.getId(), new ApiCallBack<List<Budget>>() {
-                @Override
-                public void onSuccess(List<Budget> budgets) {
-
-                    allBudgets=(budgets);
-                    updateDateRange();
-                }
-
-                @Override
-                public void onError(String message) {
-
-                }
-            });
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<List<Budget>>() {
+            }.getType();
+            List<Budget> list = gson.fromJson(budgetsJson, type);
+            if (list != null) {
+                allBudgets = list;
+                updateDateRange();
+            }
         }
+        sharedPreferences = context.getSharedPreferences("transactions", Context.MODE_PRIVATE);
+        String transactionsJson = sharedPreferences.getString("transactions", "null");
+        if(!transactionsJson.equals("null")) {
+
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<List<TransactionExp>>() {}.getType();
+            List<TransactionExp> list = gson.fromJson(transactionsJson, type);
+            if (list != null) {
+                allTransactions = list;
+                updateDateRange();
+            }
+        }
+
+//            AppUserRepository.getInstance().getTransaction(user.getId(), new ApiCallBack<List<TransactionExp>>() {
+//                @Override
+//                public void onSuccess(List<TransactionExp> transactions) {
+//                    allTransactions=(transactions);
+//                    updateDateRange();
+//                }
+//
+//                @Override
+//                public void onError(String errorMessage) {
+//                }
+//            });
+//            AppUserRepository.getInstance().getBudget(user.getId(), new ApiCallBack<List<Budget>>() {
+//                @Override
+//                public void onSuccess(List<Budget> budgets) {
+//
+//                    allBudgets=(budgets);
+//                    updateDateRange();
+//                }
+//
+//                @Override
+//                public void onError(String message) {
+//
+//                }
+//            });
     }
 }
