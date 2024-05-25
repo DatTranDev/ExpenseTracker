@@ -1,117 +1,7 @@
-//package com.example.expensetracker.fragment;
-//
-//import android.app.Dialog;
-//import android.os.Bundle;
-//
-//import androidx.annotation.NonNull;
-//import androidx.annotation.Nullable;
-//import androidx.core.content.ContextCompat;
-//import androidx.fragment.app.Fragment;
-//
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.ImageButton;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//
-//import com.example.expensetracker.R;
-//import com.example.expensetracker.bottom_sheet.ModifyTransactionFragment;
-//import com.example.expensetracker.model.TransactionExp;
-//import com.example.expensetracker.utils.Helper;
-//import com.example.expensetracker.view.MainActivity;
-//import com.google.android.material.bottomsheet.BottomSheetDialog;
-//import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-//
-//public class TransactionDetailsFragment extends BottomSheetDialogFragment {
-//
-//    public static final String TAG = TransactionDetailsFragment.class.getName();
-//
-//    private static final String KEY_TRANSACTION = "transaction_info";
-//    private String transaction;
-//    private TextView transactionType;
-//    private TextView transactionAmount;
-//    private TextView transactionTime;
-//    private TextView transactionNote;
-//    private View view;
-//    private ImageButton btnBack;
-//
-//    private TextView btnModify;
-//
-//    public TransactionDetailsFragment() {
-//    }
-//
-//    public static TransactionDetailsFragment newInstance(String param) {
-//        TransactionDetailsFragment details = new TransactionDetailsFragment();
-//        Bundle args = new Bundle();
-//        args.putString(KEY_TRANSACTION, param);
-//        details.setArguments(args);
-//        return details;
-//    }
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            transaction = getArguments().getString(KEY_TRANSACTION);
-//        }
-//    }
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        view = inflater.inflate(R.layout.fragment_transaction_details, container, false);
-//        transactionType = view.findViewById(R.id.transaction_type);
-//        transactionAmount = view.findViewById(R.id.transaction_price);
-//        transactionTime = view.findViewById(R.id.transaction_time);
-//        transactionNote = view.findViewById(R.id.transaction_note);
-//        btnBack = view.findViewById(R.id.btnBack);
-//        btnModify = view.findViewById(R.id.modifyTransaction);
-//
-//        Bundle receiver = getArguments();
-//
-//        if (receiver != null) {
-//            TransactionExp transactionExp = (TransactionExp) receiver.get(KEY_TRANSACTION);
-//            if (transactionExp != null) {
-//                transactionType.setText(transactionExp.getCategory().getName());
-//                transactionNote.setText(transactionExp.getNote());
-//                transactionAmount.setText(String.valueOf(transactionExp.getSpend()));
-//                transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-//            }
-//        }
-//
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MainActivity mainActivity = (MainActivity) getActivity();
-//                if (mainActivity != null) {
-//                    mainActivity.navigateToTransactions();
-//                }
-//            }
-//        });
-//
-//        btnModify.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TransactionExp transactionExp = (TransactionExp) receiver.get(KEY_TRANSACTION);
-//                modifyTransaction(transactionExp);
-//            }
-//        });
-//
-//        return view;
-//    }
-//
-//    private void modifyTransaction(TransactionExp transactionExp) {
-//        ModifyTransactionFragment modifyTransactionFragment = ModifyTransactionFragment.newInstance(transactionExp);
-//        modifyTransactionFragment.show(getActivity().getSupportFragmentManager(), modifyTransactionFragment.getTag());
-//    }
-//}
 package com.example.expensetracker.bottom_sheet;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,13 +13,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
-import com.example.expensetracker.model.AppUser;
-import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.view.ModifyTransactionActivity;
+import com.example.expensetracker.viewmodel.TransactionViewModel;
+import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -137,11 +31,13 @@ import com.google.gson.Gson;
 
 public class TransactionDetailsFragment extends BottomSheetDialogFragment {
     private static final String KEY_TRANSACTION = "transaction_info";
+    private static final int REQUEST_CODE_MODIFY_TRANSACTION = 100;
     private TransactionExp transactionExp;
     private TextView transactionType, transactionCategory, transactionTime, transactionNote, transactionAmount, walletName;
     private ImageView transactionCurrency, transactionCategoryIcon;
     private LinearLayout wallet;
-    private TextView btnCancel;
+    private TransactionViewModel transactionViewModel;
+    private WalletViewModel walletViewModel;
     private TextView btnModify;
 
     public static TransactionDetailsFragment newInstance(TransactionExp transactionExp) {
@@ -149,6 +45,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_TRANSACTION, transactionExp);
         transactionDetailsFragment.setArguments(bundle);
+
         return transactionDetailsFragment;
     }
 
@@ -157,8 +54,10 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         Bundle bundleReceiver = getArguments();
         if (bundleReceiver != null) {
-            transactionExp = (TransactionExp) bundleReceiver.getParcelable(KEY_TRANSACTION);
+            transactionExp = bundleReceiver.getParcelable(KEY_TRANSACTION);
         }
+        transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
+        walletViewModel = new ViewModelProvider(requireActivity()).get(WalletViewModel.class);
     }
 
     @NonNull
@@ -170,89 +69,87 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         initView(viewDialog);
         setTransactionData();
 
-//        btnCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                bottomSheetDialog.dismiss();
-//            }
-//        });
+        bottomSheetDialog.setOnShowListener(dialog -> {
+            BottomSheetDialog d = (BottomSheetDialog) dialog;
+            FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                BottomSheetDialog d = (BottomSheetDialog) dialog;
-                FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                if (bottomSheet != null) {
-                    BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                int maxHeight = getResources().getDisplayMetrics().heightPixels;
+                maxHeight = maxHeight - maxHeight / 4;
 
-                    int maxHeight = getResources().getDisplayMetrics().heightPixels;
-                    maxHeight = maxHeight - maxHeight / 4;
-
-                    ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-                    if (layoutParams != null) {
-                        layoutParams.height = maxHeight;
-                        bottomSheet.setLayoutParams(layoutParams);
-                    }
+                ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+                if (layoutParams != null) {
+                    layoutParams.height = maxHeight;
+                    bottomSheet.setLayoutParams(layoutParams);
                 }
             }
         });
 
-        btnModify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modifyTransaction(transactionExp);
-            }
-        });
+        btnModify.setOnClickListener(v -> modifyTransaction(transactionExp));
 
         return bottomSheetDialog;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_MODIFY_TRANSACTION && resultCode == AppCompatActivity.RESULT_OK) {
+            if (data != null && data.hasExtra("updatedTransaction")) {
+                Gson gson = new Gson();
+                TransactionExp updatedTransaction = gson.fromJson(data.getStringExtra("updatedTransaction"), TransactionExp.class);
+                if (updatedTransaction != null) {
+                    transactionExp = updatedTransaction;
+                    setTransactionData();
+                    transactionViewModel.loadTransactions(transactionExp.getUserId());
+                    walletViewModel.loadWallets(transactionExp.getUserId());
+                }
+            }
+        }
+    }
+
     private void modifyTransaction(TransactionExp transactionExp) {
-        ModifyTransactionFragment modifyTransactionFragment = ModifyTransactionFragment.newInstance(transactionExp);
-        modifyTransactionFragment.show(getActivity().getSupportFragmentManager(), modifyTransactionFragment.getTag());
+        Intent intent = new Intent(getActivity(), ModifyTransactionActivity.class);
+        Gson gson = new Gson();
+        String transactionJson = gson.toJson(transactionExp);
+        intent.putExtra("transaction", transactionJson);
+        startActivityForResult(intent, REQUEST_CODE_MODIFY_TRANSACTION);
     }
 
     private void initView(View view) {
         transactionType = view.findViewById(R.id.transaction_type);
-        transactionCurrency = view.findViewById(R.id.transaction_currency);
         transactionCategory = view.findViewById(R.id.transaction_category);
-        transactionNote = view.findViewById(R.id.transaction_note);
         transactionTime = view.findViewById(R.id.transaction_time);
+        transactionNote = view.findViewById(R.id.transaction_note);
         transactionAmount = view.findViewById(R.id.transaction_price);
-        btnModify = view.findViewById(R.id.modify_transaction);
         walletName = view.findViewById(R.id.wallet_name);
-        wallet = view.findViewById(R.id.wallet);
+        transactionCurrency = view.findViewById(R.id.transaction_currency);
         transactionCategoryIcon = view.findViewById(R.id.transaction_category_icon);
-//        btnCancel = view.findViewById(R.id.cancelModify);
+        wallet = view.findViewById(R.id.wallet);
+        btnModify = view.findViewById(R.id.modify_transaction);
     }
 
     private void setTransactionData() {
-        if (transactionExp == null) {
-            return;
-        }
+        if (transactionExp != null) {
+            if (transactionExp.getCategory() != null) {
+                transactionType.setText(transactionExp.getCategory().getType());
+                transactionCategory.setText(transactionExp.getCategory().getName());
+                String iconName = transactionExp.getCategory().getIcon().getLinking();
+                int iconId = getContext().getResources().getIdentifier(iconName, "drawable", getContext().getPackageName());
+                transactionCategoryIcon.setImageResource(iconId);
+            } else {
+                transactionType.setText(transactionExp.getCategory().getType());
+                transactionCategory.setText(transactionExp.getCategory().getName());
+                int iconId = getContext().getResources().getIdentifier("error", "drawable", getContext().getPackageName());
+                transactionCategoryIcon.setImageResource(iconId);
+            }
 
-        if (transactionExp.getCurrency().equals("VND")) {
-            transactionCurrency.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_vnd));
-        } else {
-            transactionCurrency.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_dollar));
-        }
+            transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
+            transactionNote.setText(transactionExp.getNote() != null ? transactionExp.getNote() : "");
+            transactionAmount.setText(Helper.formatCurrency(transactionExp.getSpend()));
+            walletName.setText(transactionExp.getWallet() != null ? transactionExp.getWallet().getName() : "");
 
-        transactionNote.setText(transactionExp.getNote());
-        transactionAmount.setText(Helper.formatCurrency(transactionExp.getSpend()));
-        transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
-        transactionCategory.setText(String.valueOf(transactionExp.getCategory().getName()));
-        transactionType.setText(String.valueOf(transactionExp.getCategory().getType()));
-
-        String iconName = transactionExp.getCategory().getIcon().getLinking();
-        int iconId = getResources().getIdentifier(iconName, "drawable", getContext().getPackageName());
-        transactionCategoryIcon.setImageResource(iconId);
-
-        if (transactionExp.getWallet() != null) {
-            wallet.setVisibility(View.VISIBLE);
-            walletName.setText(transactionExp.getWallet().getName());
-        } else {
-            wallet.setVisibility(View.GONE);
         }
     }
 }

@@ -19,11 +19,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.utils.CustomDrawable;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -37,6 +42,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -72,6 +78,8 @@ public class ReportsFragment extends BottomSheetDialogFragment {
     private TextView netIncomeAmount, incomeAmount, outcomeAmount;
     private BarChart netIncomeChart;
     private PieChart incomeChart, outcomeChart;
+    private TextView totalBalance;
+    private WalletViewModel walletViewModel;
 
     public static ReportsFragment newInstance(List<TransactionExp> transactionList) {
         ReportsFragment reportsFragment = new ReportsFragment();
@@ -88,6 +96,7 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         if (bundleReceiver != null) {
             allTransactions = bundleReceiver.getParcelableArrayList(KEY_TRANSACTION);
         }
+        walletViewModel = new ViewModelProvider(requireActivity()).get(WalletViewModel.class);
     }
 
     @NonNull
@@ -98,7 +107,13 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         bottomSheetDialog.setContentView(viewDialog);
         initView(viewDialog);
         adjustTimePeriod(0);
-//        setTransactionData();
+
+        walletViewModel.getWalletsLiveData().observe(this, new Observer<List<Wallet>>() {
+            @Override
+            public void onChanged(List<Wallet> wallets) {
+                totalBalance.setText(Helper.formatCurrency(walletViewModel.getTotalBalance()));
+            }
+        });
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -432,6 +447,26 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         List<String> incomeCategories = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
         return incomeCategories.contains(transaction.getCategory().getType());
     }
+
+    private String getIconName(Type type) {
+        switch (type) {
+            case KHOAN_THU:
+                return "ic_salary";
+            case KHOAN_CHI:
+                return "ic_bill";
+            case CHO_VAY:
+                return "ic_cho_vay";
+            case DI_VAY:
+                return "ic_di_vay";
+            case THU_NO:
+                return "ic_thu_no";
+            case TRA_NO:
+                return "ic_tra_no";
+            default:
+                return "ic_question";
+        }
+    }
+
     private void updateIncomeChart(Map<Type, BigDecimal> incomeMap) {
         BigDecimal totalIncomeAmount = BigDecimal.ZERO;
         for (BigDecimal amount : incomeMap.values()) {
@@ -448,10 +483,15 @@ public class ReportsFragment extends BottomSheetDialogFragment {
             colors = new int[] {Color.parseColor("#ECE9EA")};
             entries.add(new PieEntry(1f, ""));
         } else {
-            colors = new int[]{Color.parseColor("#00DDB0"), Color.parseColor("#F48484")};
+            colors = new int[]{Color.parseColor("#90BE6D"), Color.parseColor("#EF5DA8"), Color.parseColor("#5D5FEF")};
             for (Map.Entry<Type, BigDecimal> entry : incomeMap.entrySet()) {
                 if (!entry.getValue().equals(BigDecimal.ZERO)) {
-                    entries.add(new PieEntry(entry.getValue().floatValue(), entry.getKey().getDisplayName()));
+                    int iconId = getContext().getResources().getIdentifier(getIconName(entry.getKey()), "drawable", getContext().getPackageName());
+                    Drawable icon = ResourcesCompat.getDrawable(getResources(), iconId, null);
+                    int iconWidth = 150;
+                    int iconHeight = 150;
+                    CustomDrawable customIcon = new CustomDrawable(icon, iconWidth, iconHeight);
+                    entries.add(new PieEntry(entry.getValue().floatValue(), "", customIcon));
                 }
             }
         }
@@ -459,7 +499,7 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setColors(colors);
-        dataSet.setSliceSpace(3f);
+        dataSet.setSliceSpace(1f);
         dataSet.setDrawValues(false);
 
         PieData pieData = new PieData(dataSet);
@@ -490,26 +530,29 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         outcomeAmount.setText(Helper.formatCurrency(totalOutcomeAmount));
         outcomeAmount.setTextColor(Color.parseColor("#F48484"));
 
-        Drawable iconAlo = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_vnd, null);
-
         List<PieEntry> entries = new ArrayList<>();
         int[] colors;
         if (totalOutcomeAmount.equals(BigDecimal.ZERO)) {
             colors = new int[] {Color.parseColor("#ECE9EA")};
             entries.add(new PieEntry(1f, ""));
         } else {
-            colors = new int[] { Color.parseColor("#00DDB0"), Color.parseColor("#F48484") };
+            colors = new int[] { Color.parseColor("#2D9CDB"), Color.parseColor("#F8961E"), Color.parseColor("#F9C74F") };
             for (Map.Entry<Type, BigDecimal> entry : outcomeMap.entrySet()) {
                 if (!entry.getValue().equals(BigDecimal.ZERO)) {
-                    entries.add(new PieEntry(entry.getValue().floatValue(), entry.getKey().getDisplayName(), iconAlo));
+                    int iconId = getContext().getResources().getIdentifier(getIconName(entry.getKey()), "drawable", getContext().getPackageName());
+                    Drawable icon = ResourcesCompat.getDrawable(getResources(), iconId, null);
+                    int iconWidth = 150;
+                    int iconHeight = 150;
+                    CustomDrawable customIcon = new CustomDrawable(icon, iconWidth, iconHeight);
+                    entries.add(new PieEntry(entry.getValue().floatValue(), "", customIcon));
                 }
             }
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setIconsOffset(new MPPointF(0, 40));
+        dataSet.setIconsOffset(new MPPointF(0, 60));
         dataSet.setColors(colors);
-        dataSet.setSliceSpace(10f);
+        dataSet.setSliceSpace(1f);
         dataSet.setDrawValues(false);
 
         PieData pieData = new PieData(dataSet);
@@ -553,8 +596,14 @@ public class ReportsFragment extends BottomSheetDialogFragment {
 
         BarDataSet dataSet = new BarDataSet(entries, "Net Income");
         dataSet.setColors(Color.parseColor("#00DDB0"));
-        dataSet.setValueTextColor(Color.WHITE);
-        dataSet.setValueTextSize(12f);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(10f);
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getBarLabel(BarEntry barEntry) {
+                return Helper.formatCurrency(new BigDecimal(barEntry.getY())).replace("VND", "");
+            }
+        });
 
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(0.3f);
@@ -572,12 +621,13 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         xAxis.setLabelCount(xAxisLabels.size());
 
 
-        YAxis yAxisLeft = netIncomeChart.getAxisLeft();
-        yAxisLeft.setDrawZeroLine(false);
-        yAxisLeft.setTextColor(Color.parseColor("#9AA0A6"));
-        yAxisLeft.setTextSize(12f);
-        yAxisLeft.setTypeface(ResourcesCompat.getFont(getContext(), R.font.montserrat));
+        netIncomeChart.getAxisLeft().setDrawGridLines(false);
+        netIncomeChart.getAxisLeft().setDrawAxisLine(false);
+        netIncomeChart.getAxisRight().setDrawGridLines(false);
+        netIncomeChart.getAxisRight().setDrawAxisLine(false);
 
+        netIncomeChart.getAxisLeft().setDrawLabels(false);
+        netIncomeChart.getAxisRight().setDrawLabels(false);
         netIncomeChart.getAxisRight().setEnabled(false);
 
 
@@ -587,8 +637,6 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         netIncomeChart.setExtraOffsets(20, 10, 20, 10);
         netIncomeChart.setDrawValueAboveBar(true);
         netIncomeChart.setMaxVisibleValueCount(50);
-        netIncomeChart.setPinchZoom(false);
-        netIncomeChart.setScaleEnabled(false);
         netIncomeChart.setDrawGridBackground(false);
         netIncomeChart.setDrawBarShadow(false);
 
@@ -611,6 +659,7 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         openingBalance = view.findViewById(R.id.opening_balance);
         endingBalance = view.findViewById(R.id.ending_balance);
         previousTime = view.findViewById(R.id.previous_time);
+        totalBalance = view.findViewById(R.id.total_balance);
         btnClose = view.findViewById(R.id.close_report);
         netIncomeAmount = view.findViewById(R.id.net_income_amount);
         incomeAmount = view.findViewById(R.id.income_amount);

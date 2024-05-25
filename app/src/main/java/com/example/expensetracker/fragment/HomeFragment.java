@@ -65,6 +65,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -148,7 +149,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), new Observer<List<TransactionExp>>() {
             @Override
             public void onChanged(List<TransactionExp> transactions) {
-                transactionList = transactions;
+                transactionList = sortTransactionsByDate(transactions);
                 if (transactions.size() > 3) {
                     transactions = transactions.subList(0, 3);
                 }
@@ -224,6 +225,12 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         showWallet = view.findViewById(R.id.show_wallet);
         showTransaction = view.findViewById(R.id.show_transaction);
     }
+
+    private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {
+        Collections.sort(transactions, (t1, t2) -> t2.getCreatedAt().compareTo(t1.getCreatedAt()));
+        return transactions;
+    }
+
 
     private void setupTabLayout() {
         filterTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
