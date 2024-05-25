@@ -13,47 +13,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-
 import com.example.expensetracker.adapter.TransactionAdapter;
-import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.api.AppUser.AppUserApi;
-import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
-import com.example.expensetracker.enums.Period;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
-
 import com.example.expensetracker.model.TransactionExp;
-import com.example.expensetracker.repository.AppUserRepository;
-import com.example.expensetracker.utils.Constant;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.Call;
 
 public class TransactionFragment extends Fragment implements TransactionAdapter.OnItemClickListener {
     private TransactionAdapter transactionAdapter;
@@ -66,8 +53,16 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     private ImageButton nextTime;
     private TextView time;
     private View view;
+
+    private TransactionViewModel transactionViewModel;
+
     public TransactionFragment() {
-        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
     }
 
     @Override
@@ -80,6 +75,39 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         AppUser user = new Gson().fromJson(userJson, AppUser.class);
 
         initView(view);
+        setupObservers();
+        setupListeners();
+
+        MainActivity mainActivity = (MainActivity)getActivity();
+        RecyclerView rvTransaction = view.findViewById(R.id.transaction_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
+        rvTransaction.setLayoutManager(linearLayoutManager);
+        transactionAdapter = new TransactionAdapter(getContext(), transactions, this);
+        rvTransaction.setAdapter(transactionAdapter);
+
+        transactionViewModel.loadTransactions(user.getId());
+
+        return view;
+    }
+
+    private void setupObservers() {
+        transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), new Observer<List<TransactionExp>>() {
+            @Override
+            public void onChanged(List<TransactionExp> transactionExps) {
+                allTransactions = transactionExps;
+                adjustTimePeriod(0);
+            }
+        });
+
+        transactionViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String errorMessage) {
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupListeners() {
         nextTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,16 +136,6 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
                 updateDateRange();
             }
         });
-
-        MainActivity mainActivity = (MainActivity)getActivity();
-        RecyclerView rvTransaction = view.findViewById(R.id.transaction_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
-        rvTransaction.setLayoutManager(linearLayoutManager);
-        transactionAdapter = new TransactionAdapter(getContext(), transactions, this);
-        getTransactionsForUser(user.getId());
-        rvTransaction.setAdapter(transactionAdapter);
-
-        return view;
     }
 
     private void updateDateRange() {
@@ -142,7 +160,6 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         }
         filterTransactions(calendarStart.getTime(), calendarEnd.getTime());
         time.setText(Helper.formatDate(calendarStart.getTime()) + " - " + Helper.formatDate(calendarEnd.getTime()));
-
     }
 
     private void adjustTimePeriod(int increment) {
@@ -228,7 +245,6 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         } else {
             openingBalance.setText(String.format("+%s", Helper.formatCurrency(openingBalanceAmount)));
             openingBalance.setTextColor(Color.parseColor("#00DDB0"));
-
         }
 
         if (endingBalanceAmount.compareTo(new BigDecimal(0)) < 0) {
@@ -237,7 +253,6 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         } else {
             endingBalance.setText(String.format("+%s", Helper.formatCurrency(endingBalanceAmount)));
             endingBalance.setTextColor(Color.parseColor("#00DDB0"));
-
         }
 
         if (differenceAmount.compareTo(new BigDecimal(0)) < 0) {
@@ -246,9 +261,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         } else {
             difference.setText(String.format("+%s", Helper.formatCurrency(differenceAmount)));
             difference.setTextColor(Color.parseColor("#00DDB0"));
-
         }
-
     }
 
     private String getFilter() {
@@ -266,22 +279,6 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         endingBalance = view.findViewById(R.id.ending_balance);
         difference = view.findViewById(R.id.difference);
         transactionEmpty = view.findViewById(R.id.transaction_empty);
-    }
-
-    private void getTransactionsForUser(String userId) {
-        AppUserRepository repository = AppUserRepository.getInstance();
-        repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
-            @Override
-            public void onSuccess(List<TransactionExp> transactions) {
-                allTransactions = transactions;
-                adjustTimePeriod(0);
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
     }
 
     @Override
