@@ -3,7 +3,6 @@ package com.example.expensetracker.view.addTransaction;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +22,9 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -101,16 +100,10 @@ public class ChooseWalletFragment extends BottomSheetDialogFragment {
     public void getWallets()
     {
         Context context = getContext();
-        AppUser user;
-        SharedPreferences sharedPreferences= context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        AppUser user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
 
-
-        String userString= sharedPreferences.getString("user","null");
-
-        if(userString!="null")
+        if(user!=null)
         {
-            Gson gson = new Gson();
-            user= gson.fromJson(userString, AppUser.class);
             AppUserRepository.getInstance().getWallet(user.getId(), new ApiCallBack<List<Wallet>>() {
                 @Override
                 public void onSuccess(List<Wallet> wallets) {

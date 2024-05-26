@@ -1,15 +1,10 @@
 package com.example.expensetracker.bottom_sheet;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,18 +14,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.databinding.BottomSheetAddWalletBinding;
-import com.example.expensetracker.databinding.BottomSheetWalletBinding;
 import com.example.expensetracker.model.AppUser;
-import com.example.expensetracker.model.Wallet;
-import com.example.expensetracker.repository.WalletRepository;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 
@@ -60,9 +49,7 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
         BottomSheetAddWalletBinding binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_add_wallet, container, false);
         binding.setLifecycleOwner(this);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
+        SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(binding.getRoot());
 

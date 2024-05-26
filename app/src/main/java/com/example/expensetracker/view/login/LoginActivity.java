@@ -19,11 +19,14 @@ import androidx.lifecycle.Observer;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityLoginBinding;
 import com.example.expensetracker.model.AppUser;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.SplashScreenActivity;
 import com.example.expensetracker.view.register.RegisterActivity;
 import com.example.expensetracker.viewmodel.LoginViewModel;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -74,10 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable AppUser appUser) {
                 if(appUser != null){
-                    SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("user", new Gson().toJson(appUser));
-                    editor.apply();
+                    SharedPreferencesManager.getInstance(LoginActivity.this).saveObject("user", appUser);
                 }
             }
         });

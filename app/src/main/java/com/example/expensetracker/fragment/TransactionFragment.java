@@ -1,10 +1,7 @@
 package com.example.expensetracker.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +24,10 @@ import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -70,9 +67,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_transaction, container, false);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        AppUser user = new Gson().fromJson(userJson, AppUser.class);
+        AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(view);
         setupObservers();
