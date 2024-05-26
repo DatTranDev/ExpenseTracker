@@ -1,17 +1,15 @@
 package com.example.expensetracker.viewmodel.addTransactionVM;
+
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
-import com.example.expensetracker.repository.AppUserRepository;
-import com.google.gson.Gson;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -20,22 +18,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.SSLSession;
-
 public class ChooseCategoryViewModel extends BaseObservable {
 
     private final MutableLiveData<List<Category>> listCategory;
     AppUser user;
     public ChooseCategoryViewModel(Context context, String typeTransaction) {
-        SharedPreferences sharedPreferences= context.getSharedPreferences("categories",Context.MODE_PRIVATE);
-        String categoryString= sharedPreferences.getString("categories","null");
-        Log.d("1",categoryString);
+        Type type = new TypeToken<List<Category>>() {}.getType();
+        List<Category> list = SharedPreferencesManager.getInstance(context).getList("categories", type);
+        Log.d("1",list.toString());
         listCategory = new MutableLiveData<>();
-        if(categoryString!="null")
+        if(list!=null)
         {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Category>>() {}.getType();
-            List<Category> list= gson.fromJson(categoryString,type);
             List<Category> classify = new ArrayList<>();
             if(typeTransaction.equals("spend"))
             {

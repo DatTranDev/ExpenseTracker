@@ -94,7 +94,7 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
         btnCancel = view.findViewById(R.id.wallet_back);
         RecyclerView recyclerView = view.findViewById(R.id.account_wallet_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        walletAdapter = new WalletShowAdapter(wallets, this);
+//        walletAdapter = new WalletShowAdapter(wallets, this);
 //        total = view.findViewById(R.id.wallet_total_amount);
         recyclerView.setAdapter(walletAdapter);
     }
@@ -111,14 +111,13 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
 
     private void addWallet() {
         AddWalletFragment addWalletFragment = AddWalletFragment.newInstance();
-        addWalletFragment.setWalletUpdateListener(this);
+//        addWalletFragment.setWalletUpdateListener(this);
         addWalletFragment.show(getActivity().getSupportFragmentManager(), addWalletFragment.getTag());
     }
 
     @Override
     public void onWalletModifyClick(Wallet wallet) {
         ModifyWalletFragment modifyWalletFragment = ModifyWalletFragment.newInstance(wallet);
-        modifyWalletFragment.setWalletUpdateListener(this);
         modifyWalletFragment.show(getActivity().getSupportFragmentManager(), modifyWalletFragment.getTag());
     }
 

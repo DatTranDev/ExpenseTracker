@@ -20,6 +20,8 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.IconRepository;
+import com.example.expensetracker.utils.Constant;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.register.WelcomeActivity;
 import com.google.gson.Gson;
 import android.Manifest;
@@ -48,17 +50,14 @@ public class SplashScreenActivity extends AppCompatActivity{
         });
         IconRepository.getInstance().getAllIcons(new ApiCallBack<List<Icon>>() {
             @Override
-            public void onSuccess(List<Icon> response) {
+            public synchronized void onSuccess(List<Icon> response) {
                 //Save icons to shared preferences
-                SharedPreferences sharedPreferences = getSharedPreferences("icons", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("icons", new Gson().toJson(response));
-                editor.apply();
+                SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("icons", response);
                 boolean load = loadAllData(retry);
                 if (!load) {
                     new android.os.Handler().postDelayed(new Runnable() {
                         public void run() {
-                            android.content.Intent intent = new android.content.Intent(SplashScreenActivity.this, WelcomeActivity.class);
+                            Intent intent = new Intent(SplashScreenActivity.this, WelcomeActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -67,7 +66,7 @@ public class SplashScreenActivity extends AppCompatActivity{
                 else{
                     new android.os.Handler().postDelayed(new Runnable() {
                         public void run() {
-                            android.content.Intent intent = new android.content.Intent(SplashScreenActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -82,29 +81,18 @@ public class SplashScreenActivity extends AppCompatActivity{
         });
     }
 
-    private boolean loadAllData(Button retry){
+    private synchronized boolean loadAllData(Button retry){
         // Get user if logged in
-        SharedPreferences sharedPreferencesUs = getSharedPreferences("user", MODE_PRIVATE);
-        String userJson = sharedPreferencesUs.getString("user", null);
-        AppUser appUser = new AppUser();
-        if (userJson != null) {
-            appUser = new Gson().fromJson(userJson, AppUser.class);
+        AppUser appUser = SharedPreferencesManager.getInstance(this).getObject("user", AppUser.class);
+        if (appUser != null) {
 
             // Define shared preferences for each feature
-            SharedPreferences sharedPreferencesCat = getSharedPreferences("categories", MODE_PRIVATE);
-            SharedPreferences sharedPreferencesBudget = getSharedPreferences("budgets", MODE_PRIVATE);
-            SharedPreferences sharedPreferencesTrans = getSharedPreferences("transactions", MODE_PRIVATE);
-            SharedPreferences sharedPreferencesWallet = getSharedPreferences("wallets", MODE_PRIVATE);
-            SharedPreferences sharedPreferencesSharingWallet = getSharedPreferences("sharingWallets", MODE_PRIVATE);
-            String test = sharedPreferencesWallet.getString("wallets", null);
+
             // Load categories if not stored
-            if (!sharedPreferencesCat.contains("categories")) {
                 AppUserRepository.getInstance().getCategory(appUser.getId(), new ApiCallBack<List<Category>>() {
                     @Override
-                    public void onSuccess(List<Category> response) {
-                        SharedPreferences.Editor editor = sharedPreferencesCat.edit();
-                        editor.putString("categories", new Gson().toJson(response));
-                        editor.apply();
+                    public synchronized void onSuccess(List<Category> response) {
+                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("categories", response );
                     }
                     @Override
                     public void onError(String message) {
@@ -112,33 +100,26 @@ public class SplashScreenActivity extends AppCompatActivity{
                         retry.setVisibility(android.view.View.VISIBLE);
                     }
                 });
-            }
+
 
             // Load budgets if not stored
-            if (!sharedPreferencesBudget.contains("budgets")) {
-                AppUserRepository.getInstance().getBudget(appUser.getId(), new ApiCallBack<List<Budget>>() {
-                    @Override
-                    public void onSuccess(List<Budget> response) {
-                        SharedPreferences.Editor editor = sharedPreferencesBudget.edit();
-                        editor.putString("budgets", new Gson().toJson(response));
-                        editor.apply();
-                    }
-                    @Override
-                    public void onError(String message) {
-                        android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Budget", android.widget.Toast.LENGTH_SHORT).show();
-                        retry.setVisibility(android.view.View.VISIBLE);
-                    }
-                });
-            }
+            AppUserRepository.getInstance().getBudget(appUser.getId(), new ApiCallBack<List<Budget>>() {
+                @Override
+                public synchronized void onSuccess(List<Budget> response) {
+                    SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("budgets", response );
+                }
+                @Override
+                public void onError(String message) {
+                    android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Budget", android.widget.Toast.LENGTH_SHORT).show();
+                    retry.setVisibility(android.view.View.VISIBLE);
+                }
+            });
 
             // Load transactions if not stored
-            if (!sharedPreferencesTrans.contains("transactions")) {
                 AppUserRepository.getInstance().getTransaction(appUser.getId(), new ApiCallBack<List<TransactionExp>>() {
                     @Override
-                    public void onSuccess(List<TransactionExp> response) {
-                        SharedPreferences.Editor editor = sharedPreferencesTrans.edit();
-                        editor.putString("transactions", new Gson().toJson(response));
-                        editor.apply();
+                    public synchronized void onSuccess(List<TransactionExp> response) {
+                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("transactions", response );
                     }
                     @Override
                     public void onError(String message) {
@@ -146,16 +127,12 @@ public class SplashScreenActivity extends AppCompatActivity{
                         retry.setVisibility(android.view.View.VISIBLE);
                     }
                 });
-            }
 
             // Load wallets if not stored
-            if (!sharedPreferencesWallet.contains("wallets")) {
                 AppUserRepository.getInstance().getWallet(appUser.getId(), new ApiCallBack<List<Wallet>>() {
                     @Override
-                    public void onSuccess(List<Wallet> response) {
-                        SharedPreferences.Editor editor = sharedPreferencesWallet.edit();
-                        editor.putString("wallets", new Gson().toJson(response));
-                        editor.apply();
+                    public synchronized void onSuccess(List<Wallet> response) {
+                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("wallets", response );
                     }
                     @Override
                     public void onError(String message) {
@@ -163,16 +140,11 @@ public class SplashScreenActivity extends AppCompatActivity{
                         retry.setVisibility(android.view.View.VISIBLE);
                     }
                 });
-            }
 
-            // Load sharing wallets if not stored
-            if (!sharedPreferencesSharingWallet.contains("sharingWallets")) {
                 AppUserRepository.getInstance().getSharingWallet(appUser.getId(), new ApiCallBack<List<Wallet>>() {
                     @Override
-                    public void onSuccess(List<Wallet> response) {
-                        SharedPreferences.Editor editor = sharedPreferencesSharingWallet.edit();
-                        editor.putString("sharingWallets", new Gson().toJson(response));
-                        editor.apply();
+                    public synchronized void onSuccess(List<Wallet> response) {
+                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("sharingWallets", response );
                     }
                     @Override
                     public void onError(String message) {
@@ -180,9 +152,9 @@ public class SplashScreenActivity extends AppCompatActivity{
                         retry.setVisibility(android.view.View.VISIBLE);
                     }
                 });
-            }
             return true;
         }
-        else return false;
+        else
+            return false;
     }
 }

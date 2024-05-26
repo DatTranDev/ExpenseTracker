@@ -1,7 +1,6 @@
 package com.example.expensetracker.viewmodel.budgetVM;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.ObservableField;
@@ -14,10 +13,9 @@ import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.BudgetRepository;
-import com.google.gson.Gson;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 public class AddBudgetViewModel extends BaseObservable {
     Context context;
@@ -34,16 +32,7 @@ public class AddBudgetViewModel extends BaseObservable {
     }
     public  AddBudgetViewModel(Context context)
     {
-        SharedPreferences sharedPreferences= context.getSharedPreferences("user",Context.MODE_PRIVATE);
-
-
-        String userString= sharedPreferences.getString("user","null");
-
-        if(userString!="null")
-        {
-            Gson gson = new Gson();
-            user= gson.fromJson(userString, AppUser.class);
-        }
+        SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
 //        category.observeForever(value->updateButton());
 //        moneyBudget.observeForever(value->updateButton());
 

@@ -1,13 +1,10 @@
 package com.example.expensetracker.view.addTransaction;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -17,14 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.api.Upload.UploadResponse;
 import com.example.expensetracker.databinding.ActivityChooseCategoryBinding;
-
-import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
-import com.example.expensetracker.repository.UploadRepository;
-import com.example.expensetracker.view.login.LoginActivity;
 import com.example.expensetracker.viewmodel.addTransactionVM.ChooseCategoryViewModel;
 import com.google.gson.Gson;
 

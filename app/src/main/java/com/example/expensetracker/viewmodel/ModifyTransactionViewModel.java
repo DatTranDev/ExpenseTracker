@@ -1,7 +1,6 @@
 package com.example.expensetracker.viewmodel;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.ObservableField;
@@ -20,7 +19,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-public class AddTransactionViewModel extends BaseObservable {
+public class ModifyTransactionViewModel extends BaseObservable {
     private Context context;
     private AppUser user;
     public ObservableField<Category> category = new ObservableField<>();
@@ -31,28 +30,35 @@ public class AddTransactionViewModel extends BaseObservable {
     public ObservableField<String> partner= new ObservableField<>("");
     public ObservableField<String> image = new ObservableField<>("");
     public ObservableField<Timestamp> timeTransaction= new ObservableField<>();
-//    private Timestamp timeTransaction;
     private final MutableLiveData<String> _message = new MutableLiveData<>();
     public LiveData<String> message = _message;
-    public AddTransactionViewModel(Context context)
+    public ModifyTransactionViewModel(Context context)
     {
 
-        SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
     }
 
+    public void setData(TransactionExp transaction) {
+        if (transaction != null) {
+            category.set(transaction.getCategory());
+            wallet.set(transaction.getWallet());
+            node.set(transaction.getNote());
+            borrower.set(transaction.getPartner());
+            money.set(transaction.getSpend().toString());
+            image.set(transaction.getImage());
+            timeTransaction.set(transaction.getCreatedAt());
+        }
+    }
 
     public void showMessage(String msg) {
         _message.setValue(msg);
     }
-//    @Bindable
-//    public Timestamp getTimeTransaction(){return  timeTransaction;}
-//    public void setTimeTransaction(Timestamp a)
-//    {
-//        this.timeTransaction=a;
-//        notifyPropertyChanged(BR.timeTransaction);
-//    }
 
-    public void addTransaction()
+    public void setTimeTransaction(Timestamp timestamp) {
+        timeTransaction.set(timestamp);
+    }
+
+    public void modifyTransaction(TransactionExp transactionExp)
     {
         if(timeTransaction.get()==null)
         {
@@ -83,15 +89,15 @@ public class AddTransactionViewModel extends BaseObservable {
             newTransaction.setCreatedAt(timeTransaction.get());
             newTransaction.setImage(image.get());
 
-            TransactionRepository.getInstance().addTransaction(newTransaction, new ApiCallBack<TransactionExp>() {
+            TransactionRepository.getInstance().updateTransaction(transactionExp.getId(), newTransaction, new ApiCallBack<TransactionExp>() {
                 @Override
                 public void onSuccess(TransactionExp transactionExp) {
-                    Log.d("test","Thành công");
+                    _message.setValue("Sửa giao dịch thành công!");
                 }
 
                 @Override
                 public void onError(String message) {
-                    Log.d("test","Thất bại");
+                    _message.setValue("Sửa giao dịch thất bại!");
                 }
             });
 
@@ -112,5 +118,19 @@ public class AddTransactionViewModel extends BaseObservable {
         }
 
     }
+
+    public TransactionExp getUpdatedTransaction(TransactionExp transactionExp) {
+        transactionExp.setUserId(user.getId());
+        transactionExp.setCategoryId(category.get().getId());
+        transactionExp.setWallet(wallet.get());
+        transactionExp.setSpend(new BigDecimal(money.get().replaceAll("[,]", "")));
+        transactionExp.setNote(node.get());
+        transactionExp.setCurrency("VND");
+        transactionExp.setPartner(borrower.get());
+        transactionExp.setCreatedAt(timeTransaction.get());
+        transactionExp.setImage(image.get());
+        return transactionExp;
+    }
+
 
 }

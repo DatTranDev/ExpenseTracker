@@ -1,6 +1,11 @@
 package com.example.expensetracker.utils;
 
+import android.widget.TextView;
+
+import androidx.databinding.BindingAdapter;
+
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -12,6 +17,11 @@ public class Helper {
     public static String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
         return dateFormat.format(date);
+    }
+
+    @BindingAdapter("android:text")
+    public static void setFormattedDate(TextView view, Timestamp timestamp) {
+        view.setText(formatDate(timestamp));
     }
     public static boolean isValidEmail(String email){
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
