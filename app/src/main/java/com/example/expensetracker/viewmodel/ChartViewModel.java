@@ -49,19 +49,21 @@ public class ChartViewModel extends ViewModel {
 
     private Date[] getCurrentWeekPeriod() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         Date start = cal.getTime();
-        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        cal.add(Calendar.DAY_OF_WEEK, 6);
         Date end = cal.getTime();
         return new Date[]{start, end};
     }
 
     private Date[] getLastWeekPeriod() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         Date start = cal.getTime();
-        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        cal.add(Calendar.DAY_OF_WEEK, 6);
         Date end = cal.getTime();
         return new Date[]{start, end};
     }
