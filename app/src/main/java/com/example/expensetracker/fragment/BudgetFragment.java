@@ -180,7 +180,6 @@ public class BudgetFragment extends Fragment {
 
     }
     private void adjustTimePeriod(int increment) {
-        Log.d("testt", "đã tới 8");
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
         String[] dateRange = time.getText().toString().split(" - ");
         try {
@@ -338,29 +337,6 @@ public class BudgetFragment extends Fragment {
             }
         }
 
-//            AppUserRepository.getInstance().getTransaction(user.getId(), new ApiCallBack<List<TransactionExp>>() {
-//                @Override
-//                public void onSuccess(List<TransactionExp> transactions) {
-//                    allTransactions=(transactions);
-//                    updateDateRange();
-//                }
-//
-//                @Override
-//                public void onError(String errorMessage) {
-//                }
-//            });
-//            AppUserRepository.getInstance().getBudget(user.getId(), new ApiCallBack<List<Budget>>() {
-//                @Override
-//                public void onSuccess(List<Budget> budgets) {
-//
-//                    allBudgets=(budgets);
-//                    updateDateRange();
-//                }
-//
-//                @Override
-//                public void onError(String message) {
-//
-//                }
-//            });
+
     }
 }
