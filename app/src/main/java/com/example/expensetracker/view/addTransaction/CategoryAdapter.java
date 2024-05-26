@@ -16,10 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.expensetracker.R;
 import com.example.expensetracker.model.Category;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Category> data;
@@ -30,7 +27,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void onItemClick(int position);
     }
     public void updateCategories(List<Category> newCategories) {
-        data = sortCategories(newCategories);
+        data = newCategories;
         notifyDataSetChanged();
     }
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -38,36 +35,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     public CategoryAdapter(Context context, List<Category> list)
     {
-        data=sortCategories(list);
+        data=list;
         this.context = context;
-    }
-    public static List<Category> sortCategories(List<Category> categories) {
-        List<Category> sortedCategories = new ArrayList<>();
-        Map<String, Category> parentMap = new HashMap<>();
-        Map<String, List<Category>> childMap = new HashMap<>();
-
-        // Phân loại các category vào parentMap và childMap
-        for (Category category : categories) {
-            if (category.getParentCategoryId()==null) {
-                parentMap.put(category.getId(), category);
-            } else {
-                childMap.computeIfAbsent(category.getParentCategoryId(), k -> new ArrayList<>()).add(category);
-            }
-        }
-
-        // Sắp xếp các parent category và thêm vào sortedCategories
-        for (Map.Entry<String, Category> entry : parentMap.entrySet()) {
-            Category parent = entry.getValue();
-            sortedCategories.add(parent);
-
-            // Thêm các child category tương ứng nếu có
-            List<Category> children = childMap.get(parent.getId());
-            if (children != null) {
-                sortedCategories.addAll(children);
-            }
-        }
-
-        return sortedCategories;
     }
     @NonNull
     @Override

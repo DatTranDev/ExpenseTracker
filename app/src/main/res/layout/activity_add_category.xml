@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="AddCategoryViewModel"
+            type="com.example.expensetracker.viewmodel.accountVM.AddCategoryViewModel" />
+    </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -58,7 +65,7 @@
             android:src="@drawable/ic_spend" />
 
         <TextView
-            android:id="@+id/textView27"
+            android:id="@+id/title_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,7 +74,7 @@
             android:layout_marginLeft="15dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:text="Khoản chi" />
+            android:text="@{AddCategoryViewModel.type}" />
 
 
     </LinearLayout>
@@ -82,7 +89,7 @@
         android:layout_marginTop="10dp">
 
         <ImageView
-            android:id="@+id/imageView11"
+            android:id="@+id/iconcategory"
             android:layout_width="32dp"
             android:layout_height="32dp"
 
@@ -97,6 +104,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:ems="10"
+            android:text="@={AddCategoryViewModel.nameCategory}"
             android:hint="Tên danh mục"
             android:inputType="text"
             android:textSize="18sp" />
@@ -104,6 +112,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/chooseParentCategory"
         android:layout_width="330dp"
         android:layout_height="55dp"
         android:orientation="horizontal"
@@ -112,6 +121,7 @@
         android:layout_marginTop="12dp">
 
         <ImageView
+            android:id="@+id/iconparent"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginLeft="9dp"
@@ -132,11 +142,20 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/nameParentCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="@{AddCategoryViewModel.parentCategory.getName()}"
+                    android:textSize="16sp" />
+
+                <TextView
                     android:id="@+id/textView28"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Danh mục cha"
+                    android:visibility="@{(AddCategoryViewModel.parentCategory==null) ? View.VISIBLE : View.GONE}"
                     android:textColor="#545454"
                     android:textSize="18sp" />
 
@@ -147,7 +166,7 @@
                     android:layout_gravity="center_vertical"
                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="1.5dp"
-
+                    android:visibility="@{(AddCategoryViewModel.parentCategory==null) ? View.VISIBLE : View.GONE}"
                     android:layout_marginTop="2dp"
                     android:src="@drawable/ic_back_right" />
             </LinearLayout>
@@ -157,6 +176,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="@{(AddCategoryViewModel.parentCategory==null) ? View.VISIBLE : View.GONE}"
                 android:src="@drawable/black_line" />
         </LinearLayout>
 
@@ -168,11 +188,14 @@
         android:layout_height="52dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:backgroundTint="#E4E4E4"
+        android:backgroundTint="@color/colorbutton"
+        android:enabled="true"
         android:textColor="#4C4949"
         android:fontFamily="@font/inter_semibold"
+        android:onClick="@{()-> AddCategoryViewModel.addCategory()}"
         android:text="Lưu"
         android:textSize="15sp" />
 
 
 </LinearLayout>
+</layout>

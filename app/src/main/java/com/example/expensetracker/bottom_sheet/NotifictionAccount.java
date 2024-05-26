@@ -1,11 +1,14 @@
 package com.example.expensetracker.bottom_sheet;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,13 +25,18 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.List;
 
 public class NotifictionAccount extends BottomSheetDialogFragment {
 
     private ImageView btnCancel;
-    private FloatingActionButton btnAdd;
+    private SwitchMaterial btn;
+
+    private static final String PREFS_NAME = "my_prefs";
+
+    private static final String TOGGLE_STATE_KEY = "toggle_state";
 
 
     public NotifictionAccount(){}
@@ -72,18 +80,33 @@ public class NotifictionAccount extends BottomSheetDialogFragment {
                 }
             }
         });
+
+        // Load the saved state from SharedPreferences
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean isChecked = sharedPreferences.getBoolean(TOGGLE_STATE_KEY, false);
+        btn.setChecked(isChecked);
+
+        // Set a listener to save the state when the button is toggled
+        btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(TOGGLE_STATE_KEY, isChecked);
+                editor.apply();
+            }
+        });
+
+
+
+
         return bottomSheetDialog;
     }
 
 
     private void initView(View view) {
-        //btnAdd = view.findViewById(R.id.account_add_wallet);
+        btn = view.findViewById(R.id.material_switch);
         btnCancel = view.findViewById(R.id.notification_back);
-        // recyclerView = view.findViewById(R.id.account_wallet_list);
-        // recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // walletAdapter = new WalletShowAdapter(wallets, this);
-        //total = view.findViewById(R.id.wallet_total_amount);
-        // recyclerView.setAdapter(walletAdapter);
+
     }
 
 }
