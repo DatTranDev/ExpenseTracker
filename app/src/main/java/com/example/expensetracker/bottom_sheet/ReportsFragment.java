@@ -263,6 +263,9 @@ public class ReportsFragment extends BottomSheetDialogFragment {
 
         LinkedHashMap<String, BigDecimal> periodAmountMap = new LinkedHashMap<>();
 
+        startDate = Helper.normalizeDate(startDate, true);
+        endDate = Helper.normalizeDate(endDate, false);
+
         Calendar calendarStart = Calendar.getInstance();
         calendarStart.setTime(startDate);
         Calendar calendarEnd = Calendar.getInstance();
