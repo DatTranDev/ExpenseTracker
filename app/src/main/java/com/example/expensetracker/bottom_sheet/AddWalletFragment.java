@@ -49,7 +49,7 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
         BottomSheetAddWalletBinding binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_add_wallet, container, false);
         binding.setLifecycleOwner(this);
 
-        SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(binding.getRoot());
 
