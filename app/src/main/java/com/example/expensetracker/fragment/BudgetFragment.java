@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
 //import com.example.expensetracker.databinding.FragmentBudgetBinding;
+import com.example.expensetracker.databinding.FragmentBudgetBinding;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
@@ -36,6 +37,7 @@ import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.budget.AddBudgetActivity;
 import com.example.expensetracker.view.budget.BudgetAdapter;
 import com.example.expensetracker.view.budget.BudgetItem;
+import com.example.expensetracker.view.budget.DetailBudgetActivity;
 import com.example.expensetracker.viewmodel.budgetVM.MainBudgetViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -70,6 +72,8 @@ public class BudgetFragment extends Fragment {
 //   private String period="Tuần";
    private List<TransactionExp> allTransactions= new ArrayList<>();
     private List<Budget> allBudgets= new ArrayList<>();
+    private List<TransactionExp> filterTransactions= new ArrayList<>();
+    private  List<BudgetItem> listBudgetShow;
     public BudgetFragment() {
         // Required empty public constructor
     }
@@ -84,14 +88,10 @@ public class BudgetFragment extends Fragment {
     {
          View view= inflater.inflate(R.layout.fragment_budget, container, false);
          context= getContext();
-//         FragmentBudgetBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_budget);
-//         mainBudgetViewModel= new MainBudgetViewModel(context);
-//         binding.setMainBudgetViewModel(mainBudgetViewModel);
+         FragmentBudgetBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_budget, container, false);
+         mainBudgetViewModel= new MainBudgetViewModel(context);
+         binding.setMainBudgetViewModel(mainBudgetViewModel);
          btnAddBudget= view.findViewById(R.id.buttonAddBudget);
-//        allTransactions= mainBudgetViewModel.listTransaction.get();
-//        allBudgets= mainBudgetViewModel.listBudget.get();
-
-
         tabLayout= view.findViewById(R.id.filter);
          time= view.findViewById(R.id.timeBudget);
          transactionEmpty= view.findViewById(R.id.transaction_empty);
@@ -104,12 +104,29 @@ public class BudgetFragment extends Fragment {
          total_amount= view.findViewById(R.id.total_amount);
          total_money_enable= view.findViewById(R.id.total_money_enable);
          layoutStatus= view.findViewById(R.id.layout1);
+         //setup
          adjustTimePeriod(0);
          getData();
          btnAddBudget.setOnClickListener(v -> {
              intent= new Intent(getActivity(), AddBudgetActivity.class);
              startActivity(intent);
          });
+         adapter.setOnItemClickListener(new BudgetAdapter.OnItemClickListener() {
+             @Override
+             public void onItemClick(int position) {
+                 BudgetItem clickedItem = listBudgetShow.get(position);
+                 Gson gson= new Gson();
+                 String json = gson.toJson(clickedItem);
+//                 Log.d("testttt",json);
+                 Intent intent2= new Intent(getActivity(), DetailBudgetActivity.class);
+                 intent2.putExtra("selectedString",json);
+                 startActivity(intent2);
+
+
+
+             }
+         });
+         //filter
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -234,6 +251,7 @@ public class BudgetFragment extends Fragment {
                 }
             }
         }
+        filterTransactions=filteredTransactions;
         for(Budget budget: allBudgets){
             if(budget.getPeriod().equals(getFilter()))
             {
@@ -302,7 +320,7 @@ public class BudgetFragment extends Fragment {
             layoutStatus.setBackgroundResource(R.drawable.background_border_green);
             total_money_enable.setText("0");
         }
-
+        listBudgetShow=filterBudget;
         adapter.updateBudgets(filterBudget);
         if (!filterBudget.isEmpty()) {
             transactionEmpty.setVisibility(View.GONE);
@@ -311,31 +329,10 @@ public class BudgetFragment extends Fragment {
         }
     }
     public void getData(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("budgets", Context.MODE_PRIVATE);
-        String budgetsJson = sharedPreferences.getString("budgets", "null");
-        if(!budgetsJson.equals("null")) {
-
-            Gson gson = new Gson();
-            java.lang.reflect.Type type = new TypeToken<List<Budget>>() {
-            }.getType();
-            List<Budget> list = gson.fromJson(budgetsJson, type);
-            if (list != null) {
-                allBudgets = list;
-                updateDateRange();
-            }
-        }
-        sharedPreferences = context.getSharedPreferences("transactions", Context.MODE_PRIVATE);
-        String transactionsJson = sharedPreferences.getString("transactions", "null");
-        if(!transactionsJson.equals("null")) {
-
-            Gson gson = new Gson();
-            java.lang.reflect.Type type = new TypeToken<List<TransactionExp>>() {}.getType();
-            List<TransactionExp> list = gson.fromJson(transactionsJson, type);
-            if (list != null) {
-                allTransactions = list;
-                updateDateRange();
-            }
-        }
+        Log.d("test","đã vào 2");
+        allTransactions= mainBudgetViewModel.listTransaction.get();
+        allBudgets= mainBudgetViewModel.listBudget.get();
+        updateDateRange();
 
 
     }

@@ -1,6 +1,7 @@
 package com.example.expensetracker.viewmodel.budgetVM;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.ObservableField;
@@ -32,14 +33,17 @@ public class AddBudgetViewModel extends BaseObservable {
     }
     public  AddBudgetViewModel(Context context)
     {
-        SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        user=SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+
 //        category.observeForever(value->updateButton());
 //        moneyBudget.observeForever(value->updateButton());
 
     }
     public void addBudget(){
+        Log.d("test","Đã vào 2");
         if(category.get()==null ||  moneyBudget.get()==null || moneyBudget.get().equals("") || user==null)
         {
+            Log.d("test","Đã vào 3");
             if(moneyBudget.get()==null){
                 showMessage("Vui lòng nhập số tiền của giao dịch");
             }
@@ -49,6 +53,7 @@ public class AddBudgetViewModel extends BaseObservable {
             }
         }
         else {
+            Log.d("test","Đã vào 4");
             BigDecimal spend ;
             String cleanString = moneyBudget.get().toString().replaceAll("[,]", "");
             spend=new BigDecimal(cleanString);
@@ -65,10 +70,12 @@ public class AddBudgetViewModel extends BaseObservable {
             }
             try
             {
+                Log.d("test","Đã vào 5");
                 Budget newBudget= new Budget(user.getId(),category.get().getId(),spend,periodStirng);
                 BudgetRepository.getInstance().addBudget(newBudget, new ApiCallBack<Budget>() {
                     @Override
                     public void onSuccess(Budget budget) {
+                        Log.d("test","Đã vào 6");
                         showMessage("Thêm ngân sách thành công");
                         resetData();
 
@@ -77,10 +84,12 @@ public class AddBudgetViewModel extends BaseObservable {
                     @Override
                     public void onError(String message) {
                         showMessage("Thêm ngân sách thất bại");
+                        Log.d("test","Đã vào 7");
                     }
                 });
             }
             catch (Exception ex){
+                Log.d("test", "lỗi 2");
                 return;
             }
 

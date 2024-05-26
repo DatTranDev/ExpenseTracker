@@ -14,6 +14,7 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,13 +32,14 @@ public class MainBudgetViewModel extends BaseObservable {
     }
 
     public MainBudgetViewModel(Context context) {
-
+        getData(context);
 
 
     }
-    public void getData(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("budgets", Context.MODE_PRIVATE);
-        String budgetsJson = sharedPreferences.getString("budgets", "null");
+    public synchronized void  getData(Context context){
+        Log.d("test","đã vào 1");
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("budgets", Context.MODE_PRIVATE);
+        String budgetsJson = SharedPreferencesManager.getInstance(context).getString("budgets","null");
         if(!budgetsJson.equals("null")) {
 
             Gson gson = new Gson();
@@ -45,22 +47,20 @@ public class MainBudgetViewModel extends BaseObservable {
             }.getType();
             List<Budget> list = gson.fromJson(budgetsJson, type);
             if (list != null) {
-                allBudgets = list;
-                updateDateRange();
+                listBudget.set(list);
             }
         }
-        sharedPreferences = context.getSharedPreferences("transactions", Context.MODE_PRIVATE);
-        String transactionsJson = sharedPreferences.getString("transactions", "null");
+        String transactionsJson = SharedPreferencesManager.getInstance(context).getString("transactions","null");
         if(!transactionsJson.equals("null")) {
 
             Gson gson = new Gson();
             java.lang.reflect.Type type = new TypeToken<List<TransactionExp>>() {}.getType();
             List<TransactionExp> list = gson.fromJson(transactionsJson, type);
             if (list != null) {
-                allTransactions = list;
-                updateDateRange();
+                listTransaction.set(list);
             }
         }
+        Log.d("test","đã ra 1");
 
 
     }

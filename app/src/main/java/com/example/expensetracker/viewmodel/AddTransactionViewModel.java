@@ -37,7 +37,7 @@ public class AddTransactionViewModel extends BaseObservable {
     public AddTransactionViewModel(Context context)
     {
 
-        SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        user=SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
     }
 
 
@@ -52,7 +52,7 @@ public class AddTransactionViewModel extends BaseObservable {
 //        notifyPropertyChanged(BR.timeTransaction);
 //    }
 
-    public void addTransaction()
+    public synchronized void addTransaction()
     {
         if(timeTransaction.get()==null)
         {
@@ -86,7 +86,7 @@ public class AddTransactionViewModel extends BaseObservable {
             TransactionRepository.getInstance().addTransaction(newTransaction, new ApiCallBack<TransactionExp>() {
                 @Override
                 public void onSuccess(TransactionExp transactionExp) {
-                    Log.d("test","Thành công");
+                    showMessage("Thêm giao dịch thành công");
                 }
 
                 @Override

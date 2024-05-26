@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/text_thu"
+        android:id="@+id/nameCategory"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/inter_regular"
         android:textColor="@color/black"
@@ -35,7 +35,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/text_price"
         android:layout_marginTop="10dp"
-
         android:fontFamily="@font/inter_semibold"
         android:textColor="@color/red"
         android:layout_marginRight="15dp"

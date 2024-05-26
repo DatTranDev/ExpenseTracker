@@ -138,6 +138,12 @@ public class mainAddActivity extends AppCompatActivity {
         money.addTextChangedListener(new ThousandSeparatorTextWatcher(money));
         addTransactionViewModel.message.observe(this, message -> {
             if (message != null) {
+                if(message.equals("Thêm giao dịch thành công"))
+                {
+                    // Hiển thị thông báo
+                    Toast.makeText(mainAddActivity.this, message, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 // Hiển thị thông báo
                 Toast.makeText(mainAddActivity.this, message, Toast.LENGTH_SHORT).show();
             }
