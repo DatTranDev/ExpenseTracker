@@ -1,11 +1,18 @@
 package com.example.expensetracker.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.utils.Helper;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +47,7 @@ public class ChartViewModel extends ViewModel {
         BigDecimal outcome = BigDecimal.ZERO;
         for (TransactionExp transaction : transactions) {
             Date transactionDate = transaction.getCreatedAt();
-            if (transactionDate.after(period[0]) && transactionDate.before(period[1])) {
+            if (!isIncomeTransaction(transaction) && transactionDate.after(period[0]) && transactionDate.before(period[1])) {
                 outcome = outcome.add(transaction.getSpend());
             }
         }
@@ -49,20 +56,28 @@ public class ChartViewModel extends ViewModel {
 
     private Date[] getCurrentWeekPeriod() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         Date start = cal.getTime();
-        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        cal.add(Calendar.DAY_OF_WEEK, 6);
         Date end = cal.getTime();
+
+        start = Helper.normalizeDate(start, true);
+        end = Helper.normalizeDate(end, false);
         return new Date[]{start, end};
     }
 
     private Date[] getLastWeekPeriod() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         Date start = cal.getTime();
-        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        cal.add(Calendar.DAY_OF_WEEK, 6);
         Date end = cal.getTime();
+
+        start = Helper.normalizeDate(start, true);
+        end = Helper.normalizeDate(end, false);
         return new Date[]{start, end};
     }
 
@@ -72,6 +87,9 @@ public class ChartViewModel extends ViewModel {
         Date start = cal.getTime();
         cal.add(Calendar.MONTH, 1);
         Date end = cal.getTime();
+
+        start = Helper.normalizeDate(start, true);
+        end = Helper.normalizeDate(end, false);
         return new Date[]{start, end};
     }
 
@@ -82,6 +100,14 @@ public class ChartViewModel extends ViewModel {
         Date start = cal.getTime();
         cal.add(Calendar.MONTH, 1);
         Date end = cal.getTime();
+
+        start = Helper.normalizeDate(start, true);
+        end = Helper.normalizeDate(end, false);
         return new Date[]{start, end};
+    }
+
+    private boolean isIncomeTransaction(TransactionExp transaction) {
+        List<String> incomeCategories = Arrays.asList(Type.KHOAN_THU.getDisplayName(), Type.THU_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
+        return incomeCategories.contains(transaction.getCategory().getType());
     }
 }
