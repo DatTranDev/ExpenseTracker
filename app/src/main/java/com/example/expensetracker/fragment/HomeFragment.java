@@ -53,8 +53,8 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private WalletAdapter walletAdapter;
     private TransactionAdapter transactionAdapter;
     private List<TransactionExp> transactionList;
-    private List<Wallet> walletList; // for WalletFragment bottom sheet
-    private List<Wallet> subWallets; // for HomeFragment
+    private List<Wallet> walletList;
+    private List<Wallet> subWallets;
     private TabLayout filterTabLayout;
     private BarChart chartView;
     private TextView totalBalance;
@@ -66,6 +66,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private TextView emptyWallet;
     private TextView showReport;
     private TextView userName;
+    private TextView message;
     private WalletViewModel walletViewModel;
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
@@ -202,6 +203,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         showReport = view.findViewById(R.id.show_report);
         showWallet = view.findViewById(R.id.show_wallet);
         showTransaction = view.findViewById(R.id.show_transaction);
+        message = view.findViewById(R.id.message_empty);
     }
 
     private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {
@@ -281,15 +283,25 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
     private void updateChartView(BigDecimal value1, BigDecimal value2, String[] labels) {
         ArrayList<BarEntry> entries = new ArrayList<>();
-        if (value1.equals(BigDecimal.ZERO) && value2.equals(BigDecimal.ZERO)) {
-            chartView.setNoDataText("No data found");
-            chartView.invalidate();
-            return;
-        }
-        entries.add(new BarEntry(0f, value1.floatValue()));
-        entries.add(new BarEntry(1f, value2.floatValue()));
+        BarDataSet dataSet;
 
-        BarDataSet dataSet = new BarDataSet(entries, "Expenses");
+        if (value1.equals(BigDecimal.ZERO) && value2.equals(BigDecimal.ZERO)) {
+            entries.add(new BarEntry(0f, 40f));
+            entries.add(new BarEntry(1f, 40f));
+            dataSet = new BarDataSet(entries, "No Data");
+            dataSet.setColor(Color.parseColor("#CACAD8"));
+            dataSet.setDrawValues(false);
+            dataSet.setValueTextColor(Color.LTGRAY);
+            message.setVisibility(View.VISIBLE);
+        } else {
+            entries.add(new BarEntry(0f, value1.floatValue()));
+            entries.add(new BarEntry(1f, value2.floatValue()));
+            dataSet = new BarDataSet(entries, "Expenses");
+            dataSet.setColor(Color.parseColor("#F48484"));
+            dataSet.setValueTextColor(Color.BLACK);
+            message.setVisibility(View.GONE);
+        }
+
         BarData barData = new BarData(dataSet);
         chartView.setData(barData);
 
@@ -318,7 +330,6 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
         xAxis.setTypeface(typeface);
 
-        dataSet.setColor(Color.parseColor("#F48484"));
         dataSet.setHighlightEnabled(false);
         dataSet.setValueTextSize(16f);
 
