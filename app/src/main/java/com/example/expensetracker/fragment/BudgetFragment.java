@@ -117,13 +117,12 @@ public class BudgetFragment extends Fragment {
                  BudgetItem clickedItem = listBudgetShow.get(position);
                  Gson gson= new Gson();
                  String json = gson.toJson(clickedItem);
+                 String transaction= gson.toJson(filterTransactions);
 //                 Log.d("testttt",json);
                  Intent intent2= new Intent(getActivity(), DetailBudgetActivity.class);
-                 intent2.putExtra("selectedString",json);
+                 intent2.putExtra("selectedBudget",json);
+                 intent2.putExtra("listTransaction",transaction);
                  startActivity(intent2);
-
-
-
              }
          });
          //filter
@@ -274,7 +273,7 @@ public class BudgetFragment extends Fragment {
                     String name= budget.getCategory().getIcon().getLinking();
                     Log.d("Húp",name);
                     int id = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
-                    BudgetItem budgetItem= new BudgetItem(budget.getCategory().getName(),id,progress,Helper.formatMoney(budget.getAmount()),enable);
+                    BudgetItem budgetItem= new BudgetItem(budget.getCategory().getName(),id,progress,Helper.formatMoney(budget.getAmount()),enable,budget);
                     filterBudget.add(budgetItem);
                 }
                 catch (Exception ex)

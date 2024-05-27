@@ -32,6 +32,11 @@ public class DetailBudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.items = items;
         this.context=context;
     }
+    public void setData(List<Object> list)
+    {
+        this.items=list;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemViewType(int position) {
