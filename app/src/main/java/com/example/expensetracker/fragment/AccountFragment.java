@@ -3,9 +3,7 @@ package com.example.expensetracker.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
@@ -23,8 +21,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
 import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.bottom_sheet.AccountWallet;
-import com.example.expensetracker.bottom_sheet.CategoryAccount;
+import com.example.expensetracker.view.Account.AccountWallet;
 import com.example.expensetracker.bottom_sheet.DebtAccount;
 import com.example.expensetracker.bottom_sheet.ExportFileAccount;
 import com.example.expensetracker.bottom_sheet.NotifictionAccount;
@@ -37,7 +34,6 @@ import com.example.expensetracker.view.Account.ViewCategoryList;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.login.LoginActivity;
-import com.google.gson.Gson;
 
 
 import java.util.List;
@@ -100,7 +96,15 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
         walletAdapter = new WalletAdapter(walletList);
         getWalletList();
         walletLayout = view.findViewById(R.id.linearLayout_wallet);
-        walletLayout.setOnClickListener(v -> showAllWallet(walletList));
+//        walletLayout.setOnClickListener(v ->
+//                showAllWallet(walletList));
+        walletLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AccountWallet.class);
+                startActivity(intent);
+            }
+        });
 
         account_debt = view.findViewById(R.id.account_debt);
         account_debt.setOnClickListener(v -> {
@@ -136,11 +140,11 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
         return view;
     }
 
-    private void showAllWallet(List<Wallet> walletList) {
-        AccountWallet walletFragment = AccountWallet.newInstance(walletList);
-        walletFragment.setWalletUpdateListener( this);
-        walletFragment.show(getActivity().getSupportFragmentManager(), walletFragment.getTag());
-    }
+//    private void showAllWallet(List<Wallet> walletList) {
+//        AccountWallet walletFragment = AccountWallet.newInstance(walletList);
+//        walletFragment.setWalletUpdateListener( this);
+//        walletFragment.show(getActivity().getSupportFragmentManager(), walletFragment.getTag());
+//    }
 
     private void getWalletList() {
         AppUserRepository repository = AppUserRepository.getInstance();
