@@ -8,6 +8,7 @@ public class Category {
     private String parentCategoryId;
     private String type;
     private boolean isPublic;
+    private int _v;
 
     // Constructor
     public Category() {
@@ -22,6 +23,12 @@ public class Category {
     }
 
     // Getters and setters
+    public int get_v() {
+        return _v;
+    }
+    public void set_v(int _v) {
+        this._v = _v;
+    }
     public String getId() {
         return id;
     }

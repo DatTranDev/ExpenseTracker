@@ -55,14 +55,7 @@ public class AddCategoryViewModel extends BaseObservable {
     public  AddCategoryViewModel(Context context)
     {
         super();
-        sharedPreferences= context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        String userString= sharedPreferences.getString("user","null");
-
-        if(userString!="null")
-        {
-            gson = new Gson();
-            user= gson.fromJson(userString, AppUser.class);
-        }
+        user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
         categories = new MutableLiveData<>(getCategoriesFromSharedPreferences());
 
     }
@@ -106,7 +99,7 @@ public class AddCategoryViewModel extends BaseObservable {
                     }
                     @Override
                     public void onError(String message) {
-                        showMessage("Thêm danh mục thất bại");
+                        showMessage(message);
                     }
                 });
             }

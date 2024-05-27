@@ -94,6 +94,9 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".view.NotificationActivity"
+            android:exported="true"/>
 
         <activity
             android:name=".Fund.FundAddFund"

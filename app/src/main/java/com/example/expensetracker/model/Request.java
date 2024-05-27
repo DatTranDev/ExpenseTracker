@@ -1,9 +1,13 @@
 package com.example.expensetracker.model;
 
+import java.sql.Timestamp;
+
 public class Request {
+    private String id;
     private String senderId;
     private String receiverId;
     private String walletId;
+    private Timestamp createAt;
     private String name;
     private AppUser sender;
     private AppUser receiver;
@@ -22,6 +26,12 @@ public class Request {
         this.wallet = wallet;
     }
 
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
     public String getSenderId() {
         return senderId;
     }
@@ -76,5 +86,11 @@ public class Request {
 
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
+    }
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

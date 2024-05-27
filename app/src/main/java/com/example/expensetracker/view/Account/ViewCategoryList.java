@@ -2,29 +2,20 @@ package com.example.expensetracker.view.Account;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.adapter.WalletShowAdapter;
-import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
 import com.example.expensetracker.model.Category;
-import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.view.addTransaction.CategoryAdapter;
-import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
-import com.example.expensetracker.view.budget.AddBudgetActivity;
 import com.example.expensetracker.viewmodel.addTransactionVM.ChooseCategoryViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 

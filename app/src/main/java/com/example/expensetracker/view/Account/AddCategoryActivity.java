@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+
 import com.example.expensetracker.R;
 
 import com.example.expensetracker.databinding.ActivityAddCategoryBinding;
@@ -75,12 +77,23 @@ public class AddCategoryActivity extends AppCompatActivity {
             finish();
         });
 
-        addCategoryViewModel.get_message().observe(this, message -> {
-            if (message != null) {
-                setResult(1,intent);
-                Toast.makeText(AddCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
-                if (message == "Thêm danh mục thành công")
-                    finish();
+//        addCategoryViewModel.get_message().observe(this, message -> {
+//            if (message != null) {
+//                setResult(1,intent);
+//                Toast.makeText(AddCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
+//                if (message == "Thêm danh mục thành công")
+//                    finish();
+//            }
+//        });
+        addCategoryViewModel.get_message().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null) {
+                    setResult(1,intent);
+                    Toast.makeText(AddCategoryActivity.this, s, Toast.LENGTH_SHORT).show();
+                    if (s.equals("Thêm danh mục thành công"))
+                        finish();
+                }
             }
         });
 

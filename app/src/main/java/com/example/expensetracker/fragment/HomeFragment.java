@@ -1,11 +1,13 @@
 package com.example.expensetracker.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.view.NotificationActivity;
 import com.example.expensetracker.viewmodel.ChartViewModel;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.example.expensetracker.viewmodel.WalletViewModel;
@@ -67,6 +70,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private TextView showReport;
     private TextView userName;
     private TextView message;
+    private LinearLayout openNotification;
     private WalletViewModel walletViewModel;
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
@@ -204,6 +208,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         showWallet = view.findViewById(R.id.show_wallet);
         showTransaction = view.findViewById(R.id.show_transaction);
         message = view.findViewById(R.id.message_empty);
+        openNotification = view.findViewById(R.id.notification);
     }
 
     private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {
@@ -268,6 +273,13 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
                 if (mainActivity != null) {
                     mainActivity.navigateToTransactions();
                 }
+            }
+        });
+        openNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), NotificationActivity.class);
+                startActivity(intent);
             }
         });
     }
