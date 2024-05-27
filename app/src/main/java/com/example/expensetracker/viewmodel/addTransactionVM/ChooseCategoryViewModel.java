@@ -26,7 +26,7 @@ public class ChooseCategoryViewModel extends BaseObservable {
     private final MutableLiveData<List<Category>> listCategory;
     private CategoryAdapter adapter;
     AppUser user;    
-    public ChooseCategoryViewModel(Context context, String typeTransaction) {
+    public ChooseCategoryViewModel(Context context, String typeTransaction, boolean check) {
         Type type = new TypeToken<List<Category>>() {}.getType();
         List<Category> list = SharedPreferencesManager.getInstance(context).getList("categories", type);
         Log.d("1",list.toString());
@@ -34,8 +34,6 @@ public class ChooseCategoryViewModel extends BaseObservable {
         if(list!=null)
         {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<Category>>() {}.getType();
-            List<Category> list = gson.fromJson(categoryString,type);
 
             List<Category> sortedCategories = new ArrayList<>();
             Map<String, Category> parentMap = new HashMap<>();
