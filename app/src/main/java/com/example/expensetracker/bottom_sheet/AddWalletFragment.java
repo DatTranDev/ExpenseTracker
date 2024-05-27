@@ -79,6 +79,7 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
                 walletReq.setUserId(user.getId());
 
                 walletViewModel.addWallet(walletReq, getContext());
+
                 dismiss();
             }
         });
