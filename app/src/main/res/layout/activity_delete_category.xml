@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="DeleteCategoryViewModel"
+            type="com.example.expensetracker.viewmodel.accountVM.DeleteCategoryViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F8FC"
+        android:backgroundTint="#F6F8FC"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="28dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="28dp"
+                android:layout_gravity="bottom"
+                android:src="@drawable/ic_back_green" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="center"
+                android:layout_marginRight="48dp"
+                android:text="Danh mục " />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="220dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="2dp"
+            android:layout_gravity="center"
+            android:src="@drawable/gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="35dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="7dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/default_type_button"
+                android:src="@drawable/ic_spend" />
+
+            <TextView
+                android:id="@+id/title_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="@{DeleteCategoryViewModel.type}" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/background_border_white"
+            android:layout_width="330dp"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:paddingRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/iconcategory"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+
+                android:layout_marginLeft="9dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_question_black" />
+
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:ems="10"
+                android:text="@={DeleteCategoryViewModel.nameCategory}"
+                android:hint="Tên danh mục"
+                android:inputType="text"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chooseParentCategory"
+            android:layout_width="330dp"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:background="@drawable/background_border_white"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:id="@+id/iconparent"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="9dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_branch_gray" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nameParentCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="@{DeleteCategoryViewModel.parentCategory}"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textView28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Danh mục cha"
+                        android:visibility="@{(DeleteCategoryViewModel.parentCategory==null) ? View.VISIBLE : View.GONE}"
+                        android:textColor="#545454"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/imageView14"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="1.5dp"
+                        android:visibility="@{(DeleteCategoryViewModel.parentCategory==null) ? View.VISIBLE : View.GONE}"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/ic_back_right" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView15"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:visibility="@{(DeleteCategoryViewModel.parentCategory==null) ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/black_line" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/delete_category"
+            android:layout_width="125dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/red"
+            android:enabled="true"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_semibold"
+            android:onClick="@{()-> DeleteCategoryViewModel.deleteCategory()}"
+            android:text="Xóa"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+</layout>

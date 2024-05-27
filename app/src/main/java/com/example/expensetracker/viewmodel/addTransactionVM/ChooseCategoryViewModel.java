@@ -4,14 +4,19 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.databinding.BaseObservable;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
+
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 import com.google.gson.Gson;
+
+
+
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,19 +27,28 @@ import java.util.List;
 import java.util.Map;
 
 public class ChooseCategoryViewModel extends BaseObservable {
+    private MutableLiveData<List<Category>> listCategory;
+    private Context context;
+    private boolean check;
+    private ObservableField<String> typeTransaction = new ObservableField<>();
+    public void setTypeTransaction(String type) {
+        this.typeTransaction.set(type);
+        printList();
+    }
 
-    private final MutableLiveData<List<Category>> listCategory;
-    private CategoryAdapter adapter;
-    AppUser user;    
-    public ChooseCategoryViewModel(Context context, String typeTransaction, boolean check) {
+
+    public ChooseCategoryViewModel(Context context, boolean check) {
+        this.context = context;
+        this.check = check;
+    }
+
+    public synchronized void printList()
+    {
         Type type = new TypeToken<List<Category>>() {}.getType();
         List<Category> list = SharedPreferencesManager.getInstance(context).getList("categories", type);
-        Log.d("1",list.toString());
         listCategory = new MutableLiveData<>();
         if(list!=null)
         {
-            Gson gson = new Gson();
-
             List<Category> sortedCategories = new ArrayList<>();
             Map<String, Category> parentMap = new HashMap<>();
             Map<String, List<Category>> childMap = new HashMap<>();
@@ -62,7 +76,7 @@ public class ChooseCategoryViewModel extends BaseObservable {
 
             list = sortedCategories;
             List<Category> classify = new ArrayList<>();
-            if(typeTransaction.equals("spend"))
+            if(typeTransaction.get().equals("spend"))
             {
                 for(int i=0; i<list.size();i++)
                 {
@@ -77,7 +91,7 @@ public class ChooseCategoryViewModel extends BaseObservable {
                     }
                 }
             }
-            if(typeTransaction.equals("revenue"))
+            if(typeTransaction.get().equals("revenue"))
             {
                 for(int i=0; i<list.size();i++)
                 {
@@ -92,7 +106,7 @@ public class ChooseCategoryViewModel extends BaseObservable {
                     }
                 }
             }
-            if(typeTransaction.equals("loan"))
+            if(typeTransaction.get().equals("loan"))
             {
                 for(int i=0; i<list.size();i++)
                 {
@@ -108,9 +122,19 @@ public class ChooseCategoryViewModel extends BaseObservable {
                 }
             }
 
-
             listCategory.setValue(classify);
         }
+    }
+
+    public Category getParent(String id){
+        if (listCategory.getValue() != null) {
+            for (Category category : listCategory.getValue()) {
+                if (category.getId().equals(id)) {
+                    return category;
+                }
+            }
+        }
+        return null;
     }
 
     public LiveData<List<Category>> getListCategory() {

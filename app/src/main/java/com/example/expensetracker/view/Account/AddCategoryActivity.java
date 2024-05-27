@@ -3,31 +3,19 @@ package com.example.expensetracker.view.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
 import com.example.expensetracker.R;
-import com.example.expensetracker.databinding.ActivityAddBudgetBinding;
 import com.example.expensetracker.databinding.ActivityAddCategoryBinding;
 import com.example.expensetracker.model.Category;
-import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
-import com.example.expensetracker.view.addTransaction.ThousandSeparatorTextWatcher;
-import com.example.expensetracker.view.budget.AddBudgetActivity;
 import com.example.expensetracker.viewmodel.accountVM.AddCategoryViewModel;
-import com.example.expensetracker.viewmodel.budgetVM.AddBudgetViewModel;
 import com.google.gson.Gson;
 
 public class AddCategoryActivity extends AppCompatActivity {
@@ -88,9 +76,10 @@ public class AddCategoryActivity extends AppCompatActivity {
 
         addCategoryViewModel.get_message().observe(this, message -> {
             if (message != null) {
-
+                setResult(1,intent);
                 Toast.makeText(AddCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
-                finish();
+                if (message == "Thêm danh mục thành công")
+                    finish();
             }
         });
 
@@ -103,11 +92,19 @@ public class AddCategoryActivity extends AppCompatActivity {
         {
             Gson gson= new Gson();
             assert data != null;
-            Category selected= gson.fromJson(data.getStringExtra("selectedString"),Category.class);
-            addCategoryViewModel.parentCategory.set(selected);
-            int resourceId = getResources().getIdentifier(selected.getIcon().getLinking(), "drawable", getPackageName());
-            iconParentCategory.setImageResource(resourceId);
+            if (data.getStringExtra("selectedString") != null) {
+                Category selected = gson.fromJson(data.getStringExtra("selectedString"), Category.class);
+                addCategoryViewModel.parentCategory.set(selected);
+                int resourceId = getResources().getIdentifier(selected.getIcon().getLinking(), "drawable", getPackageName());
+                iconParentCategory.setImageResource(resourceId);
+            }
 
+            if (data.getStringExtra("selectedIcon") != null) {
+                Icon icon = gson.fromJson(data.getStringExtra("selectedIcon"), Icon.class);
+                addCategoryViewModel.iconCategory.set(icon);
+                int id = getResources().getIdentifier(icon.getLinking(), "drawable", getPackageName());
+                iconCategory.setImageResource(id);
+            }
         }
     }
 }

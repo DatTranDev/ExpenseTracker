@@ -55,19 +55,19 @@ import java.util.Locale;
 
 public class BudgetFragment extends Fragment {
 
-   private Button btnAddBudget;
-   private TabLayout tabLayout;
-   RecyclerView recycler;
-   LinearLayout  transactionEmpty, layoutStatus;
-   Intent intent;
-   Context context;
-   private ImageView test;
-   private TextView time,status,total_amount,total_money_enable,total_spend;
-   ProgressBar test2;
+    private Button btnAddBudget;
+    private TabLayout tabLayout;
+    RecyclerView recycler;
+    LinearLayout  transactionEmpty, layoutStatus;
+    Intent intent;
+    Context context;
+    private ImageView test;
+    private TextView time,status,total_amount,total_money_enable,total_spend;
+    ProgressBar test2;
     BudgetAdapter adapter;
-  MainBudgetViewModel mainBudgetViewModel;
-//   private String period="Tuần";
-   private List<TransactionExp> allTransactions= new ArrayList<>();
+    MainBudgetViewModel mainBudgetViewModel;
+    //   private String period="Tuần";
+    private List<TransactionExp> allTransactions= new ArrayList<>();
     private List<Budget> allBudgets= new ArrayList<>();
     public BudgetFragment() {
         // Required empty public constructor
@@ -81,34 +81,34 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-         View view= inflater.inflate(R.layout.fragment_budget, container, false);
-         context= getContext();
+        View view= inflater.inflate(R.layout.fragment_budget, container, false);
+        context= getContext();
 //         FragmentBudgetBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_budget);
 //         mainBudgetViewModel= new MainBudgetViewModel(context);
 //         binding.setMainBudgetViewModel(mainBudgetViewModel);
-         btnAddBudget= view.findViewById(R.id.buttonAddBudget);
+        btnAddBudget= view.findViewById(R.id.buttonAddBudget);
 //        allTransactions= mainBudgetViewModel.listTransaction.get();
 //        allBudgets= mainBudgetViewModel.listBudget.get();
 
 
         tabLayout= view.findViewById(R.id.filter);
-         time= view.findViewById(R.id.timeBudget);
-         transactionEmpty= view.findViewById(R.id.transaction_empty);
-         recycler=view.findViewById(R.id.budget_list);
-         recycler.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
-         adapter= new BudgetAdapter(new ArrayList<>());
-         recycler.setAdapter(adapter);
-         status= view.findViewById(R.id.status_text);
-         total_spend= view.findViewById(R.id.total_spend);
-         total_amount= view.findViewById(R.id.total_amount);
-         total_money_enable= view.findViewById(R.id.total_money_enable);
-         layoutStatus= view.findViewById(R.id.layout1);
-         adjustTimePeriod(0);
-         getData();
-         btnAddBudget.setOnClickListener(v -> {
-             intent= new Intent(getActivity(), AddBudgetActivity.class);
-             startActivity(intent);
-         });
+        time= view.findViewById(R.id.timeBudget);
+        transactionEmpty= view.findViewById(R.id.transaction_empty);
+        recycler=view.findViewById(R.id.budget_list);
+        recycler.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
+        adapter= new BudgetAdapter(new ArrayList<>());
+        recycler.setAdapter(adapter);
+        status= view.findViewById(R.id.status_text);
+        total_spend= view.findViewById(R.id.total_spend);
+        total_amount= view.findViewById(R.id.total_amount);
+        total_money_enable= view.findViewById(R.id.total_money_enable);
+        layoutStatus= view.findViewById(R.id.layout1);
+        adjustTimePeriod(0);
+        getData();
+        btnAddBudget.setOnClickListener(v -> {
+            intent= new Intent(getActivity(), AddBudgetActivity.class);
+            startActivity(intent);
+        });
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -242,10 +242,10 @@ public class BudgetFragment extends Fragment {
                 int progress=0;
                 BigDecimal enable= new BigDecimal(0);
                 for (TransactionExp transaction : filteredTransactions) {
-                   if(transaction.getCategoryId().equals(budget.getCategoryId()))
-                   {
-                       spendBudget=spendBudget.add(transaction.getSpend());
-                   }
+                    if(transaction.getCategoryId().equals(budget.getCategoryId()))
+                    {
+                        spendBudget=spendBudget.add(transaction.getSpend());
+                    }
                 }
                 totalSpend=totalSpend.add(spendBudget);//Tính tổng chi
                 BigDecimal result = spendBudget.divide(budget.getAmount(), 10, RoundingMode.HALF_UP); // Làm tròn kết quả với độ chính xác 10 chữ số thập phân

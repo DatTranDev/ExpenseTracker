@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensetracker.R;
 import com.example.expensetracker.model.Icon;
+import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder
 
     // Interface for handling item click events
     public interface OnItemClickListener {
-        void onItemClick(Icon icon);
+        void onItemClick(int position);
     }
 
     // Method to set the click listener
@@ -48,7 +49,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder
     @Override
     public IconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.icon_item, parent, false);
-        return new IconViewHolder(itemView);
+        return new IconViewHolder(itemView, mListener);
     }
 
     @Override
@@ -68,9 +69,21 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder
 
     public class IconViewHolder extends RecyclerView.ViewHolder{
         private ImageView iconImageView;
-        public IconViewHolder(@NonNull View itemView) {
+        public IconViewHolder(@NonNull View itemView, final IconAdapter.OnItemClickListener listener) {
             super(itemView);
             iconImageView = itemView.findViewById(R.id.iconImageView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
