@@ -10,9 +10,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.adapter.ViewPagerAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.databinding.ActivityMainBinding;
+import com.example.expensetracker.fragment.AccountFragment;
+import com.example.expensetracker.fragment.BudgetFragment;
+import com.example.expensetracker.fragment.FundFragment;
+import com.example.expensetracker.fragment.HomeFragment;
+import com.example.expensetracker.fragment.TransactionFragment;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.repository.IconRepository;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
@@ -24,14 +28,13 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private ViewPager2 viewPager;
-    private ViewPagerAdapter adapter;
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        replaceFragment(new HomeFragment());
         //TEST API
         //USER
         //GET ALL CATEGORY
@@ -235,52 +238,24 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(message);
 //            }
 //        });
-
-        adapter = new ViewPagerAdapter(this);
         fab = findViewById(R.id.fab);
-        viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
-
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                switch (position) {
-                    case 0:
-                        binding.navBar.setSelectedItemId(R.id.home);
-                        fab.show();
-                        break;
-                    case 1:
-                        binding.navBar.setSelectedItemId(R.id.transactionLog);
-                        fab.show();
-                        break;
-                    case 2:
-                        binding.navBar.setSelectedItemId(R.id.budget);
-                        fab.hide();
-                        break;
-                    case 3:
-                        binding.navBar.setSelectedItemId(R.id.mutualFund);
-                        fab.hide();
-                        break;
-                    case 4:
-                        binding.navBar.setSelectedItemId(R.id.account);
-                        fab.hide();
-                        break;
-                }
-            }
-        });
 
         binding.navBar.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
-                viewPager.setCurrentItem(0);
+                replaceFragment(new HomeFragment());
+                fab.show();
             } else if (item.getItemId() == R.id.transactionLog) {
-                viewPager.setCurrentItem(1);
+                replaceFragment(new TransactionFragment());
+                fab.show();
             } else if (item.getItemId() == R.id.budget) {
-                viewPager.setCurrentItem(2);
+                replaceFragment(new BudgetFragment());
+                fab.hide();
             } else if (item.getItemId() == R.id.mutualFund) {
-                viewPager.setCurrentItem(3);
+                replaceFragment(new FundFragment());
+                fab.hide();
             } else if (item.getItemId() == R.id.account) {
-                viewPager.setCurrentItem(4);
+                replaceFragment(new AccountFragment());
+                fab.hide();
             }
 
             return true;
@@ -292,11 +267,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigateToTransactions() {
-        viewPager.setCurrentItem(1, true);
+        replaceFragment(new TransactionFragment());
+        binding.navBar.setSelectedItemId(R.id.transactionLog);
     }
 
     public void navigateToHome() {
-        viewPager.setCurrentItem(0, true);
+        replaceFragment(new HomeFragment());
+        binding.navBar.setSelectedItemId(R.id.home);
     }
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -305,7 +282,4 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(fragment.getTag());
         fragmentTransaction.commit();
     }
-
-
-
 }
