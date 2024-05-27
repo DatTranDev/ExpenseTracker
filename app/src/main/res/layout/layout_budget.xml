@@ -4,6 +4,8 @@
     android:layout_height="145dp"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/background_border_white">
 
     <LinearLayout
@@ -13,14 +15,14 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView10"
+            android:id="@+id/imageCategory"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="12dp"
             android:src="@drawable/ic_move" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/nameCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -32,15 +34,15 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/money_budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
+            android:layout_marginRight="15dp"
             android:fontFamily="@font/inter_regular"
-            android:text="500.000" />
+            android:text="500.000"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,18 +69,30 @@
             android:layout_marginLeft="14dp"
             android:text="01/04 - 30/04" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView13"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/background_border_white"
+    <ProgressBar
+        android:id="@+id/progress_budget"
         android:layout_width="300dp"
         android:layout_height="4dp"
-        android:src="@drawable/gray_line" />
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:background="@drawable/background_border_white"
+        android:progressBackgroundTint="@color/medium_gray"
+        android:progressTint="@color/green"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progress="25"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView13"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="15dp"-->
+
+<!--        android:background="@drawable/background_border_white"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="4dp"-->
+<!--        android:src="@drawable/gray_line" />-->
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/moneyEnabled"
         android:gravity="right"
         android:paddingRight="20dp"
         android:layout_width="match_parent"

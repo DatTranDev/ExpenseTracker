@@ -9,17 +9,23 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
+import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.view.addTransaction.CategoryAdapter;
+import com.google.gson.Gson;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChooseCategoryViewModel extends BaseObservable {
 
     private final MutableLiveData<List<Category>> listCategory;
-    AppUser user;
+    private CategoryAdapter adapter;
+    AppUser user;    
     public ChooseCategoryViewModel(Context context, String typeTransaction) {
         Type type = new TypeToken<List<Category>>() {}.getType();
         List<Category> list = SharedPreferencesManager.getInstance(context).getList("categories", type);
@@ -27,11 +33,46 @@ public class ChooseCategoryViewModel extends BaseObservable {
         listCategory = new MutableLiveData<>();
         if(list!=null)
         {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Category>>() {}.getType();
+            List<Category> list = gson.fromJson(categoryString,type);
+
+            List<Category> sortedCategories = new ArrayList<>();
+            Map<String, Category> parentMap = new HashMap<>();
+            Map<String, List<Category>> childMap = new HashMap<>();
+
+            // Phân loại các category vào parentMap và childMap
+            for (int i=0; i<list.size();i++) {
+                if (list.get(i).getParentCategoryId()==null) {
+                    parentMap.put(list.get(i).getId(), list.get(i));
+                } else {
+                    childMap.computeIfAbsent(list.get(i).getParentCategoryId(), k -> new ArrayList<>()).add(list.get(i));
+                }
+            }
+
+            // Sắp xếp các parent category và thêm vào sortedCategories
+            for (Map.Entry<String, Category> entry : parentMap.entrySet()) {
+                Category parent = entry.getValue();
+                sortedCategories.add(parent);
+
+                // Thêm các child category tương ứng nếu có
+                List<Category> children = childMap.get(parent.getId());
+                if (children != null) {
+                    sortedCategories.addAll(children);
+                }
+            }
+
+            list = sortedCategories;
             List<Category> classify = new ArrayList<>();
             if(typeTransaction.equals("spend"))
             {
                 for(int i=0; i<list.size();i++)
                 {
+                    if (check){
+                        if (list.get(i).getType().equals("Khoản chi") && list.get(i).getParentCategoryId() == null)
+                            classify.add(list.get(i));
+                    }
+                    else
                     if(list.get(i).getType().equals("Khoản chi"))
                     {
                         classify.add(list.get(i));
@@ -42,6 +83,11 @@ public class ChooseCategoryViewModel extends BaseObservable {
             {
                 for(int i=0; i<list.size();i++)
                 {
+                    if (check){
+                        if (list.get(i).getType().equals("Khoản thu") && list.get(i).getParentCategoryId() == null)
+                            classify.add(list.get(i));
+                    }
+                    else
                     if(list.get(i).getType().equals("Khoản thu"))
                     {
                         classify.add(list.get(i));
@@ -52,24 +98,18 @@ public class ChooseCategoryViewModel extends BaseObservable {
             {
                 for(int i=0; i<list.size();i++)
                 {
+                    if (check){
+                        if (!list.get(i).getType().equals("Khoản thu") && !list.get(i).getType().equals("Khoản chi") && list.get(i).getParentCategoryId() == null)
+                            classify.add(list.get(i));
+                    }
+                    else
                     if(!list.get(i).getType().equals("Khoản thu") && !list.get(i).getType().equals("Khoản chi"))
                     {
                         classify.add(list.get(i));
                     }
                 }
             }
-//            for(int i=0; i<classify.size();i++)
-//            {
-//                String id= classify.get(i).getId();
-//                int stt=i+1;
-//                for(int j=i+1;j<classify.size();j++)
-//                {
-//                    if(classify.get(j).getParentCategoryId()==id)
-//                    {
-//
-//                    }
-//                }
-//            }
+
 
             listCategory.setValue(classify);
         }
@@ -78,6 +118,5 @@ public class ChooseCategoryViewModel extends BaseObservable {
     public LiveData<List<Category>> getListCategory() {
         return listCategory;
     }
-
 
 }

@@ -5,35 +5,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityChooseCategoryBinding;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.viewmodel.addTransactionVM.ChooseCategoryViewModel;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseCategoryActivity extends AppCompatActivity {
     private  ImageView btnBack;
-    private AppCompatButton test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_category);
         Intent intent = getIntent();
         String type= intent.getStringExtra("typeTrans");
+        boolean check = intent.getBooleanExtra("check",false);
         Log.d("lỗi",type);
         ActivityChooseCategoryBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_choose_category);
-        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this,type);
+        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this,type,check);
         binding.setChooseCategoryViewModel(chooseCategoryViewModel);
 
         btnBack=findViewById(R.id.btnBackCategory);
@@ -81,9 +79,6 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         });
 
         // Quan sát dữ liệu thay đổi trong ViewModel
-
-
-
 
     }
 
