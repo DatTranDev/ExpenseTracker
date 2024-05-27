@@ -13,6 +13,7 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,15 +28,12 @@ public class ChooseIconViewModel extends BaseObservable{
     public ChooseIconViewModel(Context context) {
         SharedPreferences sharedPreferences= context.getSharedPreferences("icons",Context.MODE_PRIVATE);
         String iconString= sharedPreferences.getString("icons","null");
-        Log.d("1",iconString);
-        listIcon = new MutableLiveData<>();
-        if(iconString!="null")
-        {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Category>>() {}.getType();
-            List<Icon> list = gson.fromJson(iconString,type);
-            Log.d("type",type.toString());
+        Type type = new TypeToken<List<Icon>>() {}.getType();
+        List<Icon> list = SharedPreferencesManager.getInstance(context).getList("icons",type);
 
+        listIcon = new MutableLiveData<>();
+        if(list != null)
+        {
             listIcon.setValue(list);
         }
     }

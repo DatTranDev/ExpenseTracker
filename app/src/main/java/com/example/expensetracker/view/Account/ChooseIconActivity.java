@@ -34,7 +34,7 @@ public class ChooseIconActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_icon);
-
+        Intent intent = getIntent();
         ActivityChooseIconBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_choose_icon);
         ChooseIconViewModel chooseIconViewModel= new ChooseIconViewModel(this);
         binding.setChooseIconViewModel(chooseIconViewModel);
@@ -73,18 +73,14 @@ public class ChooseIconActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new IconAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Icon clickedItem) {
-                if (clickedItem != null) {
-                    Gson gson = new Gson();
-                    String json = gson.toJson(clickedItem);
-                    Intent intent = new Intent();
-                    Log.d("testttt", json);
-                    intent.putExtra("selectedIcon", json);
-                    setResult(1, intent);
-                    finish();
-                } else {
-                    Log.e("ChooseIconActivity", "Clicked item is null");
-                }
+            public void onItemClick(int position) {
+                Icon clickedItem = chooseIconViewModel.getListIcon().getValue().get(position);
+                Gson gson= new Gson();
+                String json = gson.toJson(clickedItem);
+                Log.d("testttt",json);
+                intent.putExtra("selectedIcon",json);
+                setResult(1,intent);
+                finish();
             }
         });
     }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
@@ -25,6 +26,7 @@ import com.example.expensetracker.view.budget.AddBudgetActivity;
 import com.example.expensetracker.viewmodel.addTransactionVM.ChooseCategoryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,22 +37,22 @@ public class ViewCategoryList extends AppCompatActivity {
     private TabLayout tabLayoutFilter;
     private AppCompatButton btnAdd;
     private RecyclerView recyclerView;
-    private WalletShowAdapter walletAdapter;
-    private WalletUpdateListener walletUpdateListener;
-    private TextView total;
-    private List<Wallet> wallets;
+
+    private ChooseCategoryViewModel chooseCategoryViewModel;
+    private CategoryAdapter adapter;
+    private String type;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_category);
         Intent intent = getIntent();
+        chooseCategoryViewModel = new ChooseCategoryViewModel(this, false);
+        //chooseCategoryViewModel.setTypeTransaction("spend");
 
         initView();
 
-        //ActivityChooseCategoryBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_category);
-        //ChooseCategoryViewModel chooseCategoryViewModel = new ChooseCategoryViewModel(this, type);
-        //binding.setChooseCategoryViewModel(chooseCategoryViewModel);
-
+        getCategoriesForUser("spend");
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +77,9 @@ public class ViewCategoryList extends AppCompatActivity {
             }
         });
 
-        getCategoriesForUser("spend");
-
 
         btnAdd.setOnClickListener(v -> {
             Intent intent1 = new Intent(ViewCategoryList.this, AddCategoryActivity.class);
-            String type = "";
             switch (getFilter()) {
                 case "Khoản chi":
                     type = "spend";
@@ -93,21 +92,33 @@ public class ViewCategoryList extends AppCompatActivity {
                     break;
             }
             intent1.putExtra("typeTrans",type);
-            startActivity(intent1);
+            startActivityForResult(intent1, 69);
             getCategoriesForUser(type);
         });
 
+        //setupAdapter();
+
     }
+
+    private void setupAdapter() {
+
+        adapter.setOnItemClickListener(position -> {
+            Category clickedItem = chooseCategoryViewModel.getListCategory().getValue().get(position);
+            Gson gson = new Gson();
+            String json = gson.toJson(clickedItem);
+            Intent intent2 = new Intent(ViewCategoryList.this, DeleteCategoryActivity.class);
+            intent2.putExtra("selectedCategory", json);
+            intent2.putExtra("type", getFilter());
+            startActivity(intent2);
+        });
+    }
+
 
     private void initView() {
         btnAdd = findViewById(R.id.btnGoogleLogin);
         btnCancel = findViewById(R.id.category_back);
         tabLayoutFilter = findViewById(R.id.filter);
         recyclerView = findViewById(R.id.category_list);
-        // recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // walletAdapter = new WalletShowAdapter(wallets, this);
-        //total = view.findViewById(R.id.wallet_total_amount);
-        // recyclerView.setAdapter(walletAdapter);
     }
 
     private void filterCategories() {
@@ -131,12 +142,42 @@ public class ViewCategoryList extends AppCompatActivity {
     }
 
     private void getCategoriesForUser(String check) {
-        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this,check,false);
+        chooseCategoryViewModel.setTypeTransaction(check);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // Tạo Adapter
 
-        CategoryAdapter adapter = new CategoryAdapter(this, new ArrayList<>());
+        adapter = new CategoryAdapter(this, new ArrayList<>() );
+        recyclerView.setAdapter(adapter);
+        chooseCategoryViewModel.getListCategory().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                if (categories != null && !categories.isEmpty()) {
+                    adapter.updateCategories(categories);
+                }
+            }
+        });
+
+        adapter.setOnItemClickListener(position -> {
+            Category clickedItem = chooseCategoryViewModel.getListCategory().getValue().get(position);
+            Gson gson = new Gson();
+            String json = gson.toJson(clickedItem);
+            Intent intent2 = new Intent(ViewCategoryList.this, DeleteCategoryActivity.class);
+            intent2.putExtra("selectedCategory", json);
+            intent2.putExtra("type", getFilter());
+            Category parent = chooseCategoryViewModel.getParent(clickedItem.getParentCategoryId());
+            String json2 = gson.toJson(parent);
+            intent2.putExtra("parentCate",json2);
+
+            startActivityForResult(intent2 , 70);
+        });
+    }
+
+    private void getCategoriesForUser2(String check) {
+        chooseCategoryViewModel.setTypeTransaction(check);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new CategoryAdapter(this, new ArrayList<>() );
         recyclerView.setAdapter(adapter);
         chooseCategoryViewModel.getListCategory().observe(this, new Observer<List<Category>>() {
             @Override
@@ -148,10 +189,31 @@ public class ViewCategoryList extends AppCompatActivity {
         });
     }
 
-
     private String getFilter() {
         TabLayout.Tab tab = tabLayoutFilter.getTabAt(tabLayoutFilter.getSelectedTabPosition());
         String period = tab.getText().toString();
         return period;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 69 && resultCode == 1){
+            getCategoriesForUser(type);
+        }
+        if (requestCode == 70 && resultCode == 1)
+        {
+            if (data != null && data.hasExtra("typedelete")) {
+                String typeDelete = data.getStringExtra("typedelete");
+                switch (typeDelete) {
+                    case "Khoản chi":
+                        getCategoriesForUser("spend");
+                        break;
+                    case "Khoản thu":
+                        getCategoriesForUser("revenue");
+                        break;
+                }
+            }
+        }
     }
 }
