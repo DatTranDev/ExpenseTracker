@@ -9,6 +9,15 @@ public class CategoryReq {
     private String type;
     private boolean isPublic;
 
+    public CategoryReq(String userId,String name, String iconId, String parentCategoryId, String type, boolean isPublic) {
+        this.userId = userId;
+        this.name = name;
+        this.iconId = iconId;
+        this.parentCategoryId = parentCategoryId;
+        this.type = type;
+        this.isPublic = isPublic;
+    }
+
     public String getUserId() {
         return userId;
     }

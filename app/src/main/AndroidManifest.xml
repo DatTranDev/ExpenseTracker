@@ -53,6 +53,20 @@
         <activity
             android:name=".view.register.RegisterActivity"
             android:exported="true" />
+
+        <activity android:name=".view.Account.ViewCategoryList"
+            android:exported="true"></activity>
+
+        <activity android:name=".view.Account.AddCategoryActivity"
+            android:exported="true"></activity>
+
+        <activity android:name=".view.Account.DeleteCategoryActivity"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".view.Account.ChooseIconActivity"
+            android:exported="true" />
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

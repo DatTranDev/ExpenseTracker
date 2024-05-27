@@ -31,16 +31,18 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_category);
         Intent intent = getIntent();
         String type= intent.getStringExtra("typeTrans");
+        boolean check = intent.getBooleanExtra("check",false);
         Log.d("lỗi",type);
         ActivityChooseCategoryBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_choose_category);
-        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this,type);
+        ChooseCategoryViewModel chooseCategoryViewModel= new ChooseCategoryViewModel(this, check);
+        chooseCategoryViewModel.setTypeTransaction(type);
         binding.setChooseCategoryViewModel(chooseCategoryViewModel);
 
         btnBack=findViewById(R.id.btnBackCategory);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               setResult(0,intent);
+                setResult(0,intent);
                 finish();
             }
         });

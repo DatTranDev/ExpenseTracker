@@ -33,7 +33,7 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
-
+import com.example.expensetracker.view.Account.ViewCategoryList;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.login.LoginActivity;
@@ -112,12 +112,13 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
 
         account_category = view.findViewById(R.id.account_category);
         account_category.setOnClickListener(v -> {
-            CategoryAccount categoryAccount = new CategoryAccount();
-            categoryAccount.show(getActivity().getSupportFragmentManager(), categoryAccount.getTag());
+            Intent intent2= new Intent(getActivity(), ViewCategoryList.class);
+            startActivity(intent2);
         });
 
         account_notification = view.findViewById(R.id.account_notifiication_layout);
         account_notification.setOnClickListener(v -> {
+
             NotifictionAccount notifictionAccount = new NotifictionAccount();
             notifictionAccount.show(getActivity().getSupportFragmentManager(), notifictionAccount.getTag());
         });
