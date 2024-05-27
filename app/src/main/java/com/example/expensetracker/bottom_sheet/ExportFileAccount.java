@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,11 +30,11 @@ import com.example.expensetracker.exportfile.PDFExporter;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,9 +72,8 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         bottomSheetDialog.setContentView(viewDialog);
 
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        AppUser user = new Gson().fromJson(userJson, AppUser.class);
+
+        AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(viewDialog);
 

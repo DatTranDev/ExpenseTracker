@@ -21,6 +21,7 @@ import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,9 +79,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     public void updateTransaction(List<TransactionExp> transactions) {
+        List<TransactionExp> temp = new ArrayList<>();
+
+        for (TransactionExp transactionExp : transactions) {
+            temp.add(transactionExp);
+        }
+
         if (transactionExps != null) {
             transactionExps.clear();
-            transactionExps.addAll(transactions);
+            transactionExps.addAll(temp);
             notifyDataSetChanged();
         } else {
             transactionExps = transactions;

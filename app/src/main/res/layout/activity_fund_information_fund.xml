@@ -101,7 +101,7 @@
                         android:layout_marginBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        app:srcCompat="@drawable/cost_of_living" />
+                        app:srcCompat="@drawable/ic_wallet" />
 
                 </LinearLayout>
 
@@ -267,7 +267,7 @@
                         android:layout_marginBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        app:srcCompat="@drawable/travel" />
+                        app:srcCompat="@drawable/ic_wallet" />
 
                 </LinearLayout>
 

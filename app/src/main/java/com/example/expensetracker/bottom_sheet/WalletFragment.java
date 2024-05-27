@@ -1,21 +1,16 @@
 package com.example.expensetracker.bottom_sheet;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,12 +22,9 @@ import com.example.expensetracker.databinding.BottomSheetWalletBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
-import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -63,9 +55,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletS
         BottomSheetWalletBinding binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_wallet, container, false);
         binding.setLifecycleOwner(this);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(binding.getRoot());
         observeViewModel();

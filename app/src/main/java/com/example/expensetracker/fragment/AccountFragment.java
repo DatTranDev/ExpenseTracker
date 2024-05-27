@@ -33,8 +33,8 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
-
 import com.example.expensetracker.view.Account.ViewCategoryList;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.login.LoginActivity;
 import com.google.gson.Gson;
@@ -83,9 +83,8 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
+
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         userName = view.findViewById(R.id.account_name);
         userName.setText(user.getUserName());
@@ -219,10 +218,7 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
     }
 
     private void logout() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("user");
-        editor.apply();
+        SharedPreferencesManager.getInstance(getActivity()).removeKey("user");
 
         // Hiển thị thông báo đăng xuất thành công
         Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();

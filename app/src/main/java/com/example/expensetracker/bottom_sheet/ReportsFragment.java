@@ -38,12 +38,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -52,6 +54,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -259,6 +262,9 @@ public class ReportsFragment extends BottomSheetDialogFragment {
 
 
         LinkedHashMap<String, BigDecimal> periodAmountMap = new LinkedHashMap<>();
+
+        startDate = Helper.normalizeDate(startDate, true);
+        endDate = Helper.normalizeDate(endDate, false);
 
         Calendar calendarStart = Calendar.getInstance();
         calendarStart.setTime(startDate);
@@ -486,21 +492,31 @@ public class ReportsFragment extends BottomSheetDialogFragment {
             colors = new int[]{Color.parseColor("#90BE6D"), Color.parseColor("#EF5DA8"), Color.parseColor("#5D5FEF")};
             for (Map.Entry<Type, BigDecimal> entry : incomeMap.entrySet()) {
                 if (!entry.getValue().equals(BigDecimal.ZERO)) {
+                    BigDecimal percentage = entry.getValue().multiply(BigDecimal.valueOf(100)).divide(totalIncomeAmount, 2, RoundingMode.HALF_UP);
+                    String percentageText = percentage.toString() + "%";
+
                     int iconId = getContext().getResources().getIdentifier(getIconName(entry.getKey()), "drawable", getContext().getPackageName());
                     Drawable icon = ResourcesCompat.getDrawable(getResources(), iconId, null);
                     int iconWidth = 150;
                     int iconHeight = 150;
                     CustomDrawable customIcon = new CustomDrawable(icon, iconWidth, iconHeight);
-                    entries.add(new PieEntry(entry.getValue().floatValue(), "", customIcon));
+                    entries.add(new PieEntry(entry.getValue().floatValue(), percentageText, customIcon));
                 }
             }
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setIconsOffset(new MPPointF(0, 40));
+        dataSet.setIconsOffset(new MPPointF(0, 60));
         dataSet.setColors(colors);
         dataSet.setSliceSpace(1f);
         dataSet.setDrawValues(false);
+
+        dataSet.setValueFormatter(new ValueFormatter() {
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                PieEntry pieEntry = (PieEntry) entry;
+                return pieEntry.getLabel();
+            }
+        });
 
         PieData pieData = new PieData(dataSet);
         incomeChart.setData(pieData);
@@ -539,12 +555,15 @@ public class ReportsFragment extends BottomSheetDialogFragment {
             colors = new int[] { Color.parseColor("#2D9CDB"), Color.parseColor("#F8961E"), Color.parseColor("#F9C74F") };
             for (Map.Entry<Type, BigDecimal> entry : outcomeMap.entrySet()) {
                 if (!entry.getValue().equals(BigDecimal.ZERO)) {
+                    BigDecimal percentage = entry.getValue().multiply(BigDecimal.valueOf(100)).divide(totalOutcomeAmount, 2, RoundingMode.HALF_UP);
+                    String percentageText = percentage.toString() + "%";
+
                     int iconId = getContext().getResources().getIdentifier(getIconName(entry.getKey()), "drawable", getContext().getPackageName());
                     Drawable icon = ResourcesCompat.getDrawable(getResources(), iconId, null);
                     int iconWidth = 150;
                     int iconHeight = 150;
                     CustomDrawable customIcon = new CustomDrawable(icon, iconWidth, iconHeight);
-                    entries.add(new PieEntry(entry.getValue().floatValue(), "", customIcon));
+                    entries.add(new PieEntry(entry.getValue().floatValue(), percentageText, customIcon));
                 }
             }
         }
@@ -554,6 +573,14 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         dataSet.setColors(colors);
         dataSet.setSliceSpace(1f);
         dataSet.setDrawValues(false);
+
+        dataSet.setValueFormatter(new ValueFormatter() {
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                PieEntry pieEntry = (PieEntry) entry;
+                return pieEntry.getLabel();
+            }
+        });
+
 
         PieData pieData = new PieData(dataSet);
         outcomeChart.setData(pieData);

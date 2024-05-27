@@ -1,22 +1,20 @@
 package com.example.expensetracker.viewmodel;
+
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.databinding.BaseObservable;
-//import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.expensetracker.BR;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.TransactionRepository;
-import com.google.gson.Gson;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -39,16 +37,7 @@ public class AddTransactionViewModel extends BaseObservable {
     public AddTransactionViewModel(Context context)
     {
 
-        SharedPreferences sharedPreferences= context.getSharedPreferences("user",Context.MODE_PRIVATE);
-
-
-        String userString= sharedPreferences.getString("user","null");
-
-        if(userString!="null")
-        {
-            Gson gson = new Gson();
-            user= gson.fromJson(userString,AppUser.class);
-        }
+        SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
     }
 
 

@@ -1,40 +1,24 @@
 package com.example.expensetracker.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.content.SharedPreferences;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Cartesian;
-import com.anychart.core.cartesian.series.Column;
-import com.anychart.enums.Anchor;
-import com.anychart.enums.HoverMode;
-import com.anychart.enums.Position;
-import com.anychart.enums.TooltipPositionMode;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
-import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.bottom_sheet.ReportsFragment;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.bottom_sheet.WalletFragment;
@@ -43,8 +27,8 @@ import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
-import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.viewmodel.ChartViewModel;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
@@ -57,24 +41,20 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements TransactionAdapter.OnItemClickListener, WalletUpdateListener {
     private WalletAdapter walletAdapter;
     private TransactionAdapter transactionAdapter;
     private List<TransactionExp> transactionList;
-    private List<Wallet> walletList; // for WalletFragment bottom sheet
-    private List<Wallet> subWallets; // for HomeFragment
+    private List<Wallet> walletList;
+    private List<Wallet> subWallets;
     private TabLayout filterTabLayout;
     private BarChart chartView;
     private TextView totalBalance;
@@ -86,6 +66,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private TextView emptyWallet;
     private TextView showReport;
     private TextView userName;
+    private TextView message;
     private WalletViewModel walletViewModel;
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
@@ -107,9 +88,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
+        user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
 
         initView(view);
 
@@ -224,6 +203,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         showReport = view.findViewById(R.id.show_report);
         showWallet = view.findViewById(R.id.show_wallet);
         showTransaction = view.findViewById(R.id.show_transaction);
+        message = view.findViewById(R.id.message_empty);
     }
 
     private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {
@@ -303,15 +283,25 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
     private void updateChartView(BigDecimal value1, BigDecimal value2, String[] labels) {
         ArrayList<BarEntry> entries = new ArrayList<>();
-        if (value1.equals(BigDecimal.ZERO) && value2.equals(BigDecimal.ZERO)) {
-            chartView.setNoDataText("No data found");
-            chartView.invalidate();
-            return;
-        }
-        entries.add(new BarEntry(0f, value1.floatValue()));
-        entries.add(new BarEntry(1f, value2.floatValue()));
+        BarDataSet dataSet;
 
-        BarDataSet dataSet = new BarDataSet(entries, "Expenses");
+        if (value1.equals(BigDecimal.ZERO) && value2.equals(BigDecimal.ZERO)) {
+            entries.add(new BarEntry(0f, 40f));
+            entries.add(new BarEntry(1f, 40f));
+            dataSet = new BarDataSet(entries, "No Data");
+            dataSet.setColor(Color.parseColor("#CACAD8"));
+            dataSet.setDrawValues(false);
+            dataSet.setValueTextColor(Color.LTGRAY);
+            message.setVisibility(View.VISIBLE);
+        } else {
+            entries.add(new BarEntry(0f, value1.floatValue()));
+            entries.add(new BarEntry(1f, value2.floatValue()));
+            dataSet = new BarDataSet(entries, "Expenses");
+            dataSet.setColor(Color.parseColor("#F48484"));
+            dataSet.setValueTextColor(Color.BLACK);
+            message.setVisibility(View.GONE);
+        }
+
         BarData barData = new BarData(dataSet);
         chartView.setData(barData);
 
@@ -340,7 +330,6 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
         xAxis.setTypeface(typeface);
 
-        dataSet.setColor(Color.parseColor("#F48484"));
         dataSet.setHighlightEnabled(false);
         dataSet.setValueTextSize(16f);
 

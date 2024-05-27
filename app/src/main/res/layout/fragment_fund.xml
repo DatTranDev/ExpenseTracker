@@ -30,94 +30,303 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TableLayout
-                android:id="@+id/TableLayoutQuy3"
-                android:layout_width="150dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/fund_add_fund"
-                android:stretchColumns="*"
-                app:layout_constraintStart_toEndOf="@+id/TableLayoutQuy2"
+            <Button
+                android:id="@+id/buttonRutQuy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/fund_add_fund_confirm_button"
+                android:text="Rút Quỹ"
+                android:textSize="24sp"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2" />
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <TableLayout
+                        android:id="@+id/TableLayoutQuy1"
                         android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_height="120dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/fund_table_layout_background_select"
+                        android:stretchColumns="*">
 
-                        <ImageView
-                            android:id="@+id/imageThemQuy"
+                        <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center"
-                            android:paddingTop="5dp"
-                            android:src="@drawable/new_fund" />
+                            android:layout_height="match_parent">
 
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/txtQuySinhHoat"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Quỹ sinh hoạt"
+                                android:textStyle="bold" />
 
-                </TableRow>
+                        </TableRow>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/txtThemQuy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="60dp"
-                        android:gravity="center"
-                        android:text="Thêm quỹ"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                </TableRow>
-            </TableLayout>
+                            <TextView
+                                android:id="@+id/txtTienSinhHoat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp"
+                                android:layout_span="2"
+                                android:gravity="center"
+                                android:text="20,000,000 đ"
+                                android:textStyle="bold" />
+                        </TableRow>
+                    </TableLayout>
 
-            <TableLayout
-                android:id="@+id/TableLayoutThanhVien3"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/fund_add_member"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toEndOf="@+id/TableLayoutThanhVien2"
+                    <TableLayout
+                        android:id="@+id/TableLayoutQuy2"
+                        android:layout_width="150dp"
+                        android:layout_height="120dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/fund_table_layout_background_unselect"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txtQuyDuLich"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Quỹ du lịch"
+                                android:textStyle="bold" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txtTienDuLich"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp"
+                                android:layout_span="2"
+                                android:gravity="center"
+                                android:text="300,000,000 đ"
+                                android:textStyle="bold" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/TableLayoutQuy3"
+                        android:layout_width="150dp"
+                        android:layout_height="120dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/fund_add_fund"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="150dp"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/imageThemQuy"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:paddingTop="5dp"
+                                    android:src="@drawable/new_fund" />
+
+                            </LinearLayout>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txtThemQuy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp"
+                                android:gravity="center"
+                                android:text="Thêm quỹ"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutThanhVien">
 
-                <TableRow
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imageThanhVien3"
-                        android:layout_width="150dp"
-                        android:layout_height="80dp"
-                        android:paddingTop="15dp"
-                        android:src="@drawable/member" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtTenThanhVien3"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:text="Thêm thành viên"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                    <TableLayout
+                        android:id="@+id/TableLayoutThanhVien1"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/fund_table_layout_member"
+                        android:orientation="horizontal">
 
-                </TableRow>
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-            </TableLayout>
+                            <ImageView
+                                android:id="@+id/imageThanhVien1"
+                                android:layout_width="150dp"
+                                android:layout_height="70dp"
+                                android:paddingTop="10dp"
+                                android:src="@drawable/man" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtTenThanhVien1"
+                                android:layout_width="match_parent"
+                                android:layout_height="70dp"
+                                android:gravity="center"
+                                android:text="Trương Đắc Điền"
+                                android:textStyle="bold" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/TableLayoutThanhVien2"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/fund_table_layout_member"
+                        android:orientation="horizontal">
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imageThanhVien2"
+                                android:layout_width="150dp"
+                                android:layout_height="70dp"
+                                android:paddingTop="10dp"
+                                android:src="@drawable/woman" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtTenThanhVien2"
+                                android:layout_width="match_parent"
+                                android:layout_height="70dp"
+                                android:gravity="center"
+                                android:text="Nguyễn Thúy An"
+                                android:textStyle="bold" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/TableLayoutThanhVien3"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/fund_add_member"
+                        android:orientation="horizontal">
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imageThanhVien3"
+                                android:layout_width="150dp"
+                                android:layout_height="70dp"
+                                android:paddingTop="15dp"
+                                android:src="@drawable/member" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtTenThanhVien3"
+                                android:layout_width="match_parent"
+                                android:layout_height="70dp"
+                                android:gravity="center"
+                                android:text="Thêm thành viên"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </TableRow>
+
+                    </TableLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <LinearLayout
                 android:id="@+id/linearLayoutQuy"
@@ -156,129 +365,18 @@
 
             </LinearLayout>
 
-            <TableLayout
-                android:id="@+id/TableLayoutQuy1"
-                android:layout_width="150dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/fund_table_layout_background_select"
-                android:stretchColumns="*"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/imageSinhHoat"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:paddingLeft="5dp"
-                            android:src="@drawable/cost_of_living" />
-
-                        <TextView
-                            android:id="@+id/txtQuySinhHoat"
-                            android:layout_width="110dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Quỹ sinh hoạt"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/txtTienSinhHoat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="60dp"
-                        android:layout_span="2"
-                        android:gravity="center"
-                        android:text="20,000,000 đ"
-                        android:textStyle="bold" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:id="@+id/TableLayoutQuy2"
-                android:layout_width="150dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/fund_table_layout_background_unselect"
-                android:stretchColumns="*"
-                app:layout_constraintStart_toEndOf="@+id/TableLayoutQuy1"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/imageDuLich"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:paddingLeft="5dp"
-                            android:src="@drawable/travel"
-                            tools:srcCompat="@drawable/travel" />
-
-                        <TextView
-                            android:id="@+id/txtQuyDuLich"
-                            android:layout_width="110dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Quỹ du lịch"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/txtTienDuLich"
-                        android:layout_width="wrap_content"
-                        android:layout_height="60dp"
-                        android:layout_span="2"
-                        android:gravity="center"
-                        android:text="300,000,000 đ"
-                        android:textStyle="bold" />
-                </TableRow>
-            </TableLayout>
-
             <LinearLayout
                 android:id="@+id/linearLayoutGiaoDich"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.432"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TableLayoutQuy1">
+                app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
 
                 <TextView
                     android:id="@+id/txtThongTinGiaoDich"
@@ -320,10 +418,10 @@
 
                 <ImageView
                     android:id="@+id/imageNguoi1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/man" />
+                    android:src="@drawable/ic_spend" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -395,7 +493,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/woman" />
+                    android:src="@drawable/ic_spend" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -470,129 +568,8 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/ptxtHienThiThanhVien"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:text="Hiện tất cả"
-                    android:textColor="@color/medium_gray"
-                    android:textSize="12sp" />
-
             </LinearLayout>
 
-            <TableLayout
-                android:id="@+id/TableLayoutThanhVien1"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/fund_table_layout_member"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutThanhVien">
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imageThanhVien1"
-                        android:layout_width="150dp"
-                        android:layout_height="60dp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/man" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtTenThanhVien1"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:text="Trương Đắc Điền"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/txtCoPhan1"
-                        android:layout_width="110dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/fund_textview_layout_member"
-                        android:gravity="center"
-                        android:text="68%"
-                        android:textColor="@color/white" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:id="@+id/TableLayoutThanhVien2"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/fund_table_layout_member"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toEndOf="@+id/TableLayoutThanhVien1"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutThanhVien">
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imageThanhVien2"
-                        android:layout_width="150dp"
-                        android:layout_height="60dp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/woman" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtTenThanhVien2"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:text="Nguyễn Thúy An"
-                        android:textStyle="bold" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/txtCoPhan2"
-                        android:layout_width="110dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/fund_textview_layout_member"
-                        android:gravity="center"
-                        android:text="32%"
-                        android:textColor="@color/white" />
-                </TableRow>
-            </TableLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
