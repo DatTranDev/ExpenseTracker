@@ -3,6 +3,8 @@ package com.example.expensetracker.model;
 import java.math.BigDecimal;
 
 public class Budget {
+
+    private String id;
     private String userId;
     private AppUser user;
     private Category category;
@@ -22,6 +24,14 @@ public class Budget {
     }
 
     // Getters and setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getCurrency() {
         return currency;
     }

@@ -159,7 +159,7 @@
                 android:layout_marginTop="7dp"
                 >
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/button_edit"
                     android:layout_width="140dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
@@ -169,7 +169,7 @@
                     android:text="Sửa"
                     android:textSize="15sp" />
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/button_delete"
                     android:layout_width="140dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="32dp"

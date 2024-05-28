@@ -103,7 +103,7 @@ public class DetailBudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 String nam= dateTime.format(DateTimeFormatter.ofPattern("yyyy"));
                 date.setText(ngay);
                 weekdays.setText(thu);
-                monthYear.setText("Tháng"+thang+", "+nam);
+                monthYear.setText("Tháng "+thang+", "+nam);
             }
 
         }

@@ -77,6 +77,8 @@
             android:exported="true"/>
         <activity android:name=".view.budget.DetailBudgetActivity"
             android:exported="true"/>
+        <activity android:name=".view.budget.EditBudgetActivity"
+            android:exported="true"/>
 
 
 

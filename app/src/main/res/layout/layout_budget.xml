@@ -59,7 +59,7 @@
             android:src="@drawable/ic_time_budget" />
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/timeBudget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12.5sp"

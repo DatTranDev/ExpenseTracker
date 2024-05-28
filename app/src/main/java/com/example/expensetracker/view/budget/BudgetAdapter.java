@@ -22,6 +22,7 @@ import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 import com.example.expensetracker.view.addTransaction.ChooseWallerAdapter;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>{
@@ -69,7 +70,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
     public static class BudgetViewHolder extends RecyclerView.ViewHolder {
         TextView name;
-        TextView amount,enable;
+        TextView amount,enable,time;
         ProgressBar progressBar;
         ImageView icon;
 
@@ -81,6 +82,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
             enable= itemView.findViewById((R.id.moneyEnabled));
             icon= itemView.findViewById(R.id.imageCategory);
             progressBar= itemView.findViewById(R.id.progress_budget);
+            time=itemView.findViewById(R.id.timeBudget);
 
             //sự kiện click
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +101,10 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
         public void bind(BudgetItem item) {
            name.setText(item.nameCategory);
            amount.setText(item.Amount);
+            // Định dạng Date thành chuỗi "dd/MM"
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
+            time.setText(formatter.format(item.startDate)+" - "+formatter.format(item.endDate));
+            String formattedDate = formatter.format(item.startDate);
            if(item.Progress>100)
            {
                progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#F35656")));

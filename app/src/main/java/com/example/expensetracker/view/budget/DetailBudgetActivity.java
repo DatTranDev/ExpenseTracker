@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,8 @@ public class DetailBudgetActivity extends AppCompatActivity {
     TextView total,name,enable,time;
     ImageView icon;
     LinearLayout empty;
+    Button edit,delete;
+    String listBudget;
     private DetailBudgetViewModel detailBudgetViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,8 @@ public class DetailBudgetActivity extends AppCompatActivity {
         enable= findViewById(R.id.moneyEnabled);
         time=findViewById(R.id.time);
         icon= findViewById(R.id.imageCategory);
+        edit=findViewById(R.id.button_edit);
+        delete=findViewById(R.id.button_delete);
 
         DetailBudgetAdapter adapter= new DetailBudgetAdapter(new ArrayList<>(),this);
         recyclerView.setAdapter(adapter);
@@ -69,6 +75,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
         //get data
         String budgetItemString=intent.getStringExtra("selectedBudget");
         String listTransactionString= intent.getStringExtra("listTransaction");
+        listBudget= intent.getStringExtra("listBudget");
         Type type = new TypeToken<List<TransactionExp>>() {}.getType();
         budgetItem=gson.fromJson(budgetItemString,BudgetItem.class);
         listTransaction= gson.fromJson(listTransactionString,type);
@@ -77,6 +84,8 @@ public class DetailBudgetActivity extends AppCompatActivity {
         adapter.setData(listTransactionShow);
         name.setText(budgetItem.nameCategory);
         total.setText(budgetItem.Amount);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
+        time.setText(formatter.format(budgetItem.startDate)+" - "+formatter.format(budgetItem.endDate));
         if(budgetItem.Progress>100)
         {
 
@@ -107,6 +116,13 @@ public class DetailBudgetActivity extends AppCompatActivity {
         {
             icon.setImageResource(budgetItem.idIcon);
         }
+        edit.setOnClickListener(v->{
+            Intent intent2= new Intent(DetailBudgetActivity.this,EditBudgetActivity.class);
+            intent2.putExtra("budget",budgetItemString);
+            intent2.putExtra("listBudget",listBudget);
+            startActivityForResult(intent2,69);
+
+        });
     }
     public List<Object> groupTransactionsByDate(List<TransactionExp> transactions) {
         List<Object> groupedItems = new ArrayList<>();
