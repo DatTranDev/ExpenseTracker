@@ -14,7 +14,9 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
@@ -30,67 +32,36 @@ public class MainBudgetViewModel extends BaseObservable {
     }
 
     public MainBudgetViewModel(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
-        if(user!=null) {
-            Log.d("testt", "đã tới 1");
-            AppUserRepository.getInstance().getTransaction(user.getId(), new ApiCallBack<List<TransactionExp>>() {
-                @Override
-                public void onSuccess(List<TransactionExp> transactions) {
-                    listTransaction.set(transactions);
-                    Log.d("testt", "đã tới 2");
-                }
+        getData(context);
 
-                @Override
-                public void onError(String errorMessage) {
-                    Log.d("testt", "đã tới 11");
-                    showMessage("reset");
-                }
-            });
-            AppUserRepository.getInstance().getBudget(user.getId(), new ApiCallBack<List<Budget>>() {
-                @Override
-                public void onSuccess(List<Budget> budgets) {
-                    listBudget.set(budgets);
-                    Log.d("testt", "đã tới 3");
-                    showMessage("reset");
-                }
-
-                @Override
-                public void onError(String message) {
-
-                }
-            });
-        }
 
     }
-    public void getData(){
-//        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-//        String userJson = sharedPreferences.getString("user", "");
-//        user = new Gson().fromJson(userJson, AppUser.class);
-        if(user!=null) {
-            AppUserRepository.getInstance().getTransaction(user.getId(), new ApiCallBack<List<TransactionExp>>() {
-                @Override
-                public void onSuccess(List<TransactionExp> transactions) {
-                    listTransaction.set(transactions);
-                }
+    public synchronized void  getData(Context context){
+        Log.d("test","đã vào 1");
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("budgets", Context.MODE_PRIVATE);
+        String budgetsJson = SharedPreferencesManager.getInstance(context).getString("budgets","null");
+        if(!budgetsJson.equals("null")) {
 
-                @Override
-                public void onError(String errorMessage) {
-                }
-            });
-            AppUserRepository.getInstance().getBudget(user.getId(), new ApiCallBack<List<Budget>>() {
-                @Override
-                public void onSuccess(List<Budget> budgets) {
-                    listBudget.set(budgets);
-                }
-
-                @Override
-                public void onError(String message) {
-
-                }
-            });
-            showMessage("reset");
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<List<Budget>>() {
+            }.getType();
+            List<Budget> list = gson.fromJson(budgetsJson, type);
+            if (list != null) {
+                listBudget.set(list);
+            }
         }
+        String transactionsJson = SharedPreferencesManager.getInstance(context).getString("transactions","null");
+        if(!transactionsJson.equals("null")) {
+
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<List<TransactionExp>>() {}.getType();
+            List<TransactionExp> list = gson.fromJson(transactionsJson, type);
+            if (list != null) {
+                listTransaction.set(list);
+            }
+        }
+        Log.d("test","đã ra 1");
+
+
     }
 }

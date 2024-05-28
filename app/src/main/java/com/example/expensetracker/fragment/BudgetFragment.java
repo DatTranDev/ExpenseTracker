@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,25 +22,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
 //import com.example.expensetracker.databinding.FragmentBudgetBinding;
+import com.example.expensetracker.databinding.FragmentBudgetBinding;
 import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
+import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.MainActivity;
-
 import com.example.expensetracker.view.budget.AddBudgetActivity;
 import com.example.expensetracker.view.budget.BudgetAdapter;
 import com.example.expensetracker.view.budget.BudgetItem;
+import com.example.expensetracker.view.budget.DetailBudgetActivity;
 import com.example.expensetracker.viewmodel.budgetVM.MainBudgetViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,24 +53,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+//import java.lang.reflect.Type;
 
 
 public class BudgetFragment extends Fragment {
 
-    private Button btnAddBudget;
-    private TabLayout tabLayout;
-    RecyclerView recycler;
-    LinearLayout  transactionEmpty, layoutStatus;
-    Intent intent;
-    Context context;
-    private ImageView test;
-    private TextView time,status,total_amount,total_money_enable,total_spend;
-    ProgressBar test2;
+   private Button btnAddBudget;
+   private TabLayout tabLayout;
+   RecyclerView recycler;
+   LinearLayout  transactionEmpty, layoutStatus;
+   Intent intent;
+   Context context;
+   private ImageView test;
+   private TextView time,status,total_amount,total_money_enable,total_spend;
+   ProgressBar test2;
     BudgetAdapter adapter;
-    MainBudgetViewModel mainBudgetViewModel;
-    //   private String period="Tuần";
-    private List<TransactionExp> allTransactions= new ArrayList<>();
+  MainBudgetViewModel mainBudgetViewModel;
+//   private String period="Tuần";
+   private List<TransactionExp> allTransactions= new ArrayList<>();
     private List<Budget> allBudgets= new ArrayList<>();
+    private List<TransactionExp> filterTransactions= new ArrayList<>();
+    private  List<BudgetItem> listBudgetShow;
     public BudgetFragment() {
         // Required empty public constructor
     }
@@ -81,34 +86,48 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-
-        View view= inflater.inflate(R.layout.fragment_budget, container, false);
-        context= getContext();
-//         FragmentBudgetBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_budget);
-//         mainBudgetViewModel= new MainBudgetViewModel(context);
-//         binding.setMainBudgetViewModel(mainBudgetViewModel);
-        btnAddBudget= view.findViewById(R.id.buttonAddBudget);
-//        allTransactions= mainBudgetViewModel.listTransaction.get();
-//        allBudgets= mainBudgetViewModel.listBudget.get();
-
+         View view= inflater.inflate(R.layout.fragment_budget, container, false);
+         context= getContext();
+         FragmentBudgetBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_budget, container, false);
+         mainBudgetViewModel= new MainBudgetViewModel(context);
+         binding.setMainBudgetViewModel(mainBudgetViewModel);
+         btnAddBudget= view.findViewById(R.id.buttonAddBudget);
         tabLayout= view.findViewById(R.id.filter);
-        time= view.findViewById(R.id.timeBudget);
-        transactionEmpty= view.findViewById(R.id.transaction_empty);
-        recycler=view.findViewById(R.id.budget_list);
-        recycler.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
-        adapter= new BudgetAdapter(new ArrayList<>());
-        recycler.setAdapter(adapter);
-        status= view.findViewById(R.id.status_text);
-        total_spend= view.findViewById(R.id.total_spend);
-        total_amount= view.findViewById(R.id.total_amount);
-        total_money_enable= view.findViewById(R.id.total_money_enable);
-        layoutStatus= view.findViewById(R.id.layout1);
-        adjustTimePeriod(0);
-        getData();
-        btnAddBudget.setOnClickListener(v -> {
-            intent= new Intent(getActivity(), AddBudgetActivity.class);
-            startActivity(intent);
-        });
+         time= view.findViewById(R.id.timeBudget);
+         transactionEmpty= view.findViewById(R.id.transaction_empty);
+         recycler=view.findViewById(R.id.budget_list);
+         recycler.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
+         adapter= new BudgetAdapter(new ArrayList<>());
+         recycler.setAdapter(adapter);
+         status= view.findViewById(R.id.status_text);
+         total_spend= view.findViewById(R.id.total_spend);
+         total_amount= view.findViewById(R.id.total_amount);
+         total_money_enable= view.findViewById(R.id.total_money_enable);
+         layoutStatus= view.findViewById(R.id.layout1);
+         //setup
+         adjustTimePeriod(0);
+         getData();
+         btnAddBudget.setOnClickListener(v -> {
+             intent= new Intent(getActivity(), AddBudgetActivity.class);
+             startActivity(intent);
+         });
+         adapter.setOnItemClickListener(new BudgetAdapter.OnItemClickListener() {
+             @Override
+             public void onItemClick(int position) {
+                 BudgetItem clickedItem = listBudgetShow.get(position);
+                 Gson gson= new Gson();
+                 String json = gson.toJson(clickedItem);
+                 String transaction= gson.toJson(filterTransactions);
+                 String listBudget= gson.toJson(allBudgets);
+//                 Log.d("testttt",json);
+                 Intent intent2= new Intent(getActivity(), DetailBudgetActivity.class);
+                 intent2.putExtra("selectedBudget",json);
+                 intent2.putExtra("listTransaction",transaction);
+                 intent2.putExtra("listBudget",listBudget);
+                 startActivity(intent2);
+             }
+         });
+         //filter
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -179,7 +198,6 @@ public class BudgetFragment extends Fragment {
 
     }
     private void adjustTimePeriod(int increment) {
-        Log.d("testt", "đã tới 8");
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
         String[] dateRange = time.getText().toString().split(" - ");
         try {
@@ -234,6 +252,7 @@ public class BudgetFragment extends Fragment {
                 }
             }
         }
+        filterTransactions=filteredTransactions;
         for(Budget budget: allBudgets){
             if(budget.getPeriod().equals(getFilter()))
             {
@@ -242,10 +261,10 @@ public class BudgetFragment extends Fragment {
                 int progress=0;
                 BigDecimal enable= new BigDecimal(0);
                 for (TransactionExp transaction : filteredTransactions) {
-                    if(transaction.getCategoryId().equals(budget.getCategoryId()))
-                    {
-                        spendBudget=spendBudget.add(transaction.getSpend());
-                    }
+                   if(transaction.getCategoryId().equals(budget.getCategoryId()))
+                   {
+                       spendBudget=spendBudget.add(transaction.getSpend());
+                   }
                 }
                 totalSpend=totalSpend.add(spendBudget);//Tính tổng chi
                 BigDecimal result = spendBudget.divide(budget.getAmount(), 10, RoundingMode.HALF_UP); // Làm tròn kết quả với độ chính xác 10 chữ số thập phân
@@ -256,7 +275,7 @@ public class BudgetFragment extends Fragment {
                     String name= budget.getCategory().getIcon().getLinking();
                     Log.d("Húp",name);
                     int id = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
-                    BudgetItem budgetItem= new BudgetItem(budget.getCategory().getName(),id,progress,Helper.formatMoney(budget.getAmount()),enable);
+                    BudgetItem budgetItem= new BudgetItem(budget.getCategory().getName(),id,progress,Helper.formatMoney(budget.getAmount()),enable,budget,startDate,endDate);
                     filterBudget.add(budgetItem);
                 }
                 catch (Exception ex)
@@ -302,7 +321,7 @@ public class BudgetFragment extends Fragment {
             layoutStatus.setBackgroundResource(R.drawable.background_border_green);
             total_money_enable.setText("0");
         }
-
+        listBudgetShow=filterBudget;
         adapter.updateBudgets(filterBudget);
         if (!filterBudget.isEmpty()) {
             transactionEmpty.setVisibility(View.GONE);
@@ -311,34 +330,11 @@ public class BudgetFragment extends Fragment {
         }
     }
     public void getData(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        AppUser user = new Gson().fromJson(userJson, AppUser.class);
-        if(user!=null) {
-            AppUserRepository.getInstance().getTransaction(user.getId(), new ApiCallBack<List<TransactionExp>>() {
-                @Override
-                public void onSuccess(List<TransactionExp> transactions) {
-                    allTransactions=(transactions);
-                    updateDateRange();
-                }
+        Log.d("test","đã vào 2");
+        allTransactions= mainBudgetViewModel.listTransaction.get();
+        allBudgets= mainBudgetViewModel.listBudget.get();
+        updateDateRange();
 
-                @Override
-                public void onError(String errorMessage) {
-                }
-            });
-            AppUserRepository.getInstance().getBudget(user.getId(), new ApiCallBack<List<Budget>>() {
-                @Override
-                public void onSuccess(List<Budget> budgets) {
 
-                    allBudgets=(budgets);
-                    updateDateRange();
-                }
-
-                @Override
-                public void onError(String message) {
-
-                }
-            });
-        }
     }
 }

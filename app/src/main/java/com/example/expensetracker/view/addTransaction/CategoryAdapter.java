@@ -16,7 +16,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.expensetracker.R;
 import com.example.expensetracker.model.Category;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Category> data;
@@ -38,6 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         data=list;
         this.context = context;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -99,15 +103,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void bind(Category item) {
             name.setText(item.getName());
-            if (item.getIcon() != null) {
-                String iconName = item.getIcon().getLinking();
-                int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
-                if (resourceId != 0) {
-                    image.setImageResource(resourceId);
-                } else {
-                    // Xử lý trường hợp icon không tồn tại
-                    image.setImageResource(R.drawable.error); // Một icon mặc định
-                }
+            String iconName= item.getIcon().getLinking();
+            int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+            if (resourceId != 0) {
+                image.setImageResource(resourceId);
+            } else {
+                // Xử lý trường hợp icon không tồn tại
+                image.setImageResource(R.drawable.error); // Một icon mặc định
             }
         }
     }
@@ -138,15 +140,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void bind(Category item) {
             name.setText(item.getName());
-            if (item.getIcon() != null) {
-                String iconName = item.getIcon().getLinking();
-                int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
-                if (resourceId != 0) {
-                    image.setImageResource(resourceId);
-                } else {
-                    // Xử lý trường hợp icon không tồn tại
-                    image.setImageResource(R.drawable.error); // Một icon mặc định
-                }
+            String iconName= item.getIcon().getLinking();
+            int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+            if (resourceId != 0) {
+                image.setImageResource(resourceId);
+            } else {
+                // Xử lý trường hợp icon không tồn tại
+                image.setImageResource(R.drawable.error); // Một icon mặc định
             }
         }
     }

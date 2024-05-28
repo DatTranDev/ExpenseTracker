@@ -1,6 +1,8 @@
 package com.example.expensetracker.view.budget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 import com.example.expensetracker.view.addTransaction.ChooseWallerAdapter;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>{
@@ -67,7 +70,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
     public static class BudgetViewHolder extends RecyclerView.ViewHolder {
         TextView name;
-        TextView amount,enable;
+        TextView amount,enable,time;
         ProgressBar progressBar;
         ImageView icon;
 
@@ -79,6 +82,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
             enable= itemView.findViewById((R.id.moneyEnabled));
             icon= itemView.findViewById(R.id.imageCategory);
             progressBar= itemView.findViewById(R.id.progress_budget);
+            time=itemView.findViewById(R.id.timeBudget);
 
             //sự kiện click
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -97,14 +101,32 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
         public void bind(BudgetItem item) {
            name.setText(item.nameCategory);
            amount.setText(item.Amount);
+            // Định dạng Date thành chuỗi "dd/MM"
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
+            time.setText(formatter.format(item.startDate)+" - "+formatter.format(item.endDate));
+            String formattedDate = formatter.format(item.startDate);
            if(item.Progress>100)
            {
+               progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#F35656")));
                progressBar.setProgress(100);
                enable.setText("Vượt quá " + Helper.formatMoney(new BigDecimal(0).subtract(item.Enabled)));
            }
            else {
                progressBar.setProgress(item.Progress);
                enable.setText("Còn lại " + Helper.formatMoney(item.Enabled));
+               if(item.Progress < 60)
+               {
+                   progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#1AEB16"))); // Thay Color.RED bằng màu bạn muốn
+               }
+               if(item.Progress>=60&& item.Progress<=90)
+               {
+                   progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#FFC75C")));
+               }
+               if(item.Progress>90)
+               {
+                   progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#F35656")));
+               }
+
            }
            if(item.idIcon==0)
            {

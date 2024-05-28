@@ -510,5 +510,18 @@
         android:textSize="15sp" />
 
 </LinearLayout>
+<!--    <FrameLayout-->
+<!--        android:id="@+id/loading"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#80000000"-->
+<!--        android:visibility="gone"-->
+<!--        android:gravity="center">-->
+
+<!--        <ProgressBar-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_gravity="center"/>-->
+<!--    </FrameLayout>-->
 
 </layout>
