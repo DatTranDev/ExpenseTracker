@@ -2,6 +2,7 @@ package com.example.expensetracker.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,11 +66,21 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_transaction, container, false);
         AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(view);
+
+        Calendar calendarStart = Calendar.getInstance(Locale.US);
+        Calendar calendarEnd = Calendar.getInstance(Locale.US);
+        calendarStart.setFirstDayOfWeek(Calendar.MONDAY);
+        calendarEnd.setFirstDayOfWeek(Calendar.MONDAY);
+        calendarStart.set(Calendar.DAY_OF_WEEK, calendarStart.getFirstDayOfWeek());
+        calendarEnd.set(Calendar.DAY_OF_WEEK, calendarEnd.getFirstDayOfWeek());
+        calendarEnd.add(Calendar.DAY_OF_WEEK, 6);
+        time.setText(Helper.formatDate(calendarStart.getTime()) + " - " + Helper.formatDate(calendarEnd.getTime()));
+
+
         setupObservers();
         setupListeners();
 

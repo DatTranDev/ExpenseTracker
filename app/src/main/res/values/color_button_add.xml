@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="inactiveButtonColor">#E4E4E4</color>
+    <color name="activeButtonColor">#00DDB0</color>
+</resources>

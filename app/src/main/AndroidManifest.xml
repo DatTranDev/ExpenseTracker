@@ -21,17 +21,24 @@
         android:theme="@style/Theme.ExpenseTracker"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-
+        <activity
+            android:name=".Fund.FundModifyFundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Fund.FundFragmentActivity"
+            android:exported="false" />
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="true" />
-        <activity android:name=".view.login.ForgotPasswordActivity"
-            android:exported="true"/>
-        <activity android:name=".view.login.ResetPasswordActivity"
-            android:exported="true"/>
-        <activity android:name=".view.login.VerifyCodeActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".view.login.ForgotPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.login.ResetPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.login.VerifyCodeActivity"
+            android:exported="true" />
         <activity
             android:name=".view.register.WelcomeActivity"
             android:exported="true">
@@ -53,23 +60,35 @@
         <activity
             android:name=".view.register.RegisterActivity"
             android:exported="true" />
+
+        <activity android:name=".view.Account.ViewCategoryList"
+            android:exported="true"></activity>
+
+        <activity android:name=".view.Account.AddCategoryActivity"
+            android:exported="true"></activity>
+
+        <activity android:name=".view.Account.DeleteCategoryActivity"
+            android:exported="true"></activity>
+
+        <activity android:name=".view.Account.AccountWallet"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".view.Account.ChooseIconActivity"
+            android:exported="true" />
+
         <activity
             android:name=".view.MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".view.addTransaction.mainAddActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".view.ModifyTransactionActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".view.addTransaction.ChooseCategoryActivity"
+
             android:exported="true">
 
         </activity>
@@ -81,21 +100,15 @@
             android:exported="true"/>
 
 
+        <activity
+            android:name=".view.NotificationActivity"
+            android:exported="true"/>
 
         <activity
             android:name=".Fund.FundAddFund"
             android:exported="true" />
         <activity
             android:name=".Fund.FundAddMember"
-            android:exported="true" />
-        <activity
-            android:name=".Fund.FundInformationFund"
-            android:exported="true" />
-        <activity
-            android:name=".Fund.FundInformationTransaction"
-            android:exported="true" />
-        <activity
-            android:name=".Fund.FundWithdrawFund"
             android:exported="true" />
 
         <provider

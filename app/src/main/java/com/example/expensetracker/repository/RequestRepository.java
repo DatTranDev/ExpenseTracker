@@ -7,6 +7,8 @@ import com.example.expensetracker.api.Request.RequestRes;
 import com.example.expensetracker.api.RetrofitClient;
 import com.example.expensetracker.model.Request;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -49,12 +51,22 @@ public class RequestRepository {
     public synchronized void responseRequest(RequestRes requestRes, ApiCallBack<Request> callback) {
         requestApi.responseRequest(requestRes).enqueue(new Callback<DataResponse<Request>>() {
             @Override
-            public void onResponse(Call<DataResponse<Request>> call, retrofit2.Response<DataResponse<Request>> response) {
+            public synchronized void onResponse(Call<DataResponse<Request>> call, retrofit2.Response<DataResponse<Request>> response) {
                 if (response.isSuccessful()) {
                     DataResponse<Request> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to respond to request");
+                    if (response.code() == 400) {
+                        try {
+                            // Parse the error body if the status code is 400
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to respond to request");
+                        }
+                    } else {
+                        callback.onError("Failed to respond to request");
+                    }
                 }
             }
 
