@@ -28,6 +28,7 @@ import android.Manifest;
 import java.util.List;
 
 public class SplashScreenActivity extends AppCompatActivity{
+    boolean flag = true;
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -85,24 +86,18 @@ public class SplashScreenActivity extends AppCompatActivity{
         // Get user if logged in
         AppUser appUser = SharedPreferencesManager.getInstance(this).getObject("user", AppUser.class);
         if (appUser != null) {
-
-            // Define shared preferences for each feature
-
-            // Load categories if not stored
-                AppUserRepository.getInstance().getCategory(appUser.getId(), new ApiCallBack<List<Category>>() {
-                    @Override
-                    public synchronized void onSuccess(List<Category> response) {
-                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("categories", response );
-                    }
-                    @Override
-                    public void onError(String message) {
-                        android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Category", android.widget.Toast.LENGTH_SHORT).show();
-                        retry.setVisibility(android.view.View.VISIBLE);
-                    }
-                });
-
-
-            // Load budgets if not stored
+            AppUserRepository.getInstance().getCategory(appUser.getId(), new ApiCallBack<List<Category>>() {
+                @Override
+                public synchronized void onSuccess(List<Category> response) {
+                    SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("categories", response );
+                }
+                @Override
+                public void onError(String message) {
+                    android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Category", android.widget.Toast.LENGTH_SHORT).show();
+                    retry.setVisibility(android.view.View.VISIBLE);
+                    flag = false;
+                }
+            });
             AppUserRepository.getInstance().getBudget(appUser.getId(), new ApiCallBack<List<Budget>>() {
                 @Override
                 public synchronized void onSuccess(List<Budget> response) {
@@ -112,47 +107,48 @@ public class SplashScreenActivity extends AppCompatActivity{
                 public void onError(String message) {
                     android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Budget", android.widget.Toast.LENGTH_SHORT).show();
                     retry.setVisibility(android.view.View.VISIBLE);
+                    flag = false;
+                }
+            });
+            AppUserRepository.getInstance().getTransaction(appUser.getId(), new ApiCallBack<List<TransactionExp>>() {
+                @Override
+                public synchronized void onSuccess(List<TransactionExp> response) {
+                    SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("transactions", response );
+                }
+                @Override
+                public void onError(String message) {
+                    android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Transaction", android.widget.Toast.LENGTH_SHORT).show();
+                    retry.setVisibility(android.view.View.VISIBLE);
+                    flag = false;
+                }
+            });
+            AppUserRepository.getInstance().getWallet(appUser.getId(), new ApiCallBack<List<Wallet>>() {
+                @Override
+                public synchronized void onSuccess(List<Wallet> response) {
+                    SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("wallets", response );
+                }
+                @Override
+                public void onError(String message) {
+                    android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Wallet", android.widget.Toast.LENGTH_SHORT).show();
+                    retry.setVisibility(android.view.View.VISIBLE);
+                    flag = false;
                 }
             });
 
-            // Load transactions if not stored
-                AppUserRepository.getInstance().getTransaction(appUser.getId(), new ApiCallBack<List<TransactionExp>>() {
-                    @Override
-                    public synchronized void onSuccess(List<TransactionExp> response) {
-                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("transactions", response );
-                    }
-                    @Override
-                    public void onError(String message) {
-                        android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Transaction", android.widget.Toast.LENGTH_SHORT).show();
-                        retry.setVisibility(android.view.View.VISIBLE);
-                    }
-                });
+            AppUserRepository.getInstance().getSharingWallet(appUser.getId(), new ApiCallBack<List<Wallet>>() {
+                @Override
+                public synchronized void onSuccess(List<Wallet> response) {
+                    SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("sharingWallets", response );
+                }
+                @Override
+                public void onError(String message) {
+                    android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Sharing Wallet", android.widget.Toast.LENGTH_SHORT).show();
+                    retry.setVisibility(android.view.View.VISIBLE);
+                    flag = false;
 
-            // Load wallets if not stored
-                AppUserRepository.getInstance().getWallet(appUser.getId(), new ApiCallBack<List<Wallet>>() {
-                    @Override
-                    public synchronized void onSuccess(List<Wallet> response) {
-                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("wallets", response );
-                    }
-                    @Override
-                    public void onError(String message) {
-                        android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Wallet", android.widget.Toast.LENGTH_SHORT).show();
-                        retry.setVisibility(android.view.View.VISIBLE);
-                    }
-                });
-
-                AppUserRepository.getInstance().getSharingWallet(appUser.getId(), new ApiCallBack<List<Wallet>>() {
-                    @Override
-                    public synchronized void onSuccess(List<Wallet> response) {
-                        SharedPreferencesManager.getInstance(SplashScreenActivity.this).saveList("sharingWallets", response );
-                    }
-                    @Override
-                    public void onError(String message) {
-                        android.widget.Toast.makeText(SplashScreenActivity.this, "Failed to load Sharing Wallet", android.widget.Toast.LENGTH_SHORT).show();
-                        retry.setVisibility(android.view.View.VISIBLE);
-                    }
-                });
-            return true;
+                }
+            });
+            return flag;
         }
         else
             return false;

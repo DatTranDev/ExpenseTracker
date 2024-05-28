@@ -1,9 +1,10 @@
-package com.example.expensetracker.viewmodel;
+package com.example.expensetracker.viewmodel.accountVM;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.databinding.BaseObservable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,13 +20,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WalletViewModel extends ViewModel {
+public class AccountWalletViewModel extends BaseObservable {
     private MutableLiveData<List<Wallet>> walletsLiveData;
     private List<Wallet> walletList;
     private MutableLiveData<String> errorMessageLiveData = new MutableLiveData<>();
     private AppUserRepository appUserRepository;
 
-    public WalletViewModel() {
+    public AccountWalletViewModel() {
         walletList = new ArrayList<>();
         walletsLiveData = new MutableLiveData<>();
         walletsLiveData.setValue(walletList);
@@ -55,37 +56,12 @@ public class WalletViewModel extends ViewModel {
         });
     }
 
-    public void loadFunds(String userId) {
-        appUserRepository.getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
-            @Override
-            public void onSuccess(List<Wallet> wallets) {
-                List<Wallet> sharingWallets = new ArrayList<>();
-                for (Wallet wallet : wallets) {
-                    if (wallet.isSharing()) {
-                        sharingWallets.add(wallet);
-                    }
-                }
-                walletList = sharingWallets;
-                walletsLiveData.setValue(walletList);
-            }
-
-            @Override
-            public void onError(String message) {
-                errorMessageLiveData.setValue(message);
-            }
-        });
-    }
-
-
     public void addWallet(WalletReq walletReq, Context context) {
         WalletRepository.getInstance().addWallet(walletReq, new ApiCallBack<Wallet>() {
             @Override
             public void onSuccess(Wallet addedWallet) {
                 walletList.add(addedWallet);
                 walletsLiveData.setValue(new ArrayList<>(walletList));
-                if(addedWallet.isSharing()){
-                    Toast.makeText(context, "Tạo quỹ thành công", Toast.LENGTH_SHORT).show();
-                }
                 Toast.makeText(context, "Tạo ví thành công", Toast.LENGTH_SHORT).show();
             }
 
@@ -102,10 +78,6 @@ public class WalletViewModel extends ViewModel {
             public void onSuccess(Wallet updatedWallet) {
                 List<Wallet> currentWallets = walletsLiveData.getValue();
                 if (currentWallets != null) {
-                    if (updatedWallet.isSharing()){
-                        walletsLiveData.setValue(currentWallets);
-                        Toast.makeText(context, "Sửa quỹ thành công", Toast.LENGTH_SHORT).show();
-                    }
                     walletsLiveData.setValue(currentWallets);
                     Toast.makeText(context, "Sửa ví thành công", Toast.LENGTH_SHORT).show();
                 }
@@ -123,14 +95,11 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet wallet) {
                 List<Wallet> currentWallets = walletsLiveData.getValue();
-                if (wallet.isSharing()) {
-                        currentWallets.remove(index);
-                        walletsLiveData.setValue(currentWallets);
-                        Toast.makeText(context, "Xóa quỹ thành công", Toast.LENGTH_SHORT).show();
-                    }
+                if (currentWallets != null) {
                     currentWallets.remove(index);
                     walletsLiveData.setValue(currentWallets);
                     Toast.makeText(context, "Xóa ví thành công", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

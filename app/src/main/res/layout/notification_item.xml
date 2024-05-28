@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_margin="5dp">
+    <TextView
+        android:id="@+id/notification_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notification time"
+        android:textSize="12sp"/>
+    <TextView
+        android:id="@+id/notification_message"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/inter_semibold"
+        android:layout_height="wrap_content"
+        android:text="Notification Message"
+        android:textSize="16sp"
+        android:paddingBottom="2dp"/>
+
+    <LinearLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:visibility="gone"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/accept_button"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="Đồng ý"
+            android:fontFamily="@font/montserrat"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:background="@drawable/facebook_button"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginRight="12dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/decline_button"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="Từ chối"
+            android:fontFamily="@font/montserrat"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:background="@drawable/facebook_button"
+            android:textColor="@android:color/holo_red_dark" />
+    </LinearLayout>
+</LinearLayout>
