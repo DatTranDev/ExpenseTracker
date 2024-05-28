@@ -70,6 +70,17 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(view);
+
+        Calendar calendarStart = Calendar.getInstance(Locale.US);
+        Calendar calendarEnd = Calendar.getInstance(Locale.US);
+        calendarStart.setFirstDayOfWeek(Calendar.MONDAY);
+        calendarEnd.setFirstDayOfWeek(Calendar.MONDAY);
+        calendarStart.set(Calendar.DAY_OF_WEEK, calendarStart.getFirstDayOfWeek());
+        calendarEnd.set(Calendar.DAY_OF_WEEK, calendarEnd.getFirstDayOfWeek());
+        calendarEnd.add(Calendar.DAY_OF_WEEK, 6);
+        time.setText(Helper.formatDate(calendarStart.getTime()) + " - " + Helper.formatDate(calendarEnd.getTime()));
+
+
         setupObservers();
         setupListeners();
 
