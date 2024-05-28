@@ -118,6 +118,10 @@ public class AccountWallet extends BottomSheetDialogFragment implements WalletUp
     @Override
     public void onWalletModifyClick(Wallet wallet) {
         ModifyWalletFragment modifyWalletFragment = ModifyWalletFragment.newInstance(wallet);
+<<<<<<< Updated upstream
+=======
+//        modifyWalletFragment.setWalletUpdateListener(this);
+>>>>>>> Stashed changes
         modifyWalletFragment.show(getActivity().getSupportFragmentManager(), modifyWalletFragment.getTag());
     }
 
