@@ -93,9 +93,9 @@
         app:layout_constraintTop_toBottomOf="@+id/filter" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/transaction_list"
+        android:id="@+id/category_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="600dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/rounded_background_20"
         app:layout_constraintEnd_toEndOf="parent"

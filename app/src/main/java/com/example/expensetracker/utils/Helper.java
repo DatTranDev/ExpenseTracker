@@ -65,4 +65,12 @@ public class Helper {
 
         return calendar.getTime();
     }
+    public static String formatMoney(BigDecimal amount) {
+        DecimalFormat formatter = new DecimalFormat("#,##0", DecimalFormatSymbols.getInstance(Locale.US));
+
+        String formattedAmount = formatter.format(amount);
+
+        return formattedAmount ;
+    }
+
 }
