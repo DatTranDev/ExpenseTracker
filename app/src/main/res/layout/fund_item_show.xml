@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="walletImage"
+        android:src="@drawable/new_fund" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/fund_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:text="Quỹ của tôi" />
+        <TextView
+            android:id="@+id/fund_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:fontFamily="@font/montserrat"
+            android:text="10,000,000.00 VND"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/modify_fund"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Sửa"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textSize="16sp"
+        android:textColor="#F48484"
+        android:gravity="center_vertical"/>
+</LinearLayout>
