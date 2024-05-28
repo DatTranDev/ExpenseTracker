@@ -14,7 +14,7 @@ public interface BudgetApi {
     @POST("budget/add")
     Call<DataResponse<Budget>> addBudget(@Body Budget budget);
     @PATCH("budget/update/{id}")
-    Call<DataResponse<Budget>> updateBudget(@Body Budget budget);
+    Call<DataResponse<Budget>> updateBudget(@Path("id") String id, @Body Budget budget);
     @DELETE("budget/delete/{id}")
     Call<DataResponse<Budget>> deleteBudget(@Path("id") String id);
 }

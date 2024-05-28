@@ -58,7 +58,7 @@ public class BudgetRepository {
     }
 
     public synchronized void updateBudget(Budget budget, ApiCallBack<Budget> callback) {
-        budgetApi.updateBudget(budget).enqueue(new Callback<DataResponse<Budget>>() {
+        budgetApi.updateBudget(budget.getId(), budget).enqueue(new Callback<DataResponse<Budget>>() {
             @Override
             public void onResponse(Call<DataResponse<Budget>> call, retrofit2.Response<DataResponse<Budget>> response) {
                 if (response.isSuccessful()) {
