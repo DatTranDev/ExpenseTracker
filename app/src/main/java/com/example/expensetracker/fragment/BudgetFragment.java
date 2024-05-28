@@ -110,7 +110,7 @@ public class BudgetFragment extends Fragment {
          getData();
          btnAddBudget.setOnClickListener(v -> {
              intent= new Intent(getActivity(), AddBudgetActivity.class);
-             startActivity(intent);
+             startActivityForResult(intent,69);
          });
          adapter.setOnItemClickListener(new BudgetAdapter.OnItemClickListener() {
              @Override
@@ -274,7 +274,6 @@ public class BudgetFragment extends Fragment {
                 enable=budget.getAmount().subtract(spendBudget);
                 try {
                     String name= budget.getCategory().getIcon().getLinking();
-                    Log.d("Húp",name);
                     int id = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
                     BudgetItem budgetItem= new BudgetItem(budget.getCategory().getName(),id,progress,Helper.formatMoney(budget.getAmount()),enable,budget,startDate,endDate);
                     filterBudget.add(budgetItem);
@@ -335,8 +334,13 @@ public class BudgetFragment extends Fragment {
         allTransactions= mainBudgetViewModel.listTransaction.get();
         allBudgets= mainBudgetViewModel.listBudget.get();
         updateDateRange();
-
-
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Load lại dữ liệu của Fragment B
+        mainBudgetViewModel.getData(getContext());
+        getData();
     }
 
 

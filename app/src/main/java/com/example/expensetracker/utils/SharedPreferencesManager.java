@@ -2,6 +2,8 @@ package com.example.expensetracker.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -42,6 +44,7 @@ public class SharedPreferencesManager {
     }
 
     public <T> void saveList(String key, List<T> list) {
+        Log.d("testt","vàooooooo");
         sharedPreferences.edit().putString(key, new Gson().toJson(list)).apply();
     }
 

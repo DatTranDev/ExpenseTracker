@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,9 +22,11 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.databinding.ActivityDetailBudgetBinding;
 import com.example.expensetracker.model.Budget;
+import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.example.expensetracker.viewmodel.budgetVM.DetailBudgetViewModel;
 import com.google.gson.Gson;
@@ -146,6 +149,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
                                 break;
                             }
                         }
+                    SharedPreferencesManager.getInstance(DetailBudgetActivity.this).saveList("budgets",listBudget);
                     if(loading!=null)
                     {
                         loading.setVisibility(View.GONE);
@@ -167,6 +171,14 @@ public class DetailBudgetActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==69 && resultCode==1)
+        {
+            finish();
+        }
     }
     public List<Object> groupTransactionsByDate(List<TransactionExp> transactions) {
         List<Object> groupedItems = new ArrayList<>();

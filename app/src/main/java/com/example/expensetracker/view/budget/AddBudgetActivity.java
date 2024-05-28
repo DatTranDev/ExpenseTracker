@@ -3,6 +3,7 @@ package com.example.expensetracker.view.budget;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ import com.example.expensetracker.databinding.ActivityAddBudgetBinding;
 import com.example.expensetracker.databinding.ActivityAddTransactionBinding;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.view.addTransaction.ThousandSeparatorTextWatcher;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
@@ -49,7 +51,7 @@ public class AddBudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         intent=getIntent();
         setContentView(R.layout.activity_add_budget);
-        String[] listPeriod = {"Theo tuần", "Theo tháng"};
+        String[] listPeriod = {"Theo tuần", "Theo tháng", "Theo năm"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listPeriod);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ActivityAddBudgetBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_budget);
@@ -99,6 +101,11 @@ public class AddBudgetActivity extends AppCompatActivity {
             if (message != null) {
                 // Hiển thị thông báo
                 Toast.makeText(AddBudgetActivity.this, message, Toast.LENGTH_SHORT).show();
+                if(message.equals("Thêm ngân sách thành công"))
+                {
+                    setResult(1);
+                    finish();
+                }
             }
         });
         period.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

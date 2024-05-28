@@ -54,15 +54,28 @@ public class AddTransactionViewModel extends BaseObservable {
 
     public synchronized void addTransaction()
     {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),0,0,0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Timestamp currentDate=new Timestamp(calendar.getTimeInMillis());
         if(timeTransaction.get()==null)
         {
-            final Calendar calendar = Calendar.getInstance();
-            calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),0,0,0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            timeTransaction.set( new Timestamp(calendar.getTimeInMillis()));
+            timeTransaction.set(currentDate);
+        }else
+        {
+            int compare= timeTransaction.get().compareTo(currentDate);
+            if(compare>=1)
+            {
+                showMessage("Ngày giao dịch không hợp lệ");
+                return;
+            }
         }
         if(wallet.get()!=null && money.get()!=null && category.get()!=null && user!=null)
         {
+            if(category.get().getType().equals("Khoản chi") || category.get().getType().equals("Cho vay")|| category.get().getType().equals("Trả nợ"))
+            {
+
+            }
             BigDecimal spend ;
             String cleanString = money.get().toString().replaceAll("[,]", "");
             spend=new BigDecimal(cleanString);

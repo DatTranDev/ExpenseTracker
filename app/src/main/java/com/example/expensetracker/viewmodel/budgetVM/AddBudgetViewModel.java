@@ -9,14 +9,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.fragment.BudgetFragment;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.view.budget.AddBudgetActivity;
+import com.example.expensetracker.view.budget.EditBudgetActivity;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AddBudgetViewModel extends BaseObservable {
     Context context;
@@ -28,18 +36,23 @@ public class AddBudgetViewModel extends BaseObservable {
     public AppUser user;
     private final MutableLiveData<String> _message = new MutableLiveData<>();
     public LiveData<String> message = _message;
+    public ObservableField<List<Budget>> listBudget= new ObservableField<>();
     public void showMessage(String msg) {
         _message.setValue(msg);
     }
     public  AddBudgetViewModel(Context context)
     {
+        this.context=context;
         user=SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        Type type = new TypeToken<List<Budget>>() {}.getType();
+        listBudget.set(SharedPreferencesManager.getInstance(context).getList("budgets",type));
+
 
 //        category.observeForever(value->updateButton());
 //        moneyBudget.observeForever(value->updateButton());
 
     }
-    public void addBudget(){
+    public synchronized void addBudget(){
         Log.d("test","Đã vào 2");
         if(category.get()==null ||  moneyBudget.get()==null || moneyBudget.get().equals("") || user==null)
         {
@@ -68,14 +81,23 @@ public class AddBudgetViewModel extends BaseObservable {
             {
                 periodStirng="Tháng";
             }
+            if(period.get().equals("Theo năm"))
+            {
+                periodStirng="Năm";
+            }
             try
             {
                 Log.d("test","Đã vào 5");
                 Budget newBudget= new Budget(user.getId(),category.get().getId(),spend,periodStirng);
+                newBudget.setCategory(category.get());
                 BudgetRepository.getInstance().addBudget(newBudget, new ApiCallBack<Budget>() {
                     @Override
                     public void onSuccess(Budget budget) {
-                        Log.d("test","Đã vào 6");
+                        newBudget.setId(budget.getId());
+                        listBudget.get().add(newBudget);
+                        List<Budget> list= listBudget.get();
+                        Log.d("testtttt",listBudget.get().size()+"aaaaa");
+                        SharedPreferencesManager.getInstance(context).saveList("budgets",list);
                         showMessage("Thêm ngân sách thành công");
                         resetData();
 
@@ -84,7 +106,6 @@ public class AddBudgetViewModel extends BaseObservable {
                     @Override
                     public void onError(String message) {
                         showMessage("Thêm ngân sách thất bại");
-                        Log.d("test","Đã vào 7");
                     }
                 });
             }
