@@ -6,6 +6,8 @@ import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.api.RetrofitClient;
 import com.example.expensetracker.model.Budget;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -32,7 +34,19 @@ public class BudgetRepository {
                     DataResponse<Budget> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to add budget");
+                    if(response.code()==400)
+                    {
+                        try{
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to add budget");
+                        }
+                    }
+                    else
+                    {
+                        callback.onError("Failed to add budget");
+                    }
                 }
             }
 
@@ -51,7 +65,16 @@ public class BudgetRepository {
                     DataResponse<Budget> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to update budget");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to update budget");
+                        }
+                    } else {
+                        callback.onError("Failed to update budget");
+                    }
                 }
             }
 
@@ -70,7 +93,19 @@ public class BudgetRepository {
                     DataResponse<Budget> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to delete budget");
+                    if(response.code()==400)
+                    {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to delete budget");
+                        }
+                    }
+                    else
+                    {
+                        callback.onError("Failed to delete budget");
+                    }
                 }
             }
 

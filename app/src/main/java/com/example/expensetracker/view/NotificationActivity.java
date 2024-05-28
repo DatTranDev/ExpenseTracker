@@ -1,5 +1,6 @@
 package com.example.expensetracker.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensetracker.R;
@@ -107,23 +109,34 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private synchronized void handleDecline(String requestId) {
-        RequestRes requestRes = new RequestRes();
-        requestRes.setRequestId(requestId);
-        requestRes.setAccepted(false);
-        RequestRepository.getInstance().responseRequest(requestRes, new ApiCallBack<Request>() {
-            @Override
-            public synchronized void onSuccess(Request response) {
-                refreshNotification();
-                // Show success message (implement as needed)
-                Toast.makeText(NotificationActivity.this, "Từ chối thành công", Toast.LENGTH_SHORT).show();
-            }
+        new AlertDialog.Builder(this)
+                .setTitle("Decline Request")
+                .setMessage("Are you sure you want to decline this request?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with decline operation
+                        RequestRes requestRes = new RequestRes();
+                        requestRes.setRequestId(requestId);
+                        requestRes.setAccepted(false);
+                        RequestRepository.getInstance().responseRequest(requestRes, new ApiCallBack<Request>() {
+                            @Override
+                            public synchronized void onSuccess(Request response) {
+                                refreshNotification();
+                                // Show success message (implement as needed)
+                                Toast.makeText(NotificationActivity.this, "Từ chối thành công", Toast.LENGTH_SHORT).show();
+                            }
 
-            @Override
-            public void onError(String message) {
-                // Show error message
-                Toast.makeText(NotificationActivity.this, "Từ chối thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
+                            @Override
+                            public void onError(String message) {
+                                // Show error message
+                                Toast.makeText(NotificationActivity.this, "Từ chối thất bại", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
     private void refreshNotification(){
         notificationsContainer.removeAllViews();

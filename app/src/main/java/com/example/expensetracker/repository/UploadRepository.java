@@ -5,6 +5,8 @@ import com.example.expensetracker.api.Upload.UploadApi;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.Upload.UploadResponse;
 
+import org.json.JSONObject;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -39,7 +41,17 @@ public class UploadRepository {
                     UploadResponse uploadResponse = response.body();
                     callback.onSuccess(uploadResponse);
                 } else {
-                    callback.onError("Failed to upload image");
+                    if (response.code() == 400) {
+                        try
+                        {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to upload image");
+                        }
+                    } else {
+                        callback.onError("Failed to upload image");
+                    }
                 }
             }
 

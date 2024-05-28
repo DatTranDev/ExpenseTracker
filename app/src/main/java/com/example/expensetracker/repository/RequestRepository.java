@@ -37,6 +37,17 @@ public class RequestRepository {
                     DataResponse<List<Request>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            // Parse the error body if the status code is 400
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to fetch requests by user");
+                        }
+                    } else {
+                        callback.onError("Failed to fetch requests by user");
+                    }
                     callback.onError("Failed to fetch requests by user");
                 }
             }

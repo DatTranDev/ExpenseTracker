@@ -68,7 +68,18 @@ public class CategoryRepository {
                     DataResponse<Category> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to delete category");
+                    if (response.code() == 400) {
+                        try {
+                            // Parse the error body if the status code is 400
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to delete category");
+                        }
+                    } else {
+                        callback.onError("Failed to delete category");
+                    }
+
                 }
             }
 

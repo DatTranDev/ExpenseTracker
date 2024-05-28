@@ -11,6 +11,8 @@ import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.api.Wallet.AddMemberReq;
 import com.example.expensetracker.api.Wallet.RemoveMemberReq;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,7 +42,17 @@ public class WalletRepository {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to add wallet");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to add wallet");
+                        }
+                    }
+                    else {
+                        callback.onError("Failed to add wallet");
+                    }
                 }
             }
 
@@ -59,7 +71,16 @@ public class WalletRepository {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to update wallet");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to update wallet");
+                        }
+                    } else {
+                        callback.onError("Failed to update wallet");
+                    }
                 }
             }
 
@@ -78,7 +99,16 @@ public class WalletRepository {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to delete wallet");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to delete wallet");
+                        }
+                    } else {
+                        callback.onError("Failed to delete wallet");
+                    }
                 }
             }
 
@@ -97,7 +127,16 @@ public class WalletRepository {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to add member to wallet");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to add member to wallet");
+                        }
+                    } else {
+                        callback.onError("Failed to add member to wallet");
+                    }
                 }
             }
 
@@ -116,7 +155,16 @@ public class WalletRepository {
                     DataResponse<Wallet> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to remove member from wallet");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to remove member from wallet");
+                        }
+                    } else {
+                        callback.onError("Failed to remove member from wallet");
+                    }
                 }
             }
 
@@ -134,7 +182,16 @@ public class WalletRepository {
                     DataResponse<List<TransactionExp>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to get transaction");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get transactions");
+                        }
+                    } else {
+                        callback.onError("Failed to get transactions");
+                    }
                 }
             }
 

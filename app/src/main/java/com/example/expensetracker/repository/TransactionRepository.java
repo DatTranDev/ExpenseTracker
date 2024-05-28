@@ -6,6 +6,8 @@ import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.api.DataResponse;
 import com.example.expensetracker.model.TransactionExp;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,7 +36,17 @@ public class TransactionRepository {
                     DataResponse<TransactionExp> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to add transaction");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to add transaction");
+                        }
+                    } else {
+                        callback.onError("Failed to add transaction");
+                    }
                 }
             }
 
@@ -53,7 +65,16 @@ public class TransactionRepository {
                     DataResponse<TransactionExp> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to delete transaction");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to delete transaction");
+                        }
+                    } else {
+                        callback.onError("Failed to delete transaction");
+                    }
                 }
             }
 
@@ -72,7 +93,16 @@ public class TransactionRepository {
                     DataResponse<TransactionExp> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to update transaction");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to update transaction");
+                        }
+                    } else {
+                        callback.onError("Failed to update transaction");
+                    }
                 }
             }
 
@@ -91,7 +121,16 @@ public class TransactionRepository {
                     DataResponse<List<TransactionExp>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to get need to receive");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get need to receive");
+                        }
+                    } else {
+                        callback.onError("Failed to get need to receive");
+                    }
                 }
             }
 
@@ -110,7 +149,16 @@ public class TransactionRepository {
                     DataResponse<List<TransactionExp>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to get need to pay");
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get need to pay");
+                        }
+                    } else {
+                        callback.onError("Failed to get need to pay");
+                    }
                 }
             }
 

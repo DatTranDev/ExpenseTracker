@@ -6,6 +6,8 @@ import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.api.Service.MailSend;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +35,16 @@ public class ServiceRepository {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to send email");
+                        }
+                    } else {
+                        callback.onError("Failed to send email");
+                    }
                     callback.onError("Failed to send email");
                 }
             }

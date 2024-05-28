@@ -10,6 +10,8 @@ import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,6 +41,16 @@ public class AppUserRepository {
                     AppUser appUser = loginResponse.getData();
                     userApiCallBack.onSuccess(appUser);
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            userApiCallBack.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            userApiCallBack.onError("Invalid email or password");
+                        }
+                    } else {
+                        userApiCallBack.onError("Invalid email or password");
+                    }
                     userApiCallBack.onError("Invalid email or password");
                 }
             }
@@ -57,7 +69,14 @@ public class AppUserRepository {
                     AppUser appUser = loginResponse.getData();
                     userApiCallBack.onSuccess(appUser);
                 } else {
-
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            userApiCallBack.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            userApiCallBack.onError("Email already exists or invalid email format");
+                        }
+                    } else
                     userApiCallBack.onError("Email already exists or invalid email format");
                 }
             }
@@ -113,6 +132,14 @@ public class AppUserRepository {
                     DataResponse<AppUser> responseData = response.body();
                     userApiCallBack.onSuccess(responseData.getData());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            userApiCallBack.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            userApiCallBack.onError("Failed to find user by email");
+                        }
+                    } else
                     userApiCallBack.onError("Failed to find user by email");
                 }
             }
@@ -132,6 +159,14 @@ public class AppUserRepository {
                     DataResponse<AppUser> responseData = response.body();
                     userApiCallBack.onSuccess(responseData.getData());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            userApiCallBack.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            userApiCallBack.onError("Failed to find user by ID");
+                        }
+                    } else
                     userApiCallBack.onError("Failed to find user by ID");
                 }
             }
@@ -153,7 +188,19 @@ public class AppUserRepository {
                     DataResponse<List<Category>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
-                    callback.onError("Failed to get categories");
+                    if(response.code()==400)
+                    {
+                        try {
+                             JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get categories");
+                        }
+                    }
+                    else
+                    {
+                        callback.onError("Failed to get categories");
+                    }
                 }
             }
 
@@ -172,6 +219,14 @@ public class AppUserRepository {
                     DataResponse<List<Wallet>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get wallets");
+                        }
+                    } else
                     callback.onError("Failed to get wallets");
                 }
             }
@@ -191,6 +246,16 @@ public class AppUserRepository {
                     DataResponse<List<Wallet>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
+                    if(response.code()==400)
+                    {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get sharing wallets");
+                        }
+                    }
+                    else
                     callback.onError("Failed to get sharing wallets");
                 }
             }
@@ -210,6 +275,14 @@ public class AppUserRepository {
                     DataResponse<List<TransactionExp>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get transactions");
+                        }
+                    } else
                     callback.onError("Failed to get transactions");
                 }
             }
@@ -229,6 +302,14 @@ public class AppUserRepository {
                     DataResponse<List<Budget>> responseData = response.body();
                     callback.onSuccess(responseData.getData());
                 } else {
+                    if (response.code() == 400) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to get budgets");
+                        }
+                    } else
                     callback.onError("Failed to get budgets");
                 }
             }
