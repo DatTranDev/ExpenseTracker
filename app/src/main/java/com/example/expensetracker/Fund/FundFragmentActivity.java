@@ -1,7 +1,6 @@
 package com.example.expensetracker.Fund;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.FundShowAdapter;
-import com.example.expensetracker.adapter.WalletShowAdapter;
 import com.example.expensetracker.databinding.ActivityFundFragmentBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -59,9 +57,7 @@ public class FundFragmentActivity extends BottomSheetDialogFragment implements F
         ActivityFundFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_fund_fragment, container, false);
         binding.setLifecycleOwner(this);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(binding.getRoot());
         observeViewModel();
@@ -76,15 +72,14 @@ public class FundFragmentActivity extends BottomSheetDialogFragment implements F
     }
 
     private void observeViewModel() {
-        walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Wallet>>() {
-            @Override
-            public void onChanged(List<Wallet> wallets) {
-                fundAdapter.updateWallet(wallets);
-                setData(wallets);
-            }
+        walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), wallets -> {
+            fundAdapter.updateWallet(wallets);
+            setData(wallets);
         });
 
-        walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage -> Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
+        walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        );
     }
 
     private void initView(View view) {

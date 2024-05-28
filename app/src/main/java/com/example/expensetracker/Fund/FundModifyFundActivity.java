@@ -1,7 +1,5 @@
 package com.example.expensetracker.Fund;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,9 +19,9 @@ import com.example.expensetracker.databinding.ActivityFundModifyFundBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -63,12 +60,28 @@ public class FundModifyFundActivity extends BottomSheetDialogFragment {
         ActivityFundModifyFundBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_fund_modify_fund, container, false);
         binding.setLifecycleOwner(this);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
-
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
         initView(binding.getRoot());
 
+        setupListeners();
+
+        return binding.getRoot();
+    }
+
+    private void initView(View view) {
+        imageReturn = view.findViewById(R.id.imageQuayLai);
+        btnSave = view.findViewById(R.id.save_fund);
+        btnDelete = view.findViewById(R.id.delete_fund);
+        walletName = view.findViewById(R.id.fund_name);
+        walletAmount = view.findViewById(R.id.fund_amount);
+
+        if (wallet != null) {
+            walletName.setText(wallet.getName());
+            walletAmount.setText(wallet.getAmount().toString());
+        }
+    }
+
+    private void setupListeners() {
         imageReturn.setOnClickListener(v -> dismiss());
 
         btnSave.setOnClickListener(v -> {
@@ -89,12 +102,17 @@ public class FundModifyFundActivity extends BottomSheetDialogFragment {
         });
 
         btnDelete.setOnClickListener(v -> {
+            if (wallet == null || user == null) {
+                Toast.makeText(getContext(), "Error: Fund or user data is missing.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             UserWallet userWallet = new UserWallet();
             userWallet.setWalletId(wallet.getId());
             userWallet.setUserId(user.getId());
             userWallet.setDeleted(true);
 
-            int index = 0;
+            int index = -1;
             for (int i = 0; i < walletViewModel.getWalletsLiveData().getValue().size(); i++) {
                 Wallet walletDeleted = walletViewModel.getWalletsLiveData().getValue().get(i);
                 if (Objects.equals(walletDeleted.getId(), wallet.getId())) {
@@ -103,23 +121,12 @@ public class FundModifyFundActivity extends BottomSheetDialogFragment {
                 }
             }
 
-            walletViewModel.deleteWallet(userWallet, getContext(), index);
-            dismiss();
+            if (index != -1) {
+                walletViewModel.deleteWallet(userWallet, getContext(), index);
+                dismiss();
+            } else {
+                Toast.makeText(getContext(), "Error: Fund not found.", Toast.LENGTH_SHORT).show();
+            }
         });
-
-        return binding.getRoot();
-    }
-
-    private void initView(View view) {
-        imageReturn = view.findViewById(R.id.imageQuayLai);
-        btnSave = view.findViewById(R.id.save_fund);
-        btnDelete = view.findViewById(R.id.delete_fund);
-        walletName = view.findViewById(R.id.fund_name);
-        walletAmount = view.findViewById(R.id.fund_amount);
-
-        if (wallet != null) {
-            walletName.setText(wallet.getName());
-            walletAmount.setText(wallet.getAmount().toString());
-        }
     }
 }

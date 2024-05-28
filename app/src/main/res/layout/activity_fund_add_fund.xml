@@ -104,7 +104,7 @@
                 android:background="@drawable/input_text"
                 android:ems="10"
                 android:hint="0 VND"
-                android:inputType="textEmailAddress"
+                android:inputType="number|numberDecimal"
                 android:padding="10dp"
                 android:paddingVertical="20dp"
                 android:textSize="16sp"

@@ -88,7 +88,7 @@
             android:exported="true" />
         <activity
             android:name=".view.addTransaction.ChooseCategoryActivity"
-<<<<<<< Updated upstream
+
             android:exported="true">
 
         </activity>
@@ -100,9 +100,6 @@
             android:name=".view.NotificationActivity"
             android:exported="true"/>
 
-        <activity
-            android:name=".view.budget.AddBudgetActivity"
-            android:exported="true" />
         <activity
             android:name=".Fund.FundAddFund"
             android:exported="true" />

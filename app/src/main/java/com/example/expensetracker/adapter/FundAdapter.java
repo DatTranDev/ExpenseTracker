@@ -14,7 +14,7 @@ import com.example.expensetracker.utils.Helper;
 
 import java.util.List;
 
-public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder>{
+public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder> {
     private List<Wallet> fundList;
 
     public FundAdapter(List<Wallet> fundList) {
@@ -23,49 +23,43 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
 
     @NonNull
     @Override
-    public FundAdapter.FundViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FundViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fund_item, parent, false);
-        return new FundAdapter.FundViewHolder(view);
+        return new FundViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FundAdapter.FundViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FundViewHolder holder, int position) {
         Wallet wallet = fundList.get(position);
-        if (wallet == null) {
-            return;
+        if (wallet != null) {
+            holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
+            holder.fundName.setText(wallet.getName());
         }
-
-        String currency = wallet.getCurrency();
-        holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
-        holder.fundName.setText(wallet.getName());
     }
 
     @Override
     public int getItemCount() {
-        if (fundList != null) {
-            return fundList.size();
-        }
-        return 0;
-    }
-
-    public class FundViewHolder extends RecyclerView.ViewHolder {
-        private TextView fundName;
-        private TextView fundAmount;
-        public FundViewHolder(@NonNull View itemView) {
-            super(itemView);
-            fundName = itemView.findViewById(R.id.fund_name);
-            fundAmount = itemView.findViewById(R.id.fund_amount);
-        }
+        return fundList != null ? fundList.size() : 0;
     }
 
     public void updateWallet(List<Wallet> wallets) {
         if (fundList != null) {
             fundList.clear();
             fundList.addAll(wallets);
-            notifyDataSetChanged();
         } else {
             fundList = wallets;
-            notifyDataSetChanged();
+        }
+        notifyDataSetChanged();
+    }
+
+    public static class FundViewHolder extends RecyclerView.ViewHolder {
+        private final TextView fundName;
+        private final TextView fundAmount;
+
+        public FundViewHolder(@NonNull View itemView) {
+            super(itemView);
+            fundName = itemView.findViewById(R.id.fund_name);
+            fundAmount = itemView.findViewById(R.id.fund_amount);
         }
     }
 }

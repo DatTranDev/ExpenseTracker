@@ -12,12 +12,11 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FundShowAdapter extends RecyclerView.Adapter<FundShowAdapter.FundShowViewHolder>{
+public class FundShowAdapter extends RecyclerView.Adapter<FundShowAdapter.FundShowViewHolder> {
     private List<Wallet> fundList;
-    private OnFundModifyClickListener fundModifyListener;
+    private final OnFundModifyClickListener fundModifyListener;
 
     public FundShowAdapter(List<Wallet> wallets, OnFundModifyClickListener listener) {
         this.fundList = wallets;
@@ -30,41 +29,30 @@ public class FundShowAdapter extends RecyclerView.Adapter<FundShowAdapter.FundSh
 
     @NonNull
     @Override
-    public FundShowAdapter.FundShowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FundShowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fund_item_show, parent, false);
-        return new FundShowAdapter.FundShowViewHolder(view);
+        return new FundShowViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FundShowAdapter.FundShowViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FundShowViewHolder holder, int position) {
         Wallet wallet = fundList.get(position);
-        if (wallet == null) {
-            return;
+        if (wallet != null) {
+            holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
+            holder.fundName.setText(wallet.getName());
+            holder.modifyFund.setOnClickListener(v -> fundModifyListener.onFundModifyClick(wallet));
         }
-
-        holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
-        holder.fundName.setText(wallet.getName());
-
-        holder.modifyFund.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fundModifyListener.onFundModifyClick(wallet);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        if (fundList != null) {
-            return fundList.size();
-        }
-        return 0;
+        return fundList != null ? fundList.size() : 0;
     }
 
     public static class FundShowViewHolder extends RecyclerView.ViewHolder {
-        private TextView fundName;
-        private TextView fundAmount;
-        private TextView modifyFund;
+        private final TextView fundName;
+        private final TextView fundAmount;
+        private final TextView modifyFund;
 
         public FundShowViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,7 +63,7 @@ public class FundShowAdapter extends RecyclerView.Adapter<FundShowAdapter.FundSh
     }
 
     public void updateWallet(List<Wallet> wallets) {
-        this.fundList = new ArrayList<>(wallets);
+        this.fundList = wallets;
         notifyDataSetChanged();
     }
 }
