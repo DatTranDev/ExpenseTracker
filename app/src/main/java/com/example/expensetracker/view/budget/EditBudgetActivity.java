@@ -144,7 +144,7 @@ public class EditBudgetActivity extends AppCompatActivity {
                 public void onSuccess(Budget budget) {
 
                     resetData(newBudget.budget);
-                     SharedPreferencesManager.getInstance(EditBudgetActivity.this).saveList("budgets",listBudget);
+                    SharedPreferencesManager.getInstance(EditBudgetActivity.this).saveList("budgets",listBudget);
                     setResult(1);
                     if (loading != null) {
                         loading.setVisibility(View.GONE);

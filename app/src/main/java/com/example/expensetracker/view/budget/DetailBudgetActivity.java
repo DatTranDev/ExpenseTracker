@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -17,13 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
-import com.example.expensetracker.databinding.ActivityChooseCategoryBinding;
+import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.databinding.ActivityDetailBudgetBinding;
-import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.utils.Helper;
-import com.example.expensetracker.view.MainActivity;
-import com.example.expensetracker.viewmodel.addTransactionVM.ChooseCategoryViewModel;
+import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.example.expensetracker.viewmodel.budgetVM.DetailBudgetViewModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +40,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
     Intent intent;
     private List<TransactionExp> listTransaction = new ArrayList<>();
     private List<Object> listTransactionShow= new ArrayList<>();
+    List<Budget> listBudget= new ArrayList<>();
     private BudgetItem budgetItem;
     public Gson gson= new Gson();
     RecyclerView recyclerView;
@@ -46,7 +48,8 @@ public class DetailBudgetActivity extends AppCompatActivity {
     ImageView icon;
     LinearLayout empty;
     Button edit,delete;
-    String listBudget;
+    String listBudgetString;
+    View loading;
     private DetailBudgetViewModel detailBudgetViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
         icon= findViewById(R.id.imageCategory);
         edit=findViewById(R.id.button_edit);
         delete=findViewById(R.id.button_delete);
+        loading= findViewById(R.id.loading);
 
         DetailBudgetAdapter adapter= new DetailBudgetAdapter(new ArrayList<>(),this);
         recyclerView.setAdapter(adapter);
@@ -75,7 +79,9 @@ public class DetailBudgetActivity extends AppCompatActivity {
         //get data
         String budgetItemString=intent.getStringExtra("selectedBudget");
         String listTransactionString= intent.getStringExtra("listTransaction");
-        listBudget= intent.getStringExtra("listBudget");
+        listBudgetString = intent.getStringExtra("listBudget");
+        Type type2 = new TypeToken<List<Budget>>() {}.getType();
+        listBudget= gson.fromJson(listBudgetString,type2);
         Type type = new TypeToken<List<TransactionExp>>() {}.getType();
         budgetItem=gson.fromJson(budgetItemString,BudgetItem.class);
         listTransaction= gson.fromJson(listTransactionString,type);
@@ -119,9 +125,47 @@ public class DetailBudgetActivity extends AppCompatActivity {
         edit.setOnClickListener(v->{
             Intent intent2= new Intent(DetailBudgetActivity.this,EditBudgetActivity.class);
             intent2.putExtra("budget",budgetItemString);
-            intent2.putExtra("listBudget",listBudget);
+            intent2.putExtra("listBudget", listBudgetString);
             startActivityForResult(intent2,69);
 
+        });
+        delete.setOnClickListener(v->{
+            if(loading!=null)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+            BudgetRepository.getInstance().deleteBudget(budgetItem.budget.getId(), new ApiCallBack<Budget>() {
+                @Override
+                public void onSuccess(Budget budget) {
+
+                        for(int i=0;i<listBudget.size();i++)
+                        {
+                            if(listBudget.get(i).getId().equals(budgetItem.budget.getId()))
+                            {
+                                listBudget.remove(i);
+                                break;
+                            }
+                        }
+                    if(loading!=null)
+                    {
+                        loading.setVisibility(View.GONE);
+                    }
+                    Toast.makeText(DetailBudgetActivity.this, "Xóa ngân sách thành công", Toast.LENGTH_SHORT).show();
+                    setResult(1);
+                    finish();
+
+                }
+
+                @Override
+                public void onError(String message) {
+                    if(loading!=null)
+                    {
+                        loading.setVisibility(View.GONE);
+                    }
+                    Toast.makeText(DetailBudgetActivity.this, "Xóa ngân sách thất bại", Toast.LENGTH_SHORT).show();
+
+                }
+            });
         });
     }
     public List<Object> groupTransactionsByDate(List<TransactionExp> transactions) {
