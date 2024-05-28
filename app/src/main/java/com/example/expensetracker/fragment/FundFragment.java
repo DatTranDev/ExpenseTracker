@@ -81,11 +81,8 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-<<<<<<< Updated upstream
-=======
         walletViewModel = new ViewModelProvider(requireActivity()).get(WalletViewModel.class);
         transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
->>>>>>> Stashed changes
     }
 
     @Override
