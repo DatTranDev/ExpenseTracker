@@ -1,7 +1,5 @@
 package com.example.expensetracker.Fund;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +18,14 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.databinding.ActivityFundAddFundBinding;
 import com.example.expensetracker.model.AppUser;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 
 public class FundAddFund extends BottomSheetDialogFragment {
-    ImageView imageQuayLai;
+    private ImageView imageQuayLai;
     private Button btnHuy;
     private EditText txtTenQuyMoi;
     private EditText txtMucTieu;
@@ -51,9 +49,7 @@ public class FundAddFund extends BottomSheetDialogFragment {
         ActivityFundAddFundBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_fund_add_fund, container, false);
         binding.setLifecycleOwner(this);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(binding.getRoot());
 

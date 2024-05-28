@@ -102,7 +102,7 @@ public class WalletViewModel extends ViewModel {
             public void onSuccess(Wallet updatedWallet) {
                 List<Wallet> currentWallets = walletsLiveData.getValue();
                 if (currentWallets != null) {
-                    if (wallet.isSharing()){
+                    if (updatedWallet.isSharing()){
                         walletsLiveData.setValue(currentWallets);
                         Toast.makeText(context, "Sửa quỹ thành công", Toast.LENGTH_SHORT).show();
                     }
@@ -123,8 +123,7 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet wallet) {
                 List<Wallet> currentWallets = walletsLiveData.getValue();
-                if (currentWallets != null) {
-                    if (currentWallets.get(index).isSharing()){
+                if (wallet.isSharing()) {
                         currentWallets.remove(index);
                         walletsLiveData.setValue(currentWallets);
                         Toast.makeText(context, "Xóa quỹ thành công", Toast.LENGTH_SHORT).show();
@@ -132,7 +131,6 @@ public class WalletViewModel extends ViewModel {
                     currentWallets.remove(index);
                     walletsLiveData.setValue(currentWallets);
                     Toast.makeText(context, "Xóa ví thành công", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override

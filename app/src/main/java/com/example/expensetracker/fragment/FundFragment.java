@@ -4,18 +4,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +24,12 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.FundAdapter;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
-import com.example.expensetracker.bottom_sheet.WalletFragment;
 import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.example.expensetracker.viewmodel.WalletViewModel;
@@ -50,9 +51,9 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
 
     private FundAdapter fundAdapter;
     private TransactionAdapter transactionAdapter;
-    private List<TransactionExp> transactionList;
-    private List<Wallet> fundList;
-    private List<Wallet> subFunds;
+    private List<TransactionExp> transactionList = new ArrayList<>();
+    private List<Wallet> fundList = new ArrayList<>();
+    private List<Wallet> subFunds = new ArrayList<>();
     private AppUser user;
     private EditText showFund;
     private EditText showTransaction;
@@ -85,24 +86,26 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fund, container, false);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", "");
-        user = new Gson().fromJson(userJson, AppUser.class);
-
+        user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
         initView(view);
 
         setupRecyclerViews(view);
         setupClickListeners();
 
-        walletViewModel.loadFunds(user.getId());
-        observeWalletViewModel();
+        if (user != null) {
+            walletViewModel.loadFunds(user.getId());
+            observeWalletViewModel();
 
-        transactionViewModel.loadTransactions(user.getId());
-        observeTransactionViewModel();
+            transactionViewModel.loadTransactions(user.getId());
+            observeTransactionViewModel();
+        } else {
+            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+        }
 
         return view;
     }
@@ -117,8 +120,8 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
                 } else {
                     emptyTransaction.setVisibility(View.GONE);
                 }
-                if (transactions.size() > 3) {
-                    transactions = transactions.subList(0, 3);
+                if (transactions.size() > MAX_DISPLAY_ITEMS) {
+                    transactions = transactions.subList(0, MAX_DISPLAY_ITEMS);
                 }
                 transactionAdapter.updateTransaction(transactions);
                 transactionAdapter.notifyDataSetChanged();
@@ -149,8 +152,8 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
                         sharingWallets.add(wallet);
                     }
                 }
-                if (sharingWallets.size() > 3) {
-                    subFunds = sharingWallets.subList(0, 3);
+                if (sharingWallets.size() > MAX_DISPLAY_ITEMS) {
+                    subFunds = sharingWallets.subList(0, MAX_DISPLAY_ITEMS);
                 } else {
                     subFunds = sharingWallets;
                 }
@@ -181,35 +184,28 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
     }
 
     private void setupRecyclerViews(View view) {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        LinearLayoutManager walletLayoutManager = new LinearLayoutManager(mainActivity);
+        // Use requireActivity() instead of casting getActivity() since the fragment is attached to an activity
+        LinearLayoutManager walletLayoutManager = new LinearLayoutManager(requireActivity());
         RecyclerView rvWallet = view.findViewById(R.id.fund_list);
         rvWallet.setLayoutManager(walletLayoutManager);
         fundAdapter = new FundAdapter(subFunds);
         rvWallet.setAdapter(fundAdapter);
 
-        LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(mainActivity);
-        RecyclerView rvTransaction = view.findViewById(R.id.transaction_list_recent);
+        LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(requireActivity());
+        RecyclerView rvTransaction = view.findViewById(R.id.transaction_list_fund);
         rvTransaction.setLayoutManager(transactionLayoutManager);
         transactionAdapter = new TransactionAdapter(getContext(), transactionList, this);
         rvTransaction.setAdapter(transactionAdapter);
     }
 
-    private void setupClickListeners() {
-        showFund.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAllFund(fundList);
-            }
-        });
 
-        showTransaction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                if (mainActivity != null) {
-                    mainActivity.navigateToTransactions();
-                }
+    private void setupClickListeners() {
+        showFund.setOnClickListener(v -> showAllFund(fundList));
+
+        showTransaction.setOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null) {
+                mainActivity.navigateToTransactions();
             }
         });
     }
