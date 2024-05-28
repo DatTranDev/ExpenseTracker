@@ -104,7 +104,7 @@ public class AddTransactionViewModel extends BaseObservable {
 
                 @Override
                 public void onError(String message) {
-                    Log.d("test","Thất bại");
+                    showMessage("Thêm giao dịch thất bại");
                 }
             });
 
