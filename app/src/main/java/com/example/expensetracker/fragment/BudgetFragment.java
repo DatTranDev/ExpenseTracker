@@ -81,6 +81,7 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+
         View view= inflater.inflate(R.layout.fragment_budget, container, false);
         context= getContext();
 //         FragmentBudgetBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_budget);
@@ -89,7 +90,6 @@ public class BudgetFragment extends Fragment {
         btnAddBudget= view.findViewById(R.id.buttonAddBudget);
 //        allTransactions= mainBudgetViewModel.listTransaction.get();
 //        allBudgets= mainBudgetViewModel.listBudget.get();
-
 
         tabLayout= view.findViewById(R.id.filter);
         time= view.findViewById(R.id.timeBudget);
