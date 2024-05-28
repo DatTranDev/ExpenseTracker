@@ -100,26 +100,14 @@
             android:name=".view.NotificationActivity"
             android:exported="true"/>
 
-=======
-            android:exported="true" />
         <activity
             android:name=".view.budget.AddBudgetActivity"
             android:exported="true" />
->>>>>>> Stashed changes
         <activity
             android:name=".Fund.FundAddFund"
             android:exported="true" />
         <activity
             android:name=".Fund.FundAddMember"
-            android:exported="true" />
-        <activity
-            android:name=".Fund.FundInformationFund"
-            android:exported="true" />
-        <activity
-            android:name=".Fund.FundInformationTransaction"
-            android:exported="true" />
-        <activity
-            android:name=".Fund.FundWithdrawFund"
             android:exported="true" />
 
         <provider
