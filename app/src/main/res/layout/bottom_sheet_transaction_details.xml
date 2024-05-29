@@ -26,7 +26,6 @@
             android:layout_weight="2"
             android:orientation="horizontal">
 
-
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="40dp"
@@ -34,16 +33,6 @@
                 android:background="@drawable/rounded_background"
                 android:contentDescription="Back"
                 android:src="@drawable/ic_back" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="Sổ giao dịch"
-                android:textSize="18sp" />
         </LinearLayout>
 
         <TextView
@@ -78,6 +67,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/transaction_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="image"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -229,7 +227,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/btnDeleteTransaction"
+        android:id="@+id/btnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#F48484"

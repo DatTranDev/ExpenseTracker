@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.expensetracker.R;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
@@ -38,7 +41,10 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
     private LinearLayout wallet;
     private TransactionViewModel transactionViewModel;
     private WalletViewModel walletViewModel;
+    private ImageView transactionImage;
     private TextView btnModify;
+    private ImageButton btnBack;
+    private Button btnDelete;
 
     public static TransactionDetailsFragment newInstance(TransactionExp transactionExp) {
         TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
@@ -88,6 +94,17 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         });
 
         btnModify.setOnClickListener(v -> modifyTransaction(transactionExp));
+        btnBack.setOnClickListener(v -> dismiss());
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = transactionExp.getUserId();
+                transactionViewModel.deleteTransaction(transactionExp, getContext());
+                transactionViewModel.loadTransactions(userId);
+                dismiss();
+
+            }
+        });
 
         return bottomSheetDialog;
     }
@@ -128,6 +145,9 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         transactionCategoryIcon = view.findViewById(R.id.transaction_category_icon);
         wallet = view.findViewById(R.id.wallet);
         btnModify = view.findViewById(R.id.modify_transaction);
+        btnBack = view.findViewById(R.id.btnBack);
+        transactionImage = view.findViewById(R.id.transaction_image);
+        btnDelete = view.findViewById(R.id.btnDelete);
     }
 
     private void setTransactionData() {
@@ -150,6 +170,17 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
             transactionAmount.setText(Helper.formatCurrency(transactionExp.getSpend()));
             walletName.setText(transactionExp.getWallet() != null ? transactionExp.getWallet().getName() : "");
 
+            if (!transactionExp.getImage().isEmpty()) {
+                transactionImage.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .load(transactionExp.getImage())
+                        .apply(new RequestOptions()
+                                .error(R.drawable.error)
+                        )
+                        .into(transactionImage);
+            } else {
+                transactionImage.setVisibility(View.GONE);
+            }
         }
     }
 }
