@@ -18,6 +18,7 @@ import java.util.List;
 public class TransactionViewModel extends ViewModel {
     private MutableLiveData<List<TransactionExp>> transactionsLiveData;
     private List<TransactionExp> transactionList;
+    private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<String> errorMessageLiveData = new MutableLiveData<>();
     private AppUserRepository appUserRepository;
 
@@ -25,9 +26,13 @@ public class TransactionViewModel extends ViewModel {
         transactionList = new ArrayList<>();
         transactionsLiveData = new MutableLiveData<>();
         transactionsLiveData.setValue(transactionList);
+        isLoading = new MutableLiveData<>();
         appUserRepository = AppUserRepository.getInstance();
     }
 
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
     public LiveData<List<TransactionExp>> getTransactionsLiveData() {
         return transactionsLiveData;
     }
@@ -37,16 +42,19 @@ public class TransactionViewModel extends ViewModel {
     }
 
     public void loadTransactions(String userId) {
+        isLoading.setValue(true);
         appUserRepository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
                 transactionList = transactions;
                 transactionsLiveData.setValue(transactionList);
+                isLoading.setValue(false);
             }
 
             @Override
             public void onError(String message) {
                 errorMessageLiveData.setValue(message);
+                isLoading.setValue(false);
             }
         });
     }

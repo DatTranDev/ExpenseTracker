@@ -20,16 +20,18 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="@drawable/top_rounded_corner"
         app:itemActiveIndicatorStyle="@style/Widget.Design.BottomNavigationView"
         app:itemIconTint="@color/nav_bar_item_color"
-        app:itemPaddingTop="20dp"
+        app:itemPaddingBottom="16dp"
+        app:itemPaddingTop="12dp"
         app:itemRippleColor="@color/white"
         app:itemTextColor="@color/nav_bar_item_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation" />
 
