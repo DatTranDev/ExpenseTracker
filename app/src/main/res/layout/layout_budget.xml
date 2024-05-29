@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="340dp"
+    android:layout_width="match_parent"
     android:layout_height="145dp"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
@@ -71,9 +71,10 @@
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progress_budget"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="22dp"
         android:layout_gravity="center"
         android:background="@drawable/background_border_white"
         android:progressBackgroundTint="@color/medium_gray"

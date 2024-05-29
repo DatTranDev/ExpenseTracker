@@ -55,7 +55,8 @@
 
         <LinearLayout
             android:id="@+id/layout11"
-            android:layout_width="340dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="20dp"
             android:layout_height="160dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
@@ -153,12 +154,15 @@
 
 
             </LinearLayout>
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
+                android:orientation="horizontal"
                 >
                 <Button
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/button_edit"
                     android:layout_width="140dp"
                     android:layout_height="50dp"
@@ -169,16 +173,19 @@
                     android:text="Sửa"
                     android:textSize="15sp" />
                 <Button
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/button_delete"
                     android:layout_width="140dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="15dp"
                     android:backgroundTint="#DD2800"
+                    android:layout_gravity="right"
                     android:fontFamily="@font/inter_semibold"
                     android:text="Xóa"
                     android:textSize="15sp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
@@ -208,9 +215,10 @@
             android:textSize="16sp" />
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
+            android:paddingHorizontal="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -220,8 +228,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout3"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                >
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewBudgetDetail"

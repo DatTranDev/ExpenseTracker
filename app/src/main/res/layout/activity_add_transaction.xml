@@ -55,7 +55,7 @@
 
             <EditText
                 android:id="@+id/edit_text_money"
-                android:layout_width="210dp"
+                android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:autofillHints="1"
