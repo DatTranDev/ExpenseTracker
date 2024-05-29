@@ -47,6 +47,7 @@ public class EditBudgetActivity extends AppCompatActivity {
     RelativeLayout categoryLayout;
     List<Budget> listBudget;
     View loading;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class EditBudgetActivity extends AppCompatActivity {
         time=findViewById(R.id.choosePeriod);
         loading= findViewById(R.id.loading);
         accept= findViewById(R.id.accept);
+        back= findViewById(R.id.btnBack2);
         //lấy dữ liệu
         String json=intent.getStringExtra("budget");
         budgetItem= gson.fromJson(json,BudgetItem.class);
@@ -105,7 +107,10 @@ public class EditBudgetActivity extends AppCompatActivity {
                 // Khi không chọn gì
             }
         });
-        //
+        //click
+        back.setOnClickListener(v -> {
+            finish();
+        });
         categoryLayout.setOnClickListener(v->{
             Intent intent2= new Intent(this, ChooseCategoryActivity.class);
             intent2.putExtra("typeTrans","spend");

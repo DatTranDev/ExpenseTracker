@@ -51,6 +51,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     private ImageButton nextTime;
     private TextView time;
     private View view;
+    AppUser user;
 
     private TransactionViewModel transactionViewModel;
 
@@ -67,7 +68,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_transaction, container, false);
-        AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(view);
 
@@ -292,4 +293,13 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
         transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
     }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        // Load lại dữ liệu của Fragment B
+//        transactionViewModel.loadTransactions(user.getId());
+//        updateDateRange();
+//
+//
+//    }
 }

@@ -53,6 +53,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
     Button edit,delete;
     String listBudgetString;
     View loading;
+    ImageView back;
     private DetailBudgetViewModel detailBudgetViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
         edit=findViewById(R.id.button_edit);
         delete=findViewById(R.id.button_delete);
         loading= findViewById(R.id.loading);
+        back= findViewById(R.id.btnBack2);
 
         DetailBudgetAdapter adapter= new DetailBudgetAdapter(new ArrayList<>(),this);
         recyclerView.setAdapter(adapter);
@@ -125,6 +127,9 @@ public class DetailBudgetActivity extends AppCompatActivity {
         {
             icon.setImageResource(budgetItem.idIcon);
         }
+        back.setOnClickListener(v->{
+            finish();
+        });
         edit.setOnClickListener(v->{
             Intent intent2= new Intent(DetailBudgetActivity.this,EditBudgetActivity.class);
             intent2.putExtra("budget",budgetItemString);

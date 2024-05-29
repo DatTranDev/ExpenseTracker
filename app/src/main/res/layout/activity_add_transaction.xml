@@ -10,518 +10,606 @@
             name="AddTransactionViewModel"
             type="com.example.expensetracker.viewmodel.AddTransactionViewModel" />
     </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F6F8FC"
-    android:orientation="vertical">
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-
-        >
-        <ImageView
-            android:id="@+id/btnBack1"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_back_green"
-            >
-
-        </ImageView>
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/montserrat_semibold"
-            android:gravity="center"
-            android:layout_marginLeft="70dp"
-
-            android:text="Thêm giao dịch"
-            android:textSize="22sp" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="22dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edit_text_money"
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints="1"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="number"
-            android:textSize="40sp"
-            android:text="@={AddTransactionViewModel.money}"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat_semibold"
-            android:gravity="bottom"
-            android:layout_marginLeft="2dp"
-            android:text="đ"
-            android:textSize="30sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="15dp"
+            android:id="@+id/layout1">
+            <ImageView
+                android:id="@+id/btnBack1"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_back_green"
+                >
+
+            </ImageView>
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center"
+                android:layout_marginLeft="70dp"
+
+                android:text="Thêm giao dịch"
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/layout1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingRight="1dp">
+            android:id="@+id/layout2">
 
-            <ImageButton
-                android:id="@+id/btn_spend"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:contentDescription="@string/spend_button_description"
-                android:background="@drawable/choose_type_button"
-                android:backgroundTint="@null"
-                android:padding="10dp"
-                android:scaleType="centerInside"
-
-                android:src="@drawable/ic_spend" />
-
-            <ImageView
-                android:id="@+id/line"
-                android:layout_width="24dp"
-                android:layout_height="2dp"
+            <EditText
+                android:id="@+id/edit_text_money"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:autofillHints="1"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="number"
+                android:textSize="40sp"
+                android:text="@={AddTransactionViewModel.money}"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:src="@drawable/black_line" />
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="bottom"
+                android:layout_marginLeft="2dp"
+                android:text="đ"
+                android:textSize="30sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/layout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <LinearLayout
 
-            <ImageButton
-                android:id="@+id/btn_revenue"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="@drawable/default_type_button"
-                android:backgroundTint="@null"
-                android:padding="10dp"
-                android:contentDescription="@string/revenue_button_description"
-                android:onClick="onButtonClick"
-                android:scaleType="centerInside"
-
-                android:src="@drawable/ic_revenue" />
-
-            <ImageView
-                android:id="@+id/line2"
-                android:layout_width="24dp"
-                android:layout_height="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/black_line" />
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:paddingRight="1dp">
 
-            <ImageButton
-                android:id="@+id/btn_loan"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="@drawable/default_type_button"
-                android:backgroundTint="@null"
-                android:padding="10dp"
-                android:scaleType="centerInside"
-                android:contentDescription="@string/loan_button_description"
-                android:src="@drawable/ic_loan" />
+                <ImageButton
+                    android:id="@+id/btn_spend"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/spend_button_description"
+                    android:background="@drawable/choose_type_button"
+                    android:backgroundTint="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+
+                    android:src="@drawable/ic_spend" />
+
+                <ImageView
+                    android:id="@+id/line"
+                    android:layout_width="24dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/black_line" />
+
+                <ImageButton
+                    android:id="@+id/btn_revenue"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/default_type_button"
+                    android:backgroundTint="@null"
+                    android:padding="10dp"
+                    android:contentDescription="@string/revenue_button_description"
+                    android:onClick="onButtonClick"
+                    android:scaleType="centerInside"
+
+                    android:src="@drawable/ic_revenue" />
+
+                <ImageView
+                    android:id="@+id/line2"
+                    android:layout_width="24dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/black_line" />
+
+                <ImageButton
+                    android:id="@+id/btn_loan"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/default_type_button"
+                    android:backgroundTint="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/loan_button_description"
+                    android:src="@drawable/ic_loan" />
+
+            </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Khoản chi"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Khoản thu"
+                    android:textSize="8sp"
+                    app:layout_constraintEnd_toStartOf="@+id/textView14"
+                    app:layout_constraintStart_toEndOf="@+id/textView13"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="44dp"
+                    android:layout_height="14dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Vay, mượn"
+                    android:textSize="8sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="0dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp">
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Khoản chi"
-                android:textSize="8sp"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Khoản thu"
-                android:textSize="8sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView14"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="44dp"
-                android:layout_height="14dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Vay, mượn"
-                android:textSize="8sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteY="0dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/chooseCategory"
-        android:layout_width="320dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/background_border_white"
-        android:backgroundTint="@null">
-
-        <ImageView
-            android:id="@+id/line3"
-            android:layout_width="80dp"
-            android:layout_height="1dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginEnd="165dp"
-            android:visibility="@{(AddTransactionViewModel.category==null) ? View.VISIBLE : View.GONE}"
-            android:layout_marginBottom="22dp"
-            android:layout_weight="1"
-            android:src="@drawable/black_line" />
-
-        <ImageView
-            android:id="@+id/icon_category"
-            android:layout_width="41dp"
-            android:layout_height="41dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="252dp"
-            android:layout_marginBottom="13.5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_category" />
-
-        <TextView
-            android:id="@+id/nameCategory"
+        <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="28dp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="@{AddTransactionViewModel.category.getName()}"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="74dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="Danh mục"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/chooseTime"
-        android:layout_width="320dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/background_border_white"
-        android:backgroundTint="@null">
-        <TextView
-            android:id="@+id/timeTran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="29dp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Hôm nay"
-            android:textSize="16sp" />
-
-<!--        <ImageView-->
-<!--            android:id="@+id/line4"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginEnd="165dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:src="@drawable/black_line" />-->
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="252dp"
-            android:layout_marginBottom="15dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_calendar1" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="74dp"
-            android:layout_marginTop="11dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="Thời gian"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/chooseNote"
-        android:layout_width="320dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/background_border_white"
-        android:backgroundTint="@null">
-        <EditText
-            android:id="@+id/note"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:padding="3dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="72dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="@={AddTransactionViewModel.node}"
-            android:hint="Thêm ghi chú"
-            android:textSize="16sp" />
-
-
-        <!--        <ImageView-->
-<!--            android:id="@+id/line5"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginEnd="165dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:src="@drawable/black_line" />-->
-
-        <ImageView
-            android:id="@+id/imageTest"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="252dp"
-            android:layout_marginBottom="13dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_node" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="74dp"
-            android:layout_marginTop="11dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="Ghi chú"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/chooseWallet"
-        android:layout_width="320dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/background_border_white"
-        android:backgroundTint="@null">
-<!--        <Spinner-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentStart="true"-->
-<!--            android:layout_alignParentTop="true"-->
-<!--            android:textSize="16sp"-->
-<!--            android:layout_marginStart="75dp"-->
-<!--            android:layout_marginTop="30dp">-->
-<!--        </Spinner>-->
-
-        <TextView
-            android:id="@+id/wallet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="@{AddTransactionViewModel.wallet.getName()}"
-            android:textSize="16sp" />
-
-
-                <ImageView
-            android:layout_width="80dp"
-            android:layout_height="1dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginEnd="165dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:src="@drawable/black_line"
-            android:visibility="@{(AddTransactionViewModel.wallet==null) ? View.VISIBLE : View.GONE}"        />
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout3">
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="252dp"
-            android:layout_marginBottom="16dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_wallet" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="Loại ví"
-            android:textSize="14sp" />
-    </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/chooseCategory"
+                    android:layout_width="320dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
 
-    <RelativeLayout
-        android:id="@+id/borrower"
-        android:visibility="gone"
-        android:layout_width="320dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/background_border_white"
-        android:backgroundTint="@null">
-        <EditText
-            android:id="@+id/nameBorrower"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:padding="3dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="72dp"
-            android:layout_marginTop="20dp"
-            android:text="@={AddTransactionViewModel.borrower}"
+                    android:background="@drawable/background_border_white"
+                    android:backgroundTint="@null">
+
+                    <ImageView
+                        android:id="@+id/line3"
+                        android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="165dp"
+                        android:layout_marginBottom="22dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/black_line"
+                        android:visibility="@{(AddTransactionViewModel.category==null) ? View.VISIBLE : View.GONE}" />
+
+                    <ImageView
+                        android:id="@+id/icon_category"
+                        android:layout_width="41dp"
+                        android:layout_height="41dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginEnd="252dp"
+                        android:layout_marginBottom="13.5dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_category" />
+
+                    <TextView
+                        android:id="@+id/nameCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="75dp"
+                        android:layout_marginTop="28dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="@{AddTransactionViewModel.category.getName()}"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="74dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Danh mục"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/chooseTime"
+                    android:layout_width="320dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/background_border_white"
+                    android:backgroundTint="@null">
+
+                    <TextView
+                        android:id="@+id/timeTran"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="75dp"
+                        android:layout_marginTop="29dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Hôm nay"
+                        android:textSize="16sp" />
+
+                    <!--        <ImageView-->
+                    <!--            android:id="@+id/line4"-->
+                    <!--            android:layout_width="80dp"-->
+                    <!--            android:layout_height="1dp"-->
+                    <!--            android:layout_alignParentEnd="true"-->
+                    <!--            android:layout_alignParentBottom="true"-->
+                    <!--            android:layout_gravity="center"-->
+                    <!--            android:layout_marginEnd="165dp"-->
+                    <!--            android:layout_marginBottom="20dp"-->
+                    <!--            android:layout_weight="1"-->
+                    <!--            android:src="@drawable/black_line" />-->
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginEnd="252dp"
+                        android:layout_marginBottom="15dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_calendar1" />
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="74dp"
+                        android:layout_marginTop="11dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Thời gian"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/chooseNote"
+                    android:layout_width="320dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/background_border_white"
+                    android:backgroundTint="@null">
+
+                    <EditText
+                        android:id="@+id/note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="72dp"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:hint="Thêm ghi chú"
+                        android:padding="3dp"
+                        android:text="@={AddTransactionViewModel.node}"
+                        android:textSize="16sp" />
+
+
+                    <!--        <ImageView-->
+                    <!--            android:id="@+id/line5"-->
+                    <!--            android:layout_width="80dp"-->
+                    <!--            android:layout_height="1dp"-->
+                    <!--            android:layout_alignParentEnd="true"-->
+                    <!--            android:layout_alignParentBottom="true"-->
+                    <!--            android:layout_gravity="center"-->
+                    <!--            android:layout_marginEnd="165dp"-->
+                    <!--            android:layout_marginBottom="20dp"-->
+                    <!--            android:layout_weight="1"-->
+                    <!--            android:src="@drawable/black_line" />-->
+
+                    <ImageView
+                        android:id="@+id/imageTest"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginEnd="252dp"
+                        android:layout_marginBottom="13dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_node" />
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="74dp"
+                        android:layout_marginTop="11dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Ghi chú"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/chooseWallet"
+                    android:layout_width="320dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/background_border_white"
+                    android:backgroundTint="@null">
+
+                    <TextView
+                        android:id="@+id/wallet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="75dp"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="@{AddTransactionViewModel.wallet.getName()}"
+                        android:textSize="16sp" />
+
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="165dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/black_line"
+                        android:visibility="@{(AddTransactionViewModel.wallet==null) ? View.VISIBLE : View.GONE}" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginEnd="252dp"
+                        android:layout_marginBottom="16dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_wallet" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="75dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Loại ví"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/borrower"
+                    android:layout_width="320dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/background_border_white"
+                    android:backgroundTint="@null"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/nameBorrower"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="72dp"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:hint="Người vay"
+                        android:padding="3dp"
+                        android:text="@={AddTransactionViewModel.borrower}"
+                        android:textSize="16sp" />
+
+                    <!--        <ImageView-->
+
+                    <!--            android:layout_width="80dp"-->
+                    <!--            android:layout_height="1dp"-->
+                    <!--            android:layout_alignParentEnd="true"-->
+                    <!--            android:layout_alignParentBottom="true"-->
+                    <!--            android:layout_gravity="center"-->
+                    <!--            android:layout_marginEnd="165dp"-->
+                    <!--            android:layout_marginBottom="20dp"-->
+                    <!--            android:src="@drawable/black_line" />-->
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginEnd="252dp"
+                        android:layout_marginBottom="13.5dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_borrower" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="74dp"
+                        android:layout_marginTop="11dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Người vay"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/chooseImage"
+                    android:layout_width="320dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/background_border_white"
+                    android:backgroundTint="@null">
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="165dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/black_line"
+                        />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginEnd="252dp"
+                        android:layout_marginBottom="14dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="75dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Chọn ảnh"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/layoutImage"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_border_white"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/btnClose"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_close"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_gravity="right"/>
+                    <ImageView
+                        android:visibility="visible"
+                        android:paddingBottom="5dp"
+                        android:id="@+id/imageTransaction"
+
+
+                        android:layout_width="320dp"
+                        android:layout_height="320dp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+        <Button
+            android:id="@+id/button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="125dp"
+            android:layout_height="54dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="#00DDB0"
             android:fontFamily="@font/inter_semibold"
-            android:hint="Người vay"
-            android:textSize="16sp" />
+            android:onClick="@{()->AddTransactionViewModel.addTransaction()}"
+            android:text="Lưu"
+            android:textSize="15sp" />
+            <FrameLayout
+                android:id="@+id/loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#80000000"
+                android:visibility="gone"
+                android:gravity="center">
 
-<!--        <ImageView-->
+                <ProgressBar
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
 
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginEnd="165dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:src="@drawable/black_line" />-->
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="252dp"
-            android:layout_marginBottom="13.5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_borrower" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="74dp"
-            android:layout_marginTop="11dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="Người vay"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="125dp"
-        android:layout_height="54dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="#00DDB0"
-        android:fontFamily="@font/inter_semibold"
-        android:onClick="@{()->AddTransactionViewModel.addTransaction()}"
-        android:text="Lưu"
-        android:textSize="15sp" />
-
-</LinearLayout>
-<!--    <FrameLayout-->
-<!--        android:id="@+id/loading"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="#80000000"-->
-<!--        android:visibility="gone"-->
-<!--        android:gravity="center">-->
-
-<!--        <ProgressBar-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:layout_gravity="center"/>-->
-<!--    </FrameLayout>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

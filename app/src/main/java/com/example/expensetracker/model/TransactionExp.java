@@ -139,11 +139,11 @@ public class TransactionExp implements Parcelable {
     }
 
     public String getImage() {
-        return partner;
+        return image;
     }
 
-    public void setImage(String partner) {
-        this.partner = partner;
+    public void setImage(String image) {
+        this.image=image;
     }
 
     protected TransactionExp(Parcel in) {

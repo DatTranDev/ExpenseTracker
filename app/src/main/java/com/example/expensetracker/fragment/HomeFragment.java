@@ -428,4 +428,11 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             emptyWallet.setVisibility(View.GONE);
         }
     }
+//    public void onResume() {
+//        super.onResume();
+//        // Load lại dữ liệu của Fragment B
+//        transactionViewModel.loadTransactions(user.getId());
+//        observeTransactionViewModel();
+//
+//    }
 }
