@@ -98,14 +98,14 @@ public class TransactionViewModel extends ViewModel {
         });
     }
 
-    public void deleteTransaction(TransactionExp transaction) {
+    public void deleteTransaction(TransactionExp transaction, Context context) {
         TransactionRepository.getInstance().deleteTransaction(transaction.getId(), new ApiCallBack<TransactionExp>() {
             @Override
             public void onSuccess(TransactionExp deletedTransaction) {
                 List<TransactionExp> currentTransactions = transactionsLiveData.getValue();
                 if (currentTransactions != null) {
-                    currentTransactions.removeIf(t -> t.getId().equals(deletedTransaction.getId()));
                     transactionsLiveData.setValue(currentTransactions);
+                    Toast.makeText(context, "Xóa giao dịch thành công", Toast.LENGTH_SHORT).show();
                 }
             }
 
