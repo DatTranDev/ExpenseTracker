@@ -3,6 +3,7 @@ package com.example.expensetracker.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         });
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, mainAddActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,69);
         });
     }
 
@@ -281,5 +282,21 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.contentLayout, fragment);
         fragmentTransaction.addToBackStack(fragment.getTag());
         fragmentTransaction.commit();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 69 && resultCode == 1) {
+            if(binding.navBar.getSelectedItemId()==R.id.home)
+            {
+                replaceFragment(new HomeFragment());
+            }
+
+            if(binding.navBar.getSelectedItemId()==R.id.transactionLog)
+            {
+                replaceFragment(new TransactionFragment());
+            }
+
+        }
     }
 }
