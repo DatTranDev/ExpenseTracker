@@ -15,6 +15,7 @@ import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.UserCategory;
+import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.CategoryRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.Gson;
@@ -45,8 +46,6 @@ public class DeleteCategoryViewModel extends BaseObservable {
     public LiveData<String> message = _message;
 
     private MutableLiveData<List<Category>> categories;
-    private SharedPreferences sharedPreferences;
-    private Gson gson;
 
     public void showMessage(String msg) {
         _message.setValue(msg);
@@ -89,16 +88,7 @@ public class DeleteCategoryViewModel extends BaseObservable {
     private synchronized List<Category> getCategoriesFromSharedPreferences() {
         Type type = new TypeToken<List<Category>>() {}.getType();
         List<Category> list = SharedPreferencesManager.getInstance(context).getList("categories", type);
-//        String json = sharedPreferences.getString("categories", null);
-//
-//        String categoryString= sharedPreferences.getString("categories","null");
-//        if(categoryString!="null") {
-//            Gson gson = new Gson();
-//            Type type = new TypeToken<List<Category>>() {
-//            }.getType();
-//
-//            list = gson.fromJson(categoryString, type);
-//        }
+
         return list;
     }
 

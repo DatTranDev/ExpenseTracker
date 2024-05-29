@@ -71,12 +71,8 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.account_export, null);
         bottomSheetDialog.setContentView(viewDialog);
 
-
-
         AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
-
         initView(viewDialog);
-
         bottomSheetDialog.setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
             FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
@@ -91,7 +87,6 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
                 }
             }
         });
-
         MainActivity mainActivity = (MainActivity)getActivity();
         RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_export);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
@@ -99,14 +94,10 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         transactionAdapter = new TransactionAdapter(getContext(),allTransactions, this);
         getTransactionsForUser(user.getId());
         rvTransaction.setAdapter(transactionAdapter);
-
         pdfButton.setOnClickListener(v -> {
-            String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
+            //String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
             PDFExporter.exportToPDF(getContext(), allTransactions);
-
             Toast.makeText(getContext(), "PDF exported in downloads", Toast.LENGTH_SHORT).show();
-//            File file = new File(filePath);
-//            viewFile(getContext(), file, "application/pdf");
         });
 
         btnback.setOnClickListener(v -> bottomSheetDialog.dismiss());
@@ -119,10 +110,8 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
                 allTransactions = transactions;
-
                 transactionAdapter.updateTransaction(allTransactions);
                 transactionAdapter.notifyDataSetChanged();
-
                 if (!allTransactions.isEmpty()) {
                     transactionEmpty.setVisibility(View.GONE);
                 } else {
@@ -142,23 +131,11 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         transactionEmpty = view.findViewById(R.id.export_empty);
     }
 
-    private void viewFile(Context context, File file, String mimeType) {
-        Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, mimeType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, "No application found to open this file type.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
     @Override
     public void onItemClick(TransactionExp transactionExp) {
         TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
         transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
     }
+
+
 }

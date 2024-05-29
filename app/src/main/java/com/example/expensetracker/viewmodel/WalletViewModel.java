@@ -127,9 +127,9 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet wallet) {
                 List<Wallet> currentWallets = walletsLiveData.getValue();
-                    currentWallets.remove(index);
-                    walletsLiveData.setValue(currentWallets);
-                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                currentWallets.remove(index);
+                walletsLiveData.setValue(currentWallets);
+                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
 
             @Override

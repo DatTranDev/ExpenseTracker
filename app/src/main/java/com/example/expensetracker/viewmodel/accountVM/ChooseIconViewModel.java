@@ -26,8 +26,6 @@ public class ChooseIconViewModel extends BaseObservable{
     private final MutableLiveData<List<Icon>> listIcon;
     AppUser user;
     public ChooseIconViewModel(Context context) {
-        SharedPreferences sharedPreferences= context.getSharedPreferences("icons",Context.MODE_PRIVATE);
-        String iconString= sharedPreferences.getString("icons","null");
         Type type = new TypeToken<List<Icon>>() {}.getType();
         List<Icon> list = SharedPreferencesManager.getInstance(context).getList("icons",type);
 
