@@ -101,7 +101,41 @@ public class AddTransactionViewModel extends BaseObservable {
                     return;
                 }
             }
-            uploadImage(image.get());
+            if(!image.get().equals("") || image.get()==null)
+            {
+                uploadImage(image.get());
+            }
+            else {
+                TransactionExp newTransaction = new TransactionExp();
+                newTransaction.setUserId(user.getId());
+                newTransaction.setCategoryId(category.get().getId());
+                newTransaction.setWalletId(wallet.get().getId());
+                newTransaction.setSpend((BigDecimal) spend);
+                newTransaction.setNote(node.get());
+                newTransaction.setCurrency("VND");
+                newTransaction.setPartner(borrower.get());
+                newTransaction.setCreatedAt(timeTransaction.get());
+                newTransaction.setImage(image.get());
+                newTransaction.setCategory(category.get());
+
+                TransactionRepository.getInstance().addTransaction(newTransaction, new ApiCallBack<TransactionExp>() {
+                    @Override
+                    public void onSuccess(TransactionExp transactionExp) {
+                        newTransaction.setId(transactionExp.getId());
+                        listTransaction.add(newTransaction);
+                        SharedPreferencesManager.getInstance(context).saveList("transactions",listTransaction);
+                        showMessage("Thêm giao dịch thành công");
+
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        showMessage("Thêm giao dịch thất bại");
+                    }
+                });
+
+            }
+
         } else {
             if (money.get() == null) {
                 showMessage("Vui lòng nhập số tiền của giao dịch");

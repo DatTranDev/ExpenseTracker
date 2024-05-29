@@ -190,6 +190,7 @@ public class mainAddActivity extends AppCompatActivity {
                 Toast.makeText(mainAddActivity.this, message, Toast.LENGTH_SHORT).show();
                 if(message.equals("Thêm giao dịch thành công"))
                 {
+                    setResult(1);
                     finish();
                 }
 
