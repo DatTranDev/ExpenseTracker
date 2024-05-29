@@ -140,13 +140,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void bind(Category item) {
             name.setText(item.getName());
-            String iconName= item.getIcon().getLinking();
-            int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
-            if (resourceId != 0) {
-                image.setImageResource(resourceId);
-            } else {
-                // Xử lý trường hợp icon không tồn tại
-                image.setImageResource(R.drawable.error); // Một icon mặc định
+            if (item.getIcon()!=null) {
+                String iconName = item.getIcon().getLinking();
+                int resourceId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+                if (resourceId != 0) {
+                    image.setImageResource(resourceId);
+                } else {
+                    // Xử lý trường hợp icon không tồn tại
+                    image.setImageResource(R.drawable.error); // Một icon mặc định
+                }
             }
         }
     }

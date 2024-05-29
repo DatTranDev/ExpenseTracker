@@ -1,6 +1,7 @@
 package com.example.expensetracker.bottom_sheet;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
+import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -105,6 +107,11 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
             }
         });
 
+        btnAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), mainAddActivity.class);
+            startActivity(intent);
+        });
+
         MainActivity mainActivity = (MainActivity)getActivity();
         RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
@@ -113,6 +120,8 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
         getTransactionsForUser(user.getId(),1);
         rvTransaction.setAdapter(transactionAdapter);
         return bottomSheetDialog;
+
+
     }
 
     private void filterTransactions(String userId) {

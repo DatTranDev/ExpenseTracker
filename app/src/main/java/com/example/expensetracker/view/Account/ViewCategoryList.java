@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
+import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 import com.example.expensetracker.viewmodel.addTransactionVM.ChooseCategoryViewModel;
 import com.google.android.material.tabs.TabLayout;
@@ -32,6 +35,7 @@ public class ViewCategoryList extends AppCompatActivity {
     private ChooseCategoryViewModel chooseCategoryViewModel;
     private CategoryAdapter adapter;
     private String type;
+    private AppUser user;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +43,7 @@ public class ViewCategoryList extends AppCompatActivity {
         setContentView(R.layout.account_category);
         Intent intent = getIntent();
         chooseCategoryViewModel = new ChooseCategoryViewModel(this, false);
-        //chooseCategoryViewModel.setTypeTransaction("spend");
-
+        chooseCategoryViewModel.setTypeTransaction("spend");
         initView();
 
         getCategoriesForUser("spend");
@@ -90,20 +93,6 @@ public class ViewCategoryList extends AppCompatActivity {
         //setupAdapter();
 
     }
-
-    private void setupAdapter() {
-
-        adapter.setOnItemClickListener(position -> {
-            Category clickedItem = chooseCategoryViewModel.getListCategory().getValue().get(position);
-            Gson gson = new Gson();
-            String json = gson.toJson(clickedItem);
-            Intent intent2 = new Intent(ViewCategoryList.this, DeleteCategoryActivity.class);
-            intent2.putExtra("selectedCategory", json);
-            intent2.putExtra("type", getFilter());
-            startActivity(intent2);
-        });
-    }
-
 
     private void initView() {
         btnAdd = findViewById(R.id.btnGoogleLogin);

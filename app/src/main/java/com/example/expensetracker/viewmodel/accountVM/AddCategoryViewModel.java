@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddCategoryViewModel extends BaseObservable {
     Context context;
@@ -81,9 +82,9 @@ public class AddCategoryViewModel extends BaseObservable {
             {
                 CategoryReq categoryReq;
                 if (parentCategory.get() == null)
-                    categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), iconCategory.get().getId(), null,type.get().toString(),false );
+                    categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), Objects.requireNonNull(iconCategory.get()).getId(), null,type.get().toString(),false );
                 else
-                    categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), iconCategory.get().getId(), parentCategory.get().getId(),type.get().toString(),false );
+                    categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), Objects.requireNonNull(iconCategory.get()).getId(), parentCategory.get().getId(),type.get().toString(),false );
 
                 CategoryRepository.getInstance().addCategory(categoryReq, new ApiCallBack<Category>() {
                     @Override

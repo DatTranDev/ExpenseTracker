@@ -18,23 +18,20 @@ import com.itextpdf.layout.element.Table;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 public class PDFExporter {
     public static void exportToPDF(Context context, List<TransactionExp> transactions) {
-        String filePath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/transactions.pdf";
-        File file = new File(filePath);
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
 
         try {
             PdfWriter writer = new PdfWriter(filePath);
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document document = new Document(pdfDoc);
 
-            String fontPath = "res/font/inter_regular.ttf";
-            PdfFont font = PdfFontFactory.createFont(fontPath, PdfFontFactory.EmbeddingStrategy.FORCE_EMBEDDED);
-
             Paragraph title = new Paragraph("Giao dịch")
-                    .setFont(font)
+                    .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
                     .setFontSize(18);
 
             document.add(title);
@@ -42,18 +39,16 @@ public class PDFExporter {
             float[] columnWidths = {5, 3, 3, 3};
             Table table = new Table(columnWidths);
 
-           // table.addCell(new Cell().add(new Paragraph("ID")));
             table.addCell(new Cell().add(new Paragraph("Category")));
             table.addCell(new Cell().add(new Paragraph("Amount")));
             table.addCell(new Cell().add(new Paragraph("Date")));
             table.addCell(new Cell().add(new Paragraph("Description")));
 
             for (TransactionExp transaction : transactions) {
-               // table.addCell(new Cell().add(new Paragraph(String.valueOf(transaction.getId()))));
-                table.addCell(new Cell().add(new Paragraph(transaction.getCategory().getName()).setFont(font)));
-                table.addCell(new Cell().add(new Paragraph(transaction.getSpend().toString()).setFont(font)));
-                table.addCell(new Cell().add(new Paragraph(transaction.getCreatedAt().toString()).setFont(font)));
-                table.addCell(new Cell().add(new Paragraph(transaction.getNote()).setFont(font)));
+                table.addCell(new Cell().add(new Paragraph(transaction.getCategory().getName())));
+                table.addCell(new Cell().add(new Paragraph(transaction.getSpend().toString())));
+                table.addCell(new Cell().add(new Paragraph(transaction.getCreatedAt().toString())));
+                table.addCell(new Cell().add(new Paragraph(transaction.getNote())));
             }
 
             document.add(table);

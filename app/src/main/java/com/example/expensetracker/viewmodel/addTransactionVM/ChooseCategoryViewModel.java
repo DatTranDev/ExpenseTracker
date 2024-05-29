@@ -8,6 +8,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
 
@@ -30,12 +31,18 @@ public class ChooseCategoryViewModel extends BaseObservable {
     private MutableLiveData<List<Category>> listCategory;
     private Context context;
     private boolean check;
+    private List<Category> Cate;
     private ObservableField<String> typeTransaction = new ObservableField<>();
     public void setTypeTransaction(String type) {
         this.typeTransaction.set(type);
         printList();
     }
-
+//    public ChooseCategoryViewModel() {
+//        Cate = new ArrayList<>();
+//        listCategory = new MutableLiveData<>();
+//        listCategory.setValue(Cate);
+//
+//    }
 
     public ChooseCategoryViewModel(Context context, boolean check) {
         this.context = context;
@@ -125,6 +132,8 @@ public class ChooseCategoryViewModel extends BaseObservable {
             listCategory.setValue(classify);
         }
     }
+
+
 
     public Category getParent(String id){
         if (listCategory.getValue() != null) {
