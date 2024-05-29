@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Wallet implements Parcelable {
     private String id;
@@ -13,6 +14,7 @@ public class Wallet implements Parcelable {
     private BigDecimal amount;
     private String currency;
     private boolean isSharing;
+    private List<AppUser> members;
 
     // Constructor
     public Wallet() {
@@ -26,6 +28,12 @@ public class Wallet implements Parcelable {
     }
 
     // Getters and setters
+    public List<AppUser> getMembers() {
+        return members;
+    }
+    public void setMembers(List<AppUser> members) {
+        this.members = members;
+    }
     public String getId() {
         return id;
     }
@@ -62,6 +70,7 @@ public class Wallet implements Parcelable {
     public void setSharing(boolean sharing) {
         isSharing = sharing;
     }
+
 
     protected Wallet(Parcel in) {
         id = in.readString();

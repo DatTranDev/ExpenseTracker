@@ -21,6 +21,7 @@ import java.util.List;
 
 public class WalletViewModel extends ViewModel {
     private MutableLiveData<List<Wallet>> walletsLiveData;
+    private MutableLiveData<Boolean> isLoading;
     private List<Wallet> walletList;
     private MutableLiveData<String> errorMessageLiveData = new MutableLiveData<>();
     private AppUserRepository appUserRepository;
@@ -29,9 +30,13 @@ public class WalletViewModel extends ViewModel {
         walletList = new ArrayList<>();
         walletsLiveData = new MutableLiveData<>();
         walletsLiveData.setValue(walletList);
+        isLoading = new MutableLiveData<>();
         appUserRepository = AppUserRepository.getInstance();
     }
 
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
     public LiveData<List<Wallet>> getWalletsLiveData() {
         return walletsLiveData;
     }
@@ -41,16 +46,19 @@ public class WalletViewModel extends ViewModel {
     }
 
     public void loadWallets(String userId) {
+        isLoading.setValue(true);
         appUserRepository.getWallet(userId, new ApiCallBack<List<Wallet>>() {
             @Override
             public void onSuccess(List<Wallet> wallets) {
                 walletList = wallets;
                 walletsLiveData.setValue(walletList);
+                isLoading.setValue(false);
             }
 
             @Override
             public void onError(String message) {
                 errorMessageLiveData.setValue(message);
+                isLoading.setValue(false);
             }
         });
     }
@@ -119,9 +127,9 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet wallet) {
                 List<Wallet> currentWallets = walletsLiveData.getValue();
-                    currentWallets.remove(index);
-                    walletsLiveData.setValue(currentWallets);
-                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                currentWallets.remove(index);
+                walletsLiveData.setValue(currentWallets);
+                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
 
             @Override

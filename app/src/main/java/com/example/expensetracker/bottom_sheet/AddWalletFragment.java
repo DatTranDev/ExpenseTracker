@@ -19,6 +19,7 @@ import com.example.expensetracker.databinding.BottomSheetAddWalletBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.math.BigDecimal;
@@ -85,6 +86,21 @@ public class AddWalletFragment extends BottomSheetDialogFragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        View view = getView();
+        if (view != null) {
+            View parent = (View) view.getParent();
+            BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(parent);
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            parent.getLayoutParams().height = getResources().getDisplayMetrics().heightPixels / 2;
+            parent.requestLayout();
+        }
     }
 
     private void initView(View view) {

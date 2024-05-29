@@ -40,12 +40,9 @@ public class ChooseIconActivity extends AppCompatActivity {
         binding.setChooseIconViewModel(chooseIconViewModel);
 
         btnBack=findViewById(R.id.btnBackCategory);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(0);
-                finish();
-            }
+        btnBack.setOnClickListener(v -> {
+            setResult(0);
+            finish();
         });
 
 

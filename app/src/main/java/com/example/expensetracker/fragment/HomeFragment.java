@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +76,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private WalletViewModel walletViewModel;
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
+    private ProgressBar progressBar;
     public HomeFragment() {
 
     }
@@ -102,6 +104,8 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         setupRecyclerViews(view);
         setupClickListeners();
 
+        observeLoadingState();
+
         walletViewModel.loadWallets(user.getId());
         observeWalletViewModel();
 
@@ -127,6 +131,22 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         return view;
 
 
+    }
+
+    private void observeLoadingState() {
+        walletViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> updateLoadingState());
+        transactionViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> updateLoadingState());
+    }
+
+    private void updateLoadingState() {
+        Boolean isWalletLoading = walletViewModel.getIsLoading().getValue();
+        Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
+
+        if (Boolean.TRUE.equals(isWalletLoading) || Boolean.TRUE.equals(isTransactionLoading)) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private void observeTransactionViewModel() {
@@ -210,6 +230,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         showTransaction = view.findViewById(R.id.show_transaction);
         message = view.findViewById(R.id.message_empty);
         openNotification = view.findViewById(R.id.notification);
+        progressBar = view.findViewById(R.id.progress_bar);
     }
 
     private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {
