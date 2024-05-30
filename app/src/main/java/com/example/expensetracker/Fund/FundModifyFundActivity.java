@@ -21,6 +21,7 @@ import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.math.BigDecimal;
@@ -61,11 +62,73 @@ public class FundModifyFundActivity extends BottomSheetDialogFragment {
         binding.setLifecycleOwner(this);
 
         user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
-        initView(binding.getRoot());
 
-        setupListeners();
+        initView(binding.getRoot());
+        imageReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = walletName.getText().toString();
+                BigDecimal amount = walletAmount.getText().toString().isEmpty() ? BigDecimal.ZERO : new BigDecimal(walletAmount.getText().toString());
+
+                if (name.isEmpty() || amount.equals(BigDecimal.ZERO)) {
+                    Toast.makeText(getContext(), "Vui lòng nhập đầy đủ các trường!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                wallet.setName(name);
+                wallet.setAmount(amount);
+                wallet.setCurrency("VND");
+
+                walletViewModel.updateWallet(wallet, getContext());
+                dismiss();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserWallet userWallet = new UserWallet();
+                userWallet.setWalletId(wallet.getId());
+                userWallet.setUserId(user.getId());
+                userWallet.setDeleted(true);
+
+                int index = 0;
+                for (int i = 0; i < walletViewModel.getWalletsLiveData().getValue().size(); i++) {
+                    Wallet walletDeleted = walletViewModel.getWalletsLiveData().getValue().get(i);
+                    if (Objects.equals(walletDeleted.getId(), wallet.getId())) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                walletViewModel.deleteWallet(userWallet, getContext(), index);
+                dismiss();
+            }
+        });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        View view = getView();
+        if (view != null) {
+            View parent = (View) view.getParent();
+            BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(parent);
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            parent.getLayoutParams().height = getResources().getDisplayMetrics().heightPixels * 2 / 3;
+            parent.requestLayout();
+        }
     }
 
     private void initView(View view) {
@@ -79,54 +142,5 @@ public class FundModifyFundActivity extends BottomSheetDialogFragment {
             walletName.setText(wallet.getName());
             walletAmount.setText(wallet.getAmount().toString());
         }
-    }
-
-    private void setupListeners() {
-        imageReturn.setOnClickListener(v -> dismiss());
-
-        btnSave.setOnClickListener(v -> {
-            String name = walletName.getText().toString();
-            BigDecimal amount = walletAmount.getText().toString().isEmpty() ? BigDecimal.ZERO : new BigDecimal(walletAmount.getText().toString());
-
-            if (name.isEmpty() || amount.equals(BigDecimal.ZERO)) {
-                Toast.makeText(getContext(), "Vui lòng nhập đầy đủ các trường!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            wallet.setName(name);
-            wallet.setAmount(amount);
-            wallet.setCurrency("VND");
-
-            walletViewModel.updateWallet(wallet, getContext());
-            dismiss();
-        });
-
-        btnDelete.setOnClickListener(v -> {
-            if (wallet == null || user == null) {
-                Toast.makeText(getContext(), "Error: Fund or user data is missing.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            UserWallet userWallet = new UserWallet();
-            userWallet.setWalletId(wallet.getId());
-            userWallet.setUserId(user.getId());
-            userWallet.setDeleted(true);
-
-            int index = -1;
-            for (int i = 0; i < walletViewModel.getWalletsLiveData().getValue().size(); i++) {
-                Wallet walletDeleted = walletViewModel.getWalletsLiveData().getValue().get(i);
-                if (Objects.equals(walletDeleted.getId(), wallet.getId())) {
-                    index = i;
-                    break;
-                }
-            }
-
-            if (index != -1) {
-                walletViewModel.deleteWallet(userWallet, getContext(), index);
-                dismiss();
-            } else {
-                Toast.makeText(getContext(), "Error: Fund not found.", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

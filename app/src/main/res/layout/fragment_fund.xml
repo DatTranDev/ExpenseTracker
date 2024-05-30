@@ -13,6 +13,18 @@
     android:layout_height="match_parent"
     tools:context=".fragment.FundFragment">
 
+    <ProgressBar
+        android:id="@+id/progress_bar_fund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txtQuyChung"
         android:layout_width="wrap_content"
@@ -27,6 +39,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/scrollView6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
@@ -69,42 +82,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="568dp"
                     tools:listitem="@layout/transaction_item" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linerLayoutisEmpty"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_background_20"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
-
-                <TextView
-                    android:id="@+id/wallet_empty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="Không có quỹ nào"
-                    android:textAlignment="center"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fund_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
-                    tools:listitem="@layout/fund_item"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 
@@ -156,7 +133,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.432"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linerLayoutisEmpty">
+                app:layout_constraintTop_toBottomOf="@+id/scrollView7">
 
                 <TextView
                     android:id="@+id/txtThongTinGiaoDich"
@@ -226,8 +203,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:orientation="vertical"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_background_20"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutThanhVien">
@@ -256,17 +235,52 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
+            <ScrollView
+                android:id="@+id/scrollView7"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rounded_background_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
+
+                <LinearLayout
+                    android:id="@+id/linerLayoutisEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="47dp">
+
+                    <TextView
+                        android:id="@+id/wallet_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="Không có quỹ nào"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fund_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
+                        tools:listitem="@layout/fund_item"></androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+            </ScrollView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-    <ProgressBar
-        android:id="@+id/progress_bar_fund"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

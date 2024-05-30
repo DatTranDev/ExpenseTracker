@@ -47,8 +47,9 @@
                 <EditText
                     android:id="@+id/member_email"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:autoText="true"
                     android:background="@color/white"
                     android:fontFamily="@font/montserrat"
                     android:hint="email"
