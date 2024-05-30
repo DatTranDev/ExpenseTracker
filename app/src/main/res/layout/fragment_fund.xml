@@ -69,6 +69,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="568dp"
                     tools:listitem="@layout/transaction_item" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -103,7 +104,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
-                    tools:listitem="@layout/fund_item"/>
+                    tools:listitem="@layout/fund_item"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 
@@ -218,6 +219,40 @@
                     android:textColor="@color/medium_gray"
                     android:textSize="12sp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_background_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutThanhVien">
+
+                <TextView
+                    android:id="@+id/member_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="Chọn quỹ để hiển thị thành viên"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/member_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
+                    tools:listitem="@layout/member_item"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

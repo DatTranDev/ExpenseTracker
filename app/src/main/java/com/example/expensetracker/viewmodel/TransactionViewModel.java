@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.TransactionExp;
+import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.TransactionRepository;
 
@@ -47,6 +48,32 @@ public class TransactionViewModel extends ViewModel {
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
                 transactionList = transactions;
+                transactionsLiveData.setValue(transactionList);
+                isLoading.setValue(false);
+            }
+
+            @Override
+            public void onError(String message) {
+                errorMessageLiveData.setValue(message);
+                isLoading.setValue(false);
+            }
+        });
+    }
+
+    public void loadIsSharingTransactions(String userId) {
+        isLoading.setValue(true);
+        appUserRepository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
+            @Override
+            public void onSuccess(List<TransactionExp> transactions) {
+                List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
+                for (TransactionExp exp : transactions) {
+                    Wallet wallet = new Wallet();
+                    wallet.setId(exp.getWalletId());
+                    if (wallet.isSharing()) {
+                        transactionExpsisSharing.add(exp);
+                    }
+                }
+                transactionList = transactionExpsisSharing;
                 transactionsLiveData.setValue(transactionList);
                 isLoading.setValue(false);
             }

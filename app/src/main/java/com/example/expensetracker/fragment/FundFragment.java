@@ -1,7 +1,6 @@
 package com.example.expensetracker.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.expensetracker.Fund.FundFragmentActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.FundAdapter;
+import com.example.expensetracker.adapter.MemberAdapter;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
@@ -30,17 +31,14 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.utils.SharedPreferencesManager;
-import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.example.expensetracker.viewmodel.WalletViewModel;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class FundFragment extends Fragment implements TransactionAdapter.OnItemClickListener, WalletUpdateListener {
+public class FundFragment extends Fragment implements TransactionAdapter.OnItemClickListener, WalletUpdateListener, FundAdapter.OnFundClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -49,7 +47,9 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
     private String mParam1;
     private String mParam2;
 
+    private Wallet currentWallet;
     private FundAdapter fundAdapter;
+    private MemberAdapter memberAdapter;
     private TransactionAdapter transactionAdapter;
     private List<TransactionExp> transactionList = new ArrayList<>();
     private List<Wallet> fundList = new ArrayList<>();
@@ -59,8 +59,10 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
     private EditText showTransaction;
     private TextView emptyWallet;
     private TextView emptyTransaction;
+    private TextView emptyMember;
     private WalletViewModel walletViewModel;
     private TransactionViewModel transactionViewModel;
+    private ProgressBar progressBar;
 
     public FundFragment() {
         // Required empty public constructor
@@ -97,90 +99,117 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         setupRecyclerViews(view);
         setupClickListeners();
 
-        if (user != null) {
-            walletViewModel.loadFunds(user.getId());
-            observeWalletViewModel();
+        observeLoadingState();
 
-            transactionViewModel.loadTransactions(user.getId());
-            observeTransactionViewModel();
-        } else {
-            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
-        }
+        walletViewModel.loadFunds(user.getId());
+        observeWalletViewModel();
+
+        walletViewModel.loadMembers(user.getId(), currentWallet);
+        observeWalletViewModel();
+
+        transactionViewModel.loadIsSharingTransactions(user.getId());
+        observeTransactionViewModel();
 
         return view;
     }
 
+    private void observeLoadingState() {
+        walletViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> updateLoadingState());
+        transactionViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> updateLoadingState());
+    }
+
+    private void updateLoadingState() {
+        Boolean isWalletLoading = walletViewModel.getIsLoading().getValue();
+        Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
+
+        if (Boolean.TRUE.equals(isWalletLoading) || Boolean.TRUE.equals(isTransactionLoading)) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
     private void observeTransactionViewModel() {
-        transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), new Observer<List<TransactionExp>>() {
-            @Override
-            public void onChanged(List<TransactionExp> transactions) {
-                transactionList = sortTransactionsByDate(transactions);
-                if (transactions.isEmpty()) {
-                    emptyTransaction.setVisibility(View.VISIBLE);
-                } else {
-                    emptyTransaction.setVisibility(View.GONE);
+        transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
+            transactionList = transactions;
+            List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
+            for (TransactionExp exp : transactionList) {
+                Wallet wallet = new Wallet();
+                wallet.setId(exp.getWalletId());
+                if (wallet.isSharing()) {
+                    transactionExpsisSharing.add(exp);
                 }
-                if (transactions.size() > MAX_DISPLAY_ITEMS) {
-                    transactions = transactions.subList(0, MAX_DISPLAY_ITEMS);
-                }
-                transactionAdapter.updateTransaction(transactions);
-                transactionAdapter.notifyDataSetChanged();
             }
+
+            if (transactionExpsisSharing.isEmpty()) {
+                emptyTransaction.setVisibility(View.VISIBLE);
+            } else {
+                emptyTransaction.setVisibility(View.GONE);
+            }
+
+            if (transactionExpsisSharing.size() > MAX_DISPLAY_ITEMS) {
+                transactionExpsisSharing = transactionExpsisSharing.subList(0, MAX_DISPLAY_ITEMS);
+            }
+
+            transactionAdapter.updateTransaction(transactionExpsisSharing);
+            transactionAdapter.notifyDataSetChanged();
         });
 
-        transactionViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String errorMessage) {
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+        transactionViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
     }
 
     private void observeWalletViewModel() {
-        walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Wallet>>() {
-            @Override
-            public void onChanged(List<Wallet> wallets) {
-                fundList = wallets;
-                if (fundList.isEmpty()) {
-                    emptyWallet.setVisibility(View.VISIBLE);
-                } else {
-                    emptyWallet.setVisibility(View.GONE);
-                }
-                List<Wallet> sharingWallets = new ArrayList<>();
-                for (Wallet wallet : wallets) {
-                    if (wallet.isSharing()) {
-                        sharingWallets.add(wallet);
-                    }
-                }
-                if (sharingWallets.size() > MAX_DISPLAY_ITEMS) {
-                    subFunds = sharingWallets.subList(0, MAX_DISPLAY_ITEMS);
-                } else {
-                    subFunds = sharingWallets;
-                }
-
-                fundAdapter.updateWallet(subFunds);
-                fundAdapter.notifyDataSetChanged();
+        walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), wallets -> {
+            fundList = wallets;
+            if (fundList.isEmpty()) {
+                emptyWallet.setVisibility(View.VISIBLE);
+            } else {
+                emptyWallet.setVisibility(View.GONE);
             }
+            List<Wallet> sharingWallets = new ArrayList<>();
+            for (Wallet wallet : wallets) {
+                if (wallet.isSharing()) {
+                    sharingWallets.add(wallet);
+                }
+            }
+            if (sharingWallets.size() > MAX_DISPLAY_ITEMS) {
+                subFunds = sharingWallets.subList(0, MAX_DISPLAY_ITEMS);
+            } else {
+                subFunds = sharingWallets;
+            }
+
+            fundAdapter.updateWallet(subFunds);
+            fundAdapter.notifyDataSetChanged();
         });
 
-        walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String errorMessage) {
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        walletViewModel.getUsersLiveData().observe(getViewLifecycleOwner(), members -> {
+            List<AppUser> appUserList = new ArrayList<>();
+            appUserList = currentWallet.getMembers();
+            appUserList = members;
+            if(currentWallet.getMembers().isEmpty()){
+                emptyMember.setVisibility(View.VISIBLE);
+            }else{
+                emptyMember.setVisibility(View.GONE);
             }
+            if (appUserList.size() > 3) {
+                appUserList= appUserList.subList(0, 3);
+            }
+            memberAdapter.updateMemberWallet(appUserList);
+            memberAdapter.notifyDataSetChanged();
         });
+
+        walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
     }
 
     private void initView(View view) {
         emptyWallet = view.findViewById(R.id.wallet_empty);
         emptyTransaction = view.findViewById(R.id.transaction_empty);
+        emptyMember = view.findViewById(R.id.member_empty);
         showFund = view.findViewById(R.id.show_fund);
         showTransaction = view.findViewById(R.id.show_transaction);
-    }
-
-    private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {
-        Collections.sort(transactions, (t1, t2) -> t2.getCreatedAt().compareTo(t1.getCreatedAt()));
-        return transactions;
+        progressBar = view.findViewById(R.id.progress_bar);
     }
 
     private void setupRecyclerViews(View view) {
@@ -188,7 +217,7 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         LinearLayoutManager walletLayoutManager = new LinearLayoutManager(requireActivity());
         RecyclerView rvWallet = view.findViewById(R.id.fund_list);
         rvWallet.setLayoutManager(walletLayoutManager);
-        fundAdapter = new FundAdapter(subFunds);
+        fundAdapter = new FundAdapter(subFunds, this);
         rvWallet.setAdapter(fundAdapter);
 
         LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(requireActivity());
@@ -196,17 +225,19 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         rvTransaction.setLayoutManager(transactionLayoutManager);
         transactionAdapter = new TransactionAdapter(getContext(), transactionList, this);
         rvTransaction.setAdapter(transactionAdapter);
-    }
 
+        LinearLayoutManager memberLayoutManager = new LinearLayoutManager(requireActivity());
+        RecyclerView rvMember = view.findViewById(R.id.member_list);
+        rvMember.setLayoutManager(memberLayoutManager);
+        memberAdapter = new MemberAdapter(currentWallet.getMembers());
+        rvMember.setAdapter(memberAdapter);
+    }
 
     private void setupClickListeners() {
         showFund.setOnClickListener(v -> showAllFund(fundList));
 
         showTransaction.setOnClickListener(v -> {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity != null) {
-                mainActivity.navigateToTransactions();
-            }
+
         });
     }
 
@@ -219,6 +250,14 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
     public void onItemClick(TransactionExp transactionExp) {
         TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
         transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
+    }
+
+    @Override
+    public void onFundClick(Wallet wallet) {
+        // Handle the wallet click event here
+        Toast.makeText(getContext(), "Clicked on: " + wallet.getName(), Toast.LENGTH_SHORT).show();
+        // You can also open a new Fragment or Activity here to display details of the wallet
+        currentWallet = wallet; // Set the clicked wallet as the currentWallet
     }
 
     @Override
@@ -266,3 +305,4 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         }
     }
 }
+
