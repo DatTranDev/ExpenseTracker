@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.expensetracker.R;
+import com.example.expensetracker.view.ShowImageActivity;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.ModifyTransactionActivity;
@@ -102,7 +103,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 String userId = transactionExp.getUserId();
                 transactionViewModel.deleteTransaction(transactionExp, getContext());
-                transactionViewModel.loadTransactions(userId);
+                transactionViewModel.loadTransactions(userId, getContext());
                 dismiss();
 
             }
@@ -121,7 +122,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
                 if (updatedTransaction != null) {
                     transactionExp = updatedTransaction;
                     setTransactionData();
-                    transactionViewModel.loadTransactions(transactionExp.getUserId());
+                    transactionViewModel.loadTransactions(transactionExp.getUserId(), getContext());
                     walletViewModel.loadWallets(transactionExp.getUserId());
                 }
             }
@@ -207,6 +208,12 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
                                 .error(R.drawable.error)
                         )
                         .into(transactionImage);
+
+                transactionImage.setOnClickListener(v -> {
+                    Intent intent = new Intent(getActivity(), ShowImageActivity.class);
+                    intent.putExtra("image_url", transactionExp.getImage());
+                    startActivity(intent);
+                });
             } else {
                 transactionImage.setVisibility(View.GONE);
             }

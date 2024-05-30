@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     private ImageButton nextTime;
     private TextView time;
     private View view;
+    private ProgressBar progressBar;
     AppUser user;
 
     private TransactionViewModel transactionViewModel;
@@ -81,6 +83,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         calendarEnd.add(Calendar.DAY_OF_WEEK, 6);
         time.setText(Helper.formatDate(calendarStart.getTime()) + " - " + Helper.formatDate(calendarEnd.getTime()));
 
+        observeLoadingState();
 
         setupObservers();
         setupListeners();
@@ -92,9 +95,21 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         transactionAdapter = new TransactionAdapter(getContext(), transactions, this);
         rvTransaction.setAdapter(transactionAdapter);
 
-        transactionViewModel.loadTransactions(user.getId());
+        transactionViewModel.loadTransactions(user.getId(), getContext());
 
         return view;
+    }
+
+    private void observeLoadingState() {
+        transactionViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
+
+            if (Boolean.TRUE.equals(isTransactionLoading)) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void setupObservers() {
@@ -285,6 +300,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         openingBalance = view.findViewById(R.id.opening_balance);
         endingBalance = view.findViewById(R.id.ending_balance);
         difference = view.findViewById(R.id.difference);
+        progressBar = view.findViewById(R.id.progress_bar);
         transactionEmpty = view.findViewById(R.id.transaction_empty);
     }
 

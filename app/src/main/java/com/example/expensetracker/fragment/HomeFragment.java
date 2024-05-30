@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         walletViewModel.loadWallets(user.getId());
         observeWalletViewModel();
 
-        transactionViewModel.loadTransactions(user.getId());
+        transactionViewModel.loadTransactions(user.getId(), getContext());
         observeTransactionViewModel();
 
         chartViewModel.getWeeklyOutcomes().observe(getViewLifecycleOwner(), new Observer<BigDecimal[]>() {
