@@ -88,27 +88,27 @@ public class WalletViewModel extends ViewModel {
 
     public synchronized void loadFunds(String userId) {
         isLoading.setValue(true);
-        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(null);
-        Type type = new TypeToken<List<Wallet>>(){}.getType();
-        List<Wallet> sharingWallets = sharedPreferencesManager.getList("sharingWallets", type);
-        walletList = sharingWallets;
-        walletsLiveData.setValue(walletList);
-        isLoading.setValue(false);
+//        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(null);
+//        Type type = new TypeToken<List<Wallet>>(){}.getType();
+//        List<Wallet> sharingWallets = sharedPreferencesManager.getList("sharingWallets", type);
+//        walletList = sharingWallets;
+//        walletsLiveData.setValue(walletList);
+//        isLoading.setValue(false);
 
-//        AppUserRepository.getInstance().getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
-//            @Override
-//            public synchronized void onSuccess(List<Wallet> wallets) {
-//                walletList = wallets;
-//                walletsLiveData.setValue(walletList);
-//                isLoading.setValue(false);
-//            }
-//
-//            @Override
-//            public void onError(String message) {
-//                errorMessageLiveData.setValue(message);
-//                isLoading.setValue(false);
-//            }
-//        });
+        AppUserRepository.getInstance().getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
+            @Override
+            public synchronized void onSuccess(List<Wallet> wallets) {
+                walletList = wallets;
+                walletsLiveData.setValue(walletList);
+                isLoading.setValue(false);
+            }
+
+            @Override
+            public void onError(String message) {
+                errorMessageLiveData.setValue(message);
+                isLoading.setValue(false);
+            }
+        });
     }
 
     public void addWallet(WalletReq walletReq, Context context) {
