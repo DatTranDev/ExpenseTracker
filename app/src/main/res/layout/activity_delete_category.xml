@@ -100,7 +100,7 @@
             <EditText
                 android:id="@+id/editTextText"
                 android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
                 android:ems="10"
@@ -183,18 +183,34 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/delete_category"
+            android:id="@+id/modify_category"
             android:layout_width="125dp"
             android:layout_height="52dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/red"
             android:enabled="true"
-            android:textColor="@color/white"
             android:fontFamily="@font/inter_semibold"
             android:onClick="@{()-> DeleteCategoryViewModel.deleteCategory()}"
             android:text="Xóa"
+            android:textColor="@color/white"
             android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/delete_category"
+            android:layout_width="125dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/accent_blue"
+            android:enabled="true"
+            android:fontFamily="@font/inter_semibold"
+            android:onClick="@{()-> DeleteCategoryViewModel.modifyCategory()}"
+            android:text="Sửa"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+
 
     </LinearLayout>
 </layout>

@@ -194,6 +194,17 @@ public class ViewCategoryList extends AppCompatActivity {
                         break;
                 }
             }
+            if (data != null && data.hasExtra("typemodify")) {
+                String typeDelete = data.getStringExtra("typemodify");
+                switch (typeDelete) {
+                    case "Khoản chi":
+                        getCategoriesForUser("spend");
+                        break;
+                    case "Khoản thu":
+                        getCategoriesForUser("revenue");
+                        break;
+                }
+            }
         }
     }
 }

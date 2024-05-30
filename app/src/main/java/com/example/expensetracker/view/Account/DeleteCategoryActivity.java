@@ -31,6 +31,8 @@ public class DeleteCategoryActivity extends AppCompatActivity {
     ImageView iconParentCategory;
     Button deletebtn;
 
+    Button modifybtn;
+
     String title;
 
     Category category;
@@ -41,20 +43,33 @@ public class DeleteCategoryActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        intent = getIntent();
         setContentView(R.layout.activity_delete_category);
-        Gson gson= new Gson();
-        category = gson.fromJson(intent.getStringExtra("selectedCategory"), Category.class);
-        title = intent.getStringExtra("type");
-
-        parentCategory = gson.fromJson(intent.getStringExtra("parentCate"),Category.class);
 
         ActivityDeleteCategoryBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_delete_category);
         deleteCategoryViewModel = new DeleteCategoryViewModel(this);
         binding.setDeleteCategoryViewModel(deleteCategoryViewModel);
 
+
+        intent = getIntent();
+
+        Gson gson= new Gson();
+        category = gson.fromJson(intent.getStringExtra("selectedCategory"), Category.class);
+        title = intent.getStringExtra("type");
+
+
+        parentCategory = gson.fromJson(intent.getStringExtra("parentCate"),Category.class);
+        if (parentCategory!=null) {
+            deleteCategoryViewModel.parentCate.set(parentCategory);
+        }
+
+
         iconCategory= findViewById(R.id.iconcategory);
+        iconCategory.setOnClickListener(v -> {
+            Intent intent1 = new Intent(DeleteCategoryActivity.this, ChooseIconActivity.class);
+            startActivityForResult(intent1,69);
+        });
+
+
         iconParentCategory = findViewById(R.id.iconparent);
         back = findViewById(R.id.imageView2);
         back.setOnClickListener(v -> {
@@ -77,22 +92,48 @@ public class DeleteCategoryActivity extends AppCompatActivity {
 
         Log.e("title",title);
         deletebtn = findViewById(R.id.delete_category);
+        modifybtn = findViewById(R.id.modify_category);
         if (Objects.equals(title, "Vay/nợ") || parentCategory == null){
             Log.e("delete","true");
-            deletebtn.setVisibility(View.GONE);
+           // deletebtn.setVisibility(View.GONE);
+           // modifybtn.setVisibility(View.GONE);
         }
 
         deleteCategoryViewModel.get_message().observe(this, message -> {
             if (message != null) {
-                Intent intent1 = new Intent();
-                intent1.putExtra("typedelete",title);
-                setResult(1,intent1);
-                ToastUtil.showCustomToast(DeleteCategoryActivity.this, message, 1000);
-//                Toast.makeText(DeleteCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
-                if (message == "Xóa danh mục thành công")
+                if (message == "Xóa danh mục thành công" ) {
+                    Intent intent1 = new Intent();
+                    intent1.putExtra("typedelete", title);
+                    setResult(1, intent1);
+                    ToastUtil.showCustomToast(DeleteCategoryActivity.this, message, 1000);
                     finish();
+//                Toast.makeText(DeleteCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+                if (message == "Sửa danh mục thành công") {
+                    Intent intent1 = new Intent();
+                    intent1.putExtra("typemodify", title);
+                    setResult(1, intent1);
+                    ToastUtil.showCustomToast(DeleteCategoryActivity.this, message, 1000);
+                    finish();
+                }
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==69 && resultCode==1)
+        {
+            Gson gson= new Gson();
+            assert data != null;
+            if (data.getStringExtra("selectedIcon") != null) {
+                Icon icon = gson.fromJson(data.getStringExtra("selectedIcon"), Icon.class);
+                deleteCategoryViewModel.iconCategory.set(icon);
+                int id = getResources().getIdentifier(icon.getLinking(), "drawable", getPackageName());
+                iconCategory.setImageResource(id);
+            }
+        }
     }
 }
