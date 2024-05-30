@@ -109,6 +109,7 @@ public class DeleteCategoryActivity extends AppCompatActivity {
                     finish();
 //                Toast.makeText(DeleteCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
+                else
                 if (message == "Sửa danh mục thành công") {
                     Intent intent1 = new Intent();
                     intent1.putExtra("typemodify", title);
@@ -116,6 +117,10 @@ public class DeleteCategoryActivity extends AppCompatActivity {
                     ToastUtil.showCustomToast(DeleteCategoryActivity.this, message, 1000);
                     finish();
                 }
+                else {
+                    ToastUtil.showCustomToast(DeleteCategoryActivity.this, message, 1000);
+                }
+
             }
         });
 

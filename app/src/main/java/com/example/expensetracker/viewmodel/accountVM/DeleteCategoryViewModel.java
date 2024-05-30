@@ -103,6 +103,13 @@ public class DeleteCategoryViewModel extends BaseObservable {
             }
             categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), Objects.requireNonNull(iconCategory.get()).getId(), parentCate.get().getId(),type.get().toString(),false );
             Category categoryRemove = category.get();
+
+            categoryRemove.setIconId(iconCategory.get().getId());
+            categoryRemove.setName(nameCategory.get().toString());
+            categoryRemove.setIcon(iconCategory.get());
+            categoryRemove.setParentCategoryId(parentCate.get().getId());
+            categoryRemove.setType(type.get().toString());
+            categoryRemove.setPublic(false);
             CategoryRepository.getInstance().updateCategory(category.get().getId(), categoryReq, new ApiCallBack<Category>() {
                 @Override
                 public void onSuccess(Category category) {
