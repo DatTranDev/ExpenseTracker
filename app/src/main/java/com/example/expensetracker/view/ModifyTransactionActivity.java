@@ -206,6 +206,8 @@ public class ModifyTransactionActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     String updatedTransactionJson = gson.toJson(modifyTransactionViewModel.getUpdatedTransaction(transaction));
                     resultIntent.putExtra("updatedTransaction", updatedTransactionJson);
+                    TransactionViewModel transactionViewModel = new TransactionViewModel();
+                    transactionViewModel.loadTransactions(transaction.getUserId(), getBaseContext());
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 }

@@ -33,6 +33,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -484,15 +485,19 @@ public class ReportsFragment extends BottomSheetDialogFragment {
 
 
         List<PieEntry> entries = new ArrayList<>();
+        List<LegendEntry> legendEntries = new ArrayList<>();
+
         int[] colors;
         if (totalIncomeAmount.equals(BigDecimal.ZERO)) {
             colors = new int[] {Color.parseColor("#ECE9EA")};
             entries.add(new PieEntry(1f, ""));
         } else {
             colors = new int[]{Color.parseColor("#90BE6D"), Color.parseColor("#EF5DA8"), Color.parseColor("#5D5FEF")};
+            List<String> legendName = new ArrayList<>();
             for (Map.Entry<Type, BigDecimal> entry : incomeMap.entrySet()) {
                 if (!entry.getValue().equals(BigDecimal.ZERO)) {
-                    BigDecimal percentage = entry.getValue().multiply(BigDecimal.valueOf(100)).divide(totalIncomeAmount, 2, RoundingMode.HALF_UP);
+                    legendName.add(entry.getKey().getDisplayName());
+                    BigDecimal percentage = entry.getValue().multiply(BigDecimal.valueOf(100)).divide(totalIncomeAmount, 4, RoundingMode.HALF_UP);
                     String percentageText = percentage.toString() + "%";
 
                     int iconId = getContext().getResources().getIdentifier(getIconName(entry.getKey()), "drawable", getContext().getPackageName());
@@ -502,6 +507,13 @@ public class ReportsFragment extends BottomSheetDialogFragment {
                     CustomDrawable customIcon = new CustomDrawable(icon, iconWidth, iconHeight);
                     entries.add(new PieEntry(entry.getValue().floatValue(), percentageText, customIcon));
                 }
+            }
+
+            for (int j = 0; j < legendName.size(); j++) {
+                LegendEntry legendEntry = new LegendEntry();
+                legendEntry.formColor = colors[j];
+                legendEntry.label = String.valueOf(legendName.get(j));
+                legendEntries.add(legendEntry);
             }
         }
 
@@ -526,8 +538,11 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         incomeChart.setHoleColor(Color.TRANSPARENT);
         incomeChart.setTransparentCircleColor(Color.parseColor("#2B2B2B"));
 
-        Legend legend = incomeChart.getLegend();
-        legend.setEnabled(false);
+        if (!totalIncomeAmount.equals(BigDecimal.ZERO)) {
+            Legend legend = incomeChart.getLegend();
+            legend.setCustom(legendEntries);
+            legend.setXEntrySpace(40);
+        }
 
         Description description = new Description();
         description.setText("");
@@ -547,15 +562,19 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         outcomeAmount.setTextColor(Color.parseColor("#F48484"));
 
         List<PieEntry> entries = new ArrayList<>();
+        List<LegendEntry> legendEntries = new ArrayList<>();
+
         int[] colors;
         if (totalOutcomeAmount.equals(BigDecimal.ZERO)) {
             colors = new int[] {Color.parseColor("#ECE9EA")};
             entries.add(new PieEntry(1f, ""));
         } else {
             colors = new int[] { Color.parseColor("#2D9CDB"), Color.parseColor("#F8961E"), Color.parseColor("#F9C74F") };
+            List<String> legendName = new ArrayList<>();
             for (Map.Entry<Type, BigDecimal> entry : outcomeMap.entrySet()) {
                 if (!entry.getValue().equals(BigDecimal.ZERO)) {
-                    BigDecimal percentage = entry.getValue().multiply(BigDecimal.valueOf(100)).divide(totalOutcomeAmount, 2, RoundingMode.HALF_UP);
+                    legendName.add(entry.getKey().getDisplayName());
+                    BigDecimal percentage = entry.getValue().multiply(BigDecimal.valueOf(100)).divide(totalOutcomeAmount, 4, RoundingMode.HALF_UP);
                     String percentageText = percentage.toString() + "%";
 
                     int iconId = getContext().getResources().getIdentifier(getIconName(entry.getKey()), "drawable", getContext().getPackageName());
@@ -565,6 +584,13 @@ public class ReportsFragment extends BottomSheetDialogFragment {
                     CustomDrawable customIcon = new CustomDrawable(icon, iconWidth, iconHeight);
                     entries.add(new PieEntry(entry.getValue().floatValue(), percentageText, customIcon));
                 }
+            }
+
+            for (int j = 0; j < legendName.size(); j++) {
+                LegendEntry legendEntry = new LegendEntry();
+                legendEntry.formColor = colors[j];
+                legendEntry.label = String.valueOf(legendName.get(j));
+                legendEntries.add(legendEntry);
             }
         }
 
@@ -591,8 +617,11 @@ public class ReportsFragment extends BottomSheetDialogFragment {
         outcomeChart.setHoleColor(Color.TRANSPARENT);
         outcomeChart.setTransparentCircleColor(Color.parseColor("#2B2B2B"));
 
-        Legend legend = outcomeChart.getLegend();
-        legend.setEnabled(false);
+        if (!totalOutcomeAmount.equals(BigDecimal.ZERO)) {
+            Legend legend = outcomeChart.getLegend();
+            legend.setCustom(legendEntries);
+            legend.setXEntrySpace(40);
+        }
 
         Description description = new Description();
         description.setText("");

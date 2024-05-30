@@ -79,7 +79,7 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
 
         user = SharedPreferencesManager.getInstance(this).getObject("user", AppUser.class);
 //        accountWalletViewModel.loadWallets(user.getId());
-        walletViewModel.loadWallets(user.getId());
+        walletViewModel.loadWallets(user.getId(), this);
         btnCancel.setOnClickListener(v -> finish());
 
         btnAdd.setOnClickListener(v -> {

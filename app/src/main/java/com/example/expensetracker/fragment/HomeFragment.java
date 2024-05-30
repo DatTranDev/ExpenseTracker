@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
     private ProgressBar progressBar;
+    private View overlay;
     public HomeFragment() {
 
     }
@@ -106,7 +107,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
         observeLoadingState();
 
-        walletViewModel.loadWallets(user.getId());
+        walletViewModel.loadWallets(user.getId(), getContext());
         observeWalletViewModel();
 
         transactionViewModel.loadTransactions(user.getId(), getContext());
@@ -143,8 +144,10 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
 
         if (Boolean.TRUE.equals(isWalletLoading) || Boolean.TRUE.equals(isTransactionLoading)) {
+            overlay.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         } else {
+            overlay.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -231,6 +234,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         message = view.findViewById(R.id.message_empty);
         openNotification = view.findViewById(R.id.notification);
         progressBar = view.findViewById(R.id.progress_bar);
+        overlay = view.findViewById(R.id.overlay);
     }
 
     private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {

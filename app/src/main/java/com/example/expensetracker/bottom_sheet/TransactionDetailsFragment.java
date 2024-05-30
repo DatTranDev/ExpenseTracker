@@ -123,7 +123,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
                     transactionExp = updatedTransaction;
                     setTransactionData();
                     transactionViewModel.loadTransactions(transactionExp.getUserId(), getContext());
-                    walletViewModel.loadWallets(transactionExp.getUserId());
+                    walletViewModel.loadWallets(transactionExp.getUserId(), getContext());
                 }
             }
         }

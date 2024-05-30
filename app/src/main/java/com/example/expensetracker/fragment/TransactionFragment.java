@@ -53,6 +53,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
     private TextView time;
     private View view;
     private ProgressBar progressBar;
+    private View overlay;
     AppUser user;
 
     private TransactionViewModel transactionViewModel;
@@ -105,8 +106,10 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
             Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
 
             if (Boolean.TRUE.equals(isTransactionLoading)) {
+                overlay.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
             } else {
+                overlay.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -302,6 +305,7 @@ public class TransactionFragment extends Fragment implements TransactionAdapter.
         difference = view.findViewById(R.id.difference);
         progressBar = view.findViewById(R.id.progress_bar);
         transactionEmpty = view.findViewById(R.id.transaction_empty);
+        overlay = view.findViewById(R.id.overlay);
     }
 
     @Override
