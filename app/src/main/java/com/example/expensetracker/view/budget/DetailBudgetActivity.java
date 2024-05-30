@@ -27,6 +27,7 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.example.expensetracker.viewmodel.budgetVM.DetailBudgetViewModel;
 import com.google.gson.Gson;
@@ -171,7 +172,8 @@ public class DetailBudgetActivity extends AppCompatActivity {
                     {
                         loading.setVisibility(View.GONE);
                     }
-                    Toast.makeText(DetailBudgetActivity.this, "Xóa ngân sách thất bại", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(DetailBudgetActivity.this,"Xóa ngân sách thất bại",1000);
+//                    Toast.makeText(DetailBudgetActivity.this, "Xóa ngân sách thất bại", Toast.LENGTH_SHORT).show();
 
                 }
             });

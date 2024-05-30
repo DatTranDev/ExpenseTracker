@@ -1,7 +1,6 @@
 package com.example.expensetracker.viewmodel;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -18,7 +17,9 @@ import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.WalletRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,51 +76,36 @@ public class WalletViewModel extends ViewModel {
         });
     }
 
-    public void loadFunds(String userId) {
+    public synchronized void loadFunds(String userId) {
         isLoading.setValue(true);
-        appUserRepository.getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
-            @Override
-            public void onSuccess(List<Wallet> wallets) {
-                List<Wallet> sharingWallets = new ArrayList<>();
-                for (Wallet wallet : wallets) {
-                    if (wallet.isSharing()) {
-                        for (AppUser user : wallet.getMembers()) {
-                            if (user.getId().equals(userId)) {
-                                sharingWallets.add(wallet);
-                                break;
-                            }
-                        }
-                    }
-                }
-                walletList = sharingWallets;
-                walletsLiveData.setValue(walletList);
-                isLoading.setValue(false);
-            }
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(null);
+        Type type = new TypeToken<List<Wallet>>(){}.getType();
+        List<Wallet> sharingWallets = sharedPreferencesManager.getList("sharingWallets", type);
+        walletList = sharingWallets;
+        walletsLiveData.setValue(walletList);
+        isLoading.setValue(false);
 
-            @Override
-            public void onError(String message) {
-                errorMessageLiveData.setValue(message);
-                isLoading.setValue(false);
-            }
-        });
+//        AppUserRepository.getInstance().getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
+//            @Override
+//            public synchronized void onSuccess(List<Wallet> wallets) {
+//                walletList = wallets;
+//                walletsLiveData.setValue(walletList);
+//                isLoading.setValue(false);
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                errorMessageLiveData.setValue(message);
+//                isLoading.setValue(false);
+//            }
+//        });
     }
 
     public void loadMembers(String userId, Wallet fund){
         isLoading.setValue(true);
-        appUserRepository.getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
-            @Override
-            public void onSuccess(List<Wallet> wallets) {
-                userList = fund.getMembers();
-                usersLiveData.setValue(userList);
-                isLoading.setValue(false);
-            }
-
-            @Override
-            public void onError(String message) {
-                errorMessageLiveData.setValue(message);
-                isLoading.setValue(false);
-            }
-        });
+        userList = fund.getMembers();
+        usersLiveData.setValue(userList);
+        isLoading.setValue(false);
     }
 
     public void addWallet(WalletReq walletReq, Context context) {

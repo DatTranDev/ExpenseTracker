@@ -26,6 +26,7 @@ import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.view.addTransaction.ChooseWalletFragment;
@@ -200,7 +201,8 @@ public class ModifyTransactionActivity extends AppCompatActivity {
         money.addTextChangedListener(new ThousandSeparatorTextWatcher(money));
         modifyTransactionViewModel.message.observe(this, message -> {
             if (message != null) {
-                Toast.makeText(ModifyTransactionActivity.this, message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(ModifyTransactionActivity.this, message, 1000);
+//                Toast.makeText(ModifyTransactionActivity.this, message, Toast.LENGTH_SHORT).show();
                 if (message.equals("Sửa giao dịch thành công!")) {
                     Intent resultIntent = new Intent();
                     Gson gson = new Gson();

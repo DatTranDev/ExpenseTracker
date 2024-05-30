@@ -60,13 +60,21 @@ public class DeleteCategoryViewModel extends BaseObservable {
     }
     public synchronized void deleteCategory(){
         UserCategory userCategory = new UserCategory(user.getId(), category.get().getId(), false);
+        Category categoryRemove= category.get();
         CategoryRepository.getInstance().deleteCategory(userCategory, new ApiCallBack<Category>() {
             @Override
             public synchronized void onSuccess(Category category) {
                 List<Category> currentCategories = categories.getValue();
                 if (currentCategories != null) {
                     // Remove the category from the list
-                    currentCategories.remove(category);
+                    for(int i=0;i<currentCategories.size();i++)
+                    {
+                        if(currentCategories.get(i).getId().equals(categoryRemove.getId()))
+                        {
+                            currentCategories.remove(i);
+                            break;
+                        }
+                    }
                     categories.setValue(currentCategories);
                     saveCategoriesToSharedPreferences(currentCategories);
                     showMessage("Xóa danh mục thành công");
@@ -75,7 +83,7 @@ public class DeleteCategoryViewModel extends BaseObservable {
             }
             @Override
             public void onError(String message) {
-                showMessage("Xóa danh mục thất bại");
+                showMessage(message);
             }
         });
     }

@@ -145,19 +145,6 @@ public class MainActivity extends AppCompatActivity {
 
         //ICON
         //GET ALL ICON
-        IconRepository.getInstance().getAllIcons(new ApiCallBack<List<Icon>>() {
-            @Override
-            public void onSuccess(List<com.example.expensetracker.model.Icon> icons) {
-                for (com.example.expensetracker.model.Icon icon : icons) {
-                    System.out.println(icon.getLinking());
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                System.out.println(message);
-            }
-        });
 
         //REQUEST
         //GET REQUEST BY USER

@@ -1,5 +1,6 @@
 package com.example.expensetracker.view.addTransaction;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,8 +85,11 @@ public class ChooseWallerAdapter extends RecyclerView.Adapter<ChooseWallerAdapte
         }
         public void bind(Wallet item) {
             name.setText(item.getName());
-            Log.d("lỗi",item.getAmount().toString());
             amount.setText(Helper.formatCurrency(item.getAmount()));
+            if(item.isSharing())
+            {
+                name.setTextColor(Color.parseColor("#FB2727"));
+            }
         }
     }
 

@@ -90,19 +90,17 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public synchronized View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fund, container, false);
 
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
         initView(view);
 
-        setupRecyclerViews(view);
-        setupClickListeners();
-
-        observeLoadingState();
-
         walletViewModel.loadFunds(user.getId());
         observeWalletViewModel();
+        if(!walletViewModel.getWalletsLiveData().getValue().isEmpty()) {
+            currentWallet = walletViewModel.getWalletsLiveData().getValue().get(0);
+        }
 
         walletViewModel.loadMembers(user.getId(), currentWallet);
         observeWalletViewModel();
@@ -110,6 +108,9 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         transactionViewModel.loadIsSharingTransactions(user.getId());
         observeTransactionViewModel();
 
+        setupRecyclerViews(view);
+        setupClickListeners();
+        observeLoadingState();
         return view;
     }
 
@@ -209,7 +210,7 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         emptyMember = view.findViewById(R.id.member_empty);
         showFund = view.findViewById(R.id.show_fund);
         showTransaction = view.findViewById(R.id.show_transaction);
-        progressBar = view.findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progress_bar_fund);
     }
 
     private void setupRecyclerViews(View view) {

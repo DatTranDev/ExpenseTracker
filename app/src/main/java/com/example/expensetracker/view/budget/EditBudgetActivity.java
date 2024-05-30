@@ -24,6 +24,7 @@ import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.repository.BudgetRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.view.addTransaction.ThousandSeparatorTextWatcher;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
@@ -155,14 +156,16 @@ public class EditBudgetActivity extends AppCompatActivity {
                     if (loading != null) {
                         loading.setVisibility(View.GONE);
                     }
-                    Toast.makeText(EditBudgetActivity.this, "Sửa ngân sách thành công", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(EditBudgetActivity.this, "Sửa ngân sách thành công", 1000);
+//                    Toast.makeText(EditBudgetActivity.this, "Sửa ngân sách thành công", Toast.LENGTH_SHORT).show();
                     setResult(1);
                     finish();
                 }
 
                 @Override
                 public void onError(String message) {
-                    Toast.makeText(EditBudgetActivity.this, "Sửa ngân sách thất bại", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(EditBudgetActivity.this, "Sửa ngân sách thất bại",1000);
+//                    Toast.makeText(EditBudgetActivity.this, "Sửa ngân sách thất bại", Toast.LENGTH_SHORT).show();
                     if (loading != null) {
                         loading.setVisibility(View.GONE);
                     }
