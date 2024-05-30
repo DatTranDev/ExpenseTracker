@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DeleteCategoryViewModel extends BaseObservable {
     Context context;
@@ -34,6 +35,7 @@ public class DeleteCategoryViewModel extends BaseObservable {
     public ObservableField<Icon> iconCategory = new ObservableField<>();
 
     public  ObservableField<String> parentCategory = new ObservableField<>();
+    public ObservableField<Category> parentCate= new ObservableField<>();
 
     public MutableLiveData<Boolean> btnEnabled = new MutableLiveData<>(false);
     public AppUser user;
@@ -86,6 +88,60 @@ public class DeleteCategoryViewModel extends BaseObservable {
                 showMessage(message);
             }
         });
+    }
+
+    public synchronized void modifyCategory()
+    {
+        if (category.get().isPublic() == true)
+        {
+            showMessage("Danh mục này không thể chỉnh sửa");
+        }
+        else {
+            CategoryReq categoryReq;
+            if(iconCategory.get()==null)
+            {
+                iconCategory.set(category.get().getIcon());
+            }
+            if (parentCate.get().getId() == null){
+                categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), Objects.requireNonNull(iconCategory.get()).getId(), null,type.get().toString(),false );
+            }
+            categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), Objects.requireNonNull(iconCategory.get()).getId(), parentCate.get().getId(),type.get().toString(),false );
+            Category categoryRemove = category.get();
+
+            categoryRemove.setIconId(iconCategory.get().getId());
+            categoryRemove.setName(nameCategory.get().toString());
+            categoryRemove.setIcon(iconCategory.get());
+            categoryRemove.setParentCategoryId(parentCate.get().getId());
+            categoryRemove.setType(type.get().toString());
+            categoryRemove.setPublic(false);
+            CategoryRepository.getInstance().updateCategory(category.get().getId(), categoryReq, new ApiCallBack<Category>() {
+                @Override
+                public void onSuccess(Category category) {
+                    List<Category> currentCategories = categories.getValue();
+
+                    if (currentCategories != null) {
+                        for(int i=0;i<currentCategories.size();i++)
+                        {
+                            if(currentCategories.get(i).getId().equals(categoryRemove.getId()))
+                            {
+                                currentCategories.remove(i);
+                                currentCategories.add(categoryRemove);
+                                break;
+                            }
+                        }
+                        categories.setValue(currentCategories);
+                        saveCategoriesToSharedPreferences(currentCategories);
+                        showMessage("Sửa danh mục thành công");
+                        resetData();
+                    }
+                }
+
+                @Override
+                public void onError(String message) {
+                    showMessage(message);
+                }
+            });
+        }
     }
 
 

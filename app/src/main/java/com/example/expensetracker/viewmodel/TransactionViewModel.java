@@ -1,6 +1,7 @@
 package com.example.expensetracker.viewmodel;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -12,7 +13,11 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.TransactionRepository;
+import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +47,7 @@ public class TransactionViewModel extends ViewModel {
         return errorMessageLiveData;
     }
 
-    public void loadTransactions(String userId) {
+    public void loadTransactions(String userId, Context context) {
         isLoading.setValue(true);
         appUserRepository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
             @Override
@@ -50,6 +55,7 @@ public class TransactionViewModel extends ViewModel {
                 transactionList = transactions;
                 transactionsLiveData.setValue(transactionList);
                 isLoading.setValue(false);
+                SharedPreferencesManager.getInstance(context).saveList("transactions", transactionList);
             }
 
             @Override
@@ -92,7 +98,7 @@ public class TransactionViewModel extends ViewModel {
             public void onSuccess(TransactionExp addedTransaction) {
                 transactionList.add(addedTransaction);
                 transactionsLiveData.setValue(new ArrayList<>(transactionList));
-                Toast.makeText(context, "Thêm ví thành công!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Thêm giao dịch thành công!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -132,6 +138,8 @@ public class TransactionViewModel extends ViewModel {
                 List<TransactionExp> currentTransactions = transactionsLiveData.getValue();
                 if (currentTransactions != null) {
                     transactionsLiveData.setValue(currentTransactions);
+                    SharedPreferencesManager.getInstance(context).removeKey("transactions");
+                    SharedPreferencesManager.getInstance(context).saveList("transactions", currentTransactions);
                     Toast.makeText(context, "Xóa giao dịch thành công", Toast.LENGTH_SHORT).show();
                 }
             }

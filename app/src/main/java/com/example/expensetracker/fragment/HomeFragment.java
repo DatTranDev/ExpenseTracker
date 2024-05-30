@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
+import com.example.expensetracker.bottom_sheet.NotifictionAccount;
 import com.example.expensetracker.bottom_sheet.ReportsFragment;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.bottom_sheet.WalletFragment;
@@ -77,6 +78,8 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
     private ProgressBar progressBar;
+    private Boolean check;
+    private View overlay;
     public HomeFragment() {
 
     }
@@ -97,6 +100,14 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
 
+        check = false;
+        if(SharedPreferencesManager.getInstance(getContext()).getObject("toggle_state",Boolean.class)==null)
+            check =false;
+        if (check)
+        {
+            Log.e("check",check.toString());
+            NotifictionAccount.scheduleDailyNotification(getContext());
+        }
         initView(view);
 
         userName.setText(user.getUserName());
@@ -106,10 +117,10 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
         observeLoadingState();
 
-        walletViewModel.loadWallets(user.getId());
+        walletViewModel.loadWallets(user.getId(), getContext());
         observeWalletViewModel();
 
-        transactionViewModel.loadTransactions(user.getId());
+        transactionViewModel.loadTransactions(user.getId(), getContext());
         observeTransactionViewModel();
 
         chartViewModel.getWeeklyOutcomes().observe(getViewLifecycleOwner(), new Observer<BigDecimal[]>() {
@@ -143,8 +154,10 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
 
         if (Boolean.TRUE.equals(isWalletLoading) || Boolean.TRUE.equals(isTransactionLoading)) {
+            overlay.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         } else {
+            overlay.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -231,6 +244,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
         message = view.findViewById(R.id.message_empty);
         openNotification = view.findViewById(R.id.notification);
         progressBar = view.findViewById(R.id.progress_bar);
+        overlay = view.findViewById(R.id.overlay);
     }
 
     private List<TransactionExp> sortTransactionsByDate(List<TransactionExp> transactions) {

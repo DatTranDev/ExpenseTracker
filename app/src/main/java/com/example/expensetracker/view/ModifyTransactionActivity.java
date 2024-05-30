@@ -33,6 +33,7 @@ import com.example.expensetracker.view.addTransaction.ChooseWalletFragment;
 import com.example.expensetracker.view.addTransaction.ThousandSeparatorTextWatcher;
 import com.example.expensetracker.viewmodel.AddTransactionViewModel;
 import com.example.expensetracker.viewmodel.ModifyTransactionViewModel;
+import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.google.gson.Gson;
 
 import java.sql.Timestamp;
@@ -207,6 +208,8 @@ public class ModifyTransactionActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     String updatedTransactionJson = gson.toJson(modifyTransactionViewModel.getUpdatedTransaction(transaction));
                     resultIntent.putExtra("updatedTransaction", updatedTransactionJson);
+                    TransactionViewModel transactionViewModel = new TransactionViewModel();
+                    transactionViewModel.loadTransactions(transaction.getUserId(), getBaseContext());
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 }

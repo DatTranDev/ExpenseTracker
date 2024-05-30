@@ -61,7 +61,7 @@ public class AppUser {
         this.alertTime = alertTime;
     }
 
-    public void findById(AppUser user){
+    public void findByEmail(AppUser user){
         if(user.getEmail().equals(this.getEmail())){
             user.setId(this.getId());
             user.setUserName(this.getUserName());

@@ -12,12 +12,15 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.utils.SharedPreferencesManager;
 
 
 import java.util.List;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberViewHolder>{
     private List<AppUser> appUserList;
+
+    private AppUser user;
 
     public MemberAdapter(List<AppUser> appUserList) {
         this.appUserList = appUserList;
@@ -27,6 +30,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
     @Override
     public MemberAdapter.MemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_item, parent, false);
+        user = SharedPreferencesManager.getInstance(null).getObject("user", AppUser.class);
         return new MemberAdapter.MemberViewHolder(view);
     }
 
@@ -38,20 +42,24 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         }
     }
 
-    @Override
     public int getItemCount() {
-        return appUserList != null ? appUserList.size() : 0;
+        if (appUserList != null) {
+            return appUserList.size();
+        }
+        return 0;
     }
 
-    public void updateMemberWallet(List<AppUser> userList) {
-        if ( appUserList!= null) {
+    public void updateMemberWallet(List<AppUser> members) {
+        if (appUserList != null) {
             appUserList.clear();
-            appUserList.addAll(userList);
+            appUserList.addAll(members);
+            notifyDataSetChanged();
         } else {
-            appUserList = userList;
+            appUserList = members;
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
+
 
     public static class MemberViewHolder extends RecyclerView.ViewHolder {
         private final TextView memberName;

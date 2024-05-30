@@ -126,6 +126,8 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
 
             NotifictionAccount notifictionAccount = new NotifictionAccount();
             notifictionAccount.show(getActivity().getSupportFragmentManager(), notifictionAccount.getTag());
+//            Intent intent = new Intent(getActivity(), NotifictionAccount.class);
+//            startActivity(intent);
         });
 
         account_export = view.findViewById(R.id.account_export_file);

@@ -62,7 +62,7 @@ public class AddCategoryViewModel extends BaseObservable {
     }
     public synchronized void addCategory(){
 
-        if(nameCategory.get()==null || nameCategory.get().equals("") || user==null || iconCategory.get() == null || parentCategory.get() == null)
+        if(nameCategory.get()==null || nameCategory.get().equals("") || user==null || iconCategory.get() == null )
         {
             Log.e("Test: ", "Success");
             if(nameCategory.get()==null){
@@ -72,11 +72,6 @@ public class AddCategoryViewModel extends BaseObservable {
             if(iconCategory.get()==null)
             {
                 showMessage("Vui lòng chọn icon cho danh mục");
-                return;
-            }
-            if (parentCategory.get() == null)
-            {
-                showMessage("Vui lòng chọn danh mục cha");
                 return;
             }
         }

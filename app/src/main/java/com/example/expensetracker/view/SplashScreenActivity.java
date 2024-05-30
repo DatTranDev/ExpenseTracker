@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.ApiCallBack;
+import com.example.expensetracker.api.Category.CategoryReq;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Budget;
 import com.example.expensetracker.model.Category;
@@ -19,6 +20,7 @@ import com.example.expensetracker.model.Icon;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
+import com.example.expensetracker.repository.CategoryRepository;
 import com.example.expensetracker.repository.IconRepository;
 import com.example.expensetracker.utils.Constant;
 import com.example.expensetracker.utils.SharedPreferencesManager;
@@ -83,6 +85,31 @@ public class SplashScreenActivity extends AppCompatActivity{
     }
 
     private synchronized boolean loadAllData(Button retry){
+
+        //test update
+//        CategoryReq categoryReq = new CategoryReq();
+//        categoryReq.setUserId("6615a4b40d01b7dd489839bc");
+//        categoryReq.setName("Xu tiktok thanh toán 12");
+//        categoryReq.setIconId("6647af5e58421edbe63eabe2");
+//        categoryReq.setParentCategoryId("6615894eb71e80c899ce774b");
+//        categoryReq.setType("Khoản chi");
+//        categoryReq.setPublic(false);
+//
+//        String cateId = "66587cf7ac866f93a662b165";
+//
+//        CategoryRepository.getInstance().updateCategory(cateId, categoryReq, new ApiCallBack<Category>() {
+//            @Override
+//            public void onSuccess(Category category) {
+//                android.widget.Toast.makeText(SplashScreenActivity.this, "Update category success", android.widget.Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                android.widget.Toast.makeText(SplashScreenActivity.this, message, android.widget.Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
         // Get user if logged in
         AppUser appUser = SharedPreferencesManager.getInstance(this).getObject("user", AppUser.class);
         if (appUser != null) {
