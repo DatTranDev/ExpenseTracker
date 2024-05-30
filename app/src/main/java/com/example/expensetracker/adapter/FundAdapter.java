@@ -1,5 +1,6 @@
 package com.example.expensetracker.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.List;
 public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder> {
     private List<Wallet> fundList;
     private OnFundClickListener onFundClickListener;
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public FundAdapter(List<Wallet> fundList, OnFundClickListener onFundClickListener) {
         this.fundList = fundList;
@@ -40,7 +42,8 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
         if (wallet != null) {
             holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
             holder.fundName.setText(wallet.getName());
-            holder.itemView.setTag(wallet); // Set the wallet object as the tag of the itemView
+            holder.itemView.setTag(wallet);
+            holder.itemView.setBackgroundColor(selectedPosition == position ? Color.GREEN : Color.TRANSPARENT);
         }
     }
 
@@ -59,7 +62,12 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
         notifyDataSetChanged();
     }
 
-    public static class FundViewHolder extends RecyclerView.ViewHolder {
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
+    public class FundViewHolder extends RecyclerView.ViewHolder {
         private final TextView fundName;
         private final TextView fundAmount;
 
@@ -72,11 +80,17 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
                 if (listener != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Wallet clickedWallet = (Wallet) itemView.getTag(); // Get the wallet object from the itemView tag
-                        listener.onFundClick(clickedWallet); // Pass the wallet object to the listener
+                        Wallet clickedWallet = (Wallet) itemView.getTag();
+                        listener.onFundClick(clickedWallet);
+
+                        // Update selected position and notify adapter
+                        notifyItemChanged(selectedPosition);
+                        selectedPosition = position;
+                        notifyItemChanged(selectedPosition);
                     }
                 }
             });
         }
     }
 }
+

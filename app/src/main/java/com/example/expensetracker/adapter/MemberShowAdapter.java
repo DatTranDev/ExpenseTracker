@@ -37,15 +37,26 @@ public class MemberShowAdapter extends RecyclerView.Adapter<MemberShowAdapter.Me
     @Override
     public void onBindViewHolder(@NonNull MemberShowViewHolder holder, int position) {
         AppUser appUser = appUserList.get(position);
-        if (appUser != null) {
-            holder.memberName.setText(appUser.getUserName());
-            holder.modifyMember.setOnClickListener(v -> memberModifyListener.onMemberModifyClick(appUser));
+        if (appUser == null) {
+            return;
         }
+        holder.memberName.setText(appUser.getUserName());
+        holder.modifyMember.setOnClickListener(v -> memberModifyListener.onMemberModifyClick(appUser));
+
+        holder.modifyMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                memberModifyListener.onMemberModifyClick(appUser);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return appUserList != null ? appUserList.size() : 0;
+        if (appUserList != null) {
+            return appUserList.size();
+        }
+        return 0;
     }
 
     public static class MemberShowViewHolder extends RecyclerView.ViewHolder {

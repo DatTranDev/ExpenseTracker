@@ -16,17 +16,22 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.api.Wallet.AddMemberReq;
+import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.databinding.ActivityFundAddFundBinding;
+import com.example.expensetracker.databinding.ActivityFundAddMemberBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.WalletViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.math.BigDecimal;
+
 public class MemberAdd extends BottomSheetDialogFragment {
-    ImageView imageQuayLai;
-    Button btnHuy;
-    Button btnGuiLoiMoi;
+    private ImageView imageQuayLai;
+    private Button btnHuy;
+    private Button btnGuiLoiMoi;
     private EditText txtEmail;
     private AppUser user;
     private Wallet wallet;
@@ -36,6 +41,7 @@ public class MemberAdd extends BottomSheetDialogFragment {
         this.wallet = wallet;
     }
 
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         walletViewModel = new ViewModelProvider(requireActivity()).get(WalletViewModel.class);
@@ -44,32 +50,60 @@ public class MemberAdd extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ActivityFundAddFundBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_fund_add_member, container, false);
+        ActivityFundAddMemberBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_fund_add_member, container, false);
         binding.setLifecycleOwner(this);
 
         user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
         initView(binding.getRoot());
 
-        btnHuy.setOnClickListener(v -> dismiss());
-
-        imageQuayLai.setOnClickListener(v -> dismiss());
-
-        btnGuiLoiMoi.setOnClickListener(v -> {
-            String email = txtEmail.getText().toString();
-
-            if (email.isEmpty()) {
-                Toast.makeText(getContext(), "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
-                return;
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
+        });
 
-            AddMemberReq addMemberReq = new AddMemberReq(wallet.getId(), user.getId(), email);
+        imageQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
-            walletViewModel.addMember(addMemberReq, wallet,getContext());
-            dismiss();
+        btnGuiLoiMoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = txtEmail.getText().toString();
+
+                if (email.isEmpty()) {
+                    Toast.makeText(requireContext(), "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                AddMemberReq addMemberReq = new AddMemberReq(wallet.getId(), user.getId(), email);
+
+                walletViewModel.addMember(addMemberReq, wallet, requireContext());
+                dismiss();
+            }
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        View view = getView();
+        if (view != null) {
+            View parent = (View) view.getParent();
+            BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(parent);
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            parent.getLayoutParams().height = getResources().getDisplayMetrics().heightPixels / 2;
+            parent.requestLayout();
+        }
     }
 
     private void initView(View view) {

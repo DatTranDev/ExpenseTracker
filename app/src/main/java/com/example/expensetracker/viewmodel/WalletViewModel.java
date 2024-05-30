@@ -30,6 +30,7 @@ public class WalletViewModel extends ViewModel {
     private List<Wallet> walletList;
     private List<AppUser> userList;
     private MutableLiveData<List<AppUser>> usersLiveData;
+    private Wallet fund;
     private MutableLiveData<String> errorMessageLiveData = new MutableLiveData<>();
     private AppUserRepository appUserRepository;
 
@@ -41,6 +42,7 @@ public class WalletViewModel extends ViewModel {
         usersLiveData = new MutableLiveData<>();
         usersLiveData.setValue(userList);
         isLoading = new MutableLiveData<>();
+        fund = new Wallet();
         appUserRepository = AppUserRepository.getInstance();
     }
 
@@ -55,6 +57,14 @@ public class WalletViewModel extends ViewModel {
 
     public LiveData<String> getErrorMessageLiveData() {
         return errorMessageLiveData;
+    }
+
+
+    public void loadMembers(String userId, Wallet fund){
+        isLoading.setValue(true);
+        userList = fund.getMembers();
+        usersLiveData.setValue(userList);
+        isLoading.setValue(false);
     }
 
     public void loadWallets(String userId, Context context) {
@@ -99,13 +109,6 @@ public class WalletViewModel extends ViewModel {
 //                isLoading.setValue(false);
 //            }
 //        });
-    }
-
-    public void loadMembers(String userId, Wallet fund){
-        isLoading.setValue(true);
-        userList = fund.getMembers();
-        usersLiveData.setValue(userList);
-        isLoading.setValue(false);
     }
 
     public void addWallet(WalletReq walletReq, Context context) {
@@ -165,10 +168,10 @@ public class WalletViewModel extends ViewModel {
         });
     }
 
-    public void addMember(AddMemberReq addMemberReq, Wallet fund, Context context) {
+    public void addMember(AddMemberReq addMemberReq, Wallet currentfund, Context context) {
         // Check if the member already exists in the fund
         boolean memberExists = false;
-        for (AppUser member : fund.getMembers()) {
+        for (AppUser member : currentfund.getMembers()) {
             if (member.getEmail().equals(addMemberReq.getInviteUserMail())) {
                 memberExists = true;
                 break;
@@ -180,16 +183,27 @@ public class WalletViewModel extends ViewModel {
             Toast.makeText(context, "Thành viên đã tồn tại", Toast.LENGTH_SHORT).show();
             return;
         }
-
         // If member does not exist, proceed to add the member
-        appUserRepository.getInstance().findByEmail(addMemberReq.getInviteUserMail(), new ApiCallBack<AppUser>() {
+        WalletRepository.getInstance().addMember(addMemberReq, new ApiCallBack<Wallet>() {
             @Override
-            public void onSuccess(AppUser user) {
-                AppUser appUser = new AppUser();
-                appUser.setEmail(addMemberReq.getInviteUserMail());
-                user.findById(appUser);
-                fund.getMembers().add(appUser); // Add the new member to the original fund
-                Toast.makeText(context, "Thêm thành viên thành công", Toast.LENGTH_SHORT).show();
+            public void onSuccess(Wallet wallet) {
+                appUserRepository.getInstance().findByEmail(addMemberReq.getInviteUserMail(), new ApiCallBack<AppUser>() {
+                    @Override
+                    public void onSuccess(AppUser user) {
+                        AppUser appUser = new AppUser();
+                        appUser.setEmail(addMemberReq.getInviteUserMail());
+                        user.findByEmail(appUser);
+                        currentfund.getMembers().add(appUser); // Add the new member to the original fund
+                        userList = currentfund.getMembers();
+                    }
+                    @Override
+                    public void onError(String message) {
+                        errorMessageLiveData.setValue(message);
+                    }
+                });
+                fund.setMembers(userList);
+                usersLiveData.setValue(userList);
+                Toast.makeText(context, "Gửi lời mời thành công", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -197,6 +211,7 @@ public class WalletViewModel extends ViewModel {
                 errorMessageLiveData.setValue(message);
             }
         });
+
     }
 
     public void removeMember(RemoveMemberReq removeMemberReq, Wallet fund, Context context) {
@@ -220,13 +235,14 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet removeMemberWallet) {
                 for (AppUser user : fund.getMembers()) {
-                    if (user.getId().equals(removeMemberReq.getUserId())) {
+                    if (user.getId().equals(removeMemberReq.getRemoveUserId())) {
                         fund.getMembers().remove(user);
                         break;
                     }
                 }
+                userList = fund.getMembers();
                 // Update walletsLiveData after removing member
-                walletsLiveData.setValue(walletList);
+                usersLiveData.setValue(userList);
                 Toast.makeText(context, "Xóa thành viên thành công", Toast.LENGTH_SHORT).show();
             }
 

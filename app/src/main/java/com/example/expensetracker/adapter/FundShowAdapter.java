@@ -35,18 +35,29 @@ public class FundShowAdapter extends RecyclerView.Adapter<FundShowAdapter.FundSh
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FundShowViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FundShowAdapter.FundShowViewHolder holder, int position) {
         Wallet wallet = fundList.get(position);
-        if (wallet != null) {
-            holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
-            holder.fundName.setText(wallet.getName());
-            holder.modifyFund.setOnClickListener(v -> fundModifyListener.onFundModifyClick(wallet));
+        if (wallet == null) {
+            return;
         }
+
+        holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
+        holder.fundName.setText(wallet.getName());
+
+        holder.modifyFund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fundModifyListener.onFundModifyClick(wallet);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return fundList != null ? fundList.size() : 0;
+        if (fundList != null) {
+            return fundList.size();
+        }
+        return 0;
     }
 
     public static class FundShowViewHolder extends RecyclerView.ViewHolder {
