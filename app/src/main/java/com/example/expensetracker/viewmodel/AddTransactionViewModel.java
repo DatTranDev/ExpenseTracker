@@ -123,7 +123,8 @@ public class AddTransactionViewModel extends BaseObservable {
                     public void onSuccess(TransactionExp transactionExp) {
                         newTransaction.setId(transactionExp.getId());
                         listTransaction.add(newTransaction);
-                        SharedPreferencesManager.getInstance(context).saveList("transactions",listTransaction);
+                        SharedPreferencesManager.getInstance(context).removeKey("transactions");
+                        SharedPreferencesManager.getInstance(context).saveList("transactions", listTransaction);
                         showMessage("Thêm giao dịch thành công");
 
                     }

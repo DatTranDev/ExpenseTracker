@@ -36,6 +36,7 @@ import com.example.expensetracker.databinding.ActivityAddTransactionBinding;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.UploadRepository;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.viewmodel.AddTransactionViewModel;
 import com.google.gson.Gson;
 
@@ -185,9 +186,10 @@ public class mainAddActivity extends AppCompatActivity {
                 {
                     loading.setVisibility(View.GONE);
                 }
+                ToastUtil.showCustomToast(this,message,1000);
 
-                // Hiển thị thông báo
-                Toast.makeText(mainAddActivity.this, message, Toast.LENGTH_SHORT).show();
+//                // Hiển thị thông báo
+//                Toast.makeText(mainAddActivity.this, message, Toast.LENGTH_SHORT).show();
                 if(message.equals("Thêm giao dịch thành công"))
                 {
                     setResult(1);

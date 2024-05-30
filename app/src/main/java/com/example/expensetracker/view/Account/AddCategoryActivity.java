@@ -17,6 +17,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityAddCategoryBinding;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Icon;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.viewmodel.accountVM.AddCategoryViewModel;
 import com.google.gson.Gson;
@@ -90,7 +91,8 @@ public class AddCategoryActivity extends AppCompatActivity {
             public void onChanged(String s) {
                 if (s != null) {
                     setResult(1,intent);
-                    Toast.makeText(AddCategoryActivity.this, s, Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddCategoryActivity.this, s, 1000);
+//                    Toast.makeText(AddCategoryActivity.this, s, Toast.LENGTH_SHORT).show();
                     if (s.equals("Thêm danh mục thành công"))
                         finish();
                 }

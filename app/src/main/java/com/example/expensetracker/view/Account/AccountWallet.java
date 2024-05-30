@@ -30,6 +30,7 @@ import com.example.expensetracker.databinding.ActivityAddCategoryBinding;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.example.expensetracker.viewmodel.accountVM.AccountWalletViewModel;
@@ -79,7 +80,7 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
 
         user = SharedPreferencesManager.getInstance(this).getObject("user", AppUser.class);
 //        accountWalletViewModel.loadWallets(user.getId());
-        walletViewModel.loadWallets(user.getId());
+        walletViewModel.loadWallets(user.getId(), this);
         btnCancel.setOnClickListener(v -> finish());
 
         btnAdd.setOnClickListener(v -> {
@@ -96,7 +97,8 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
         });
 
         walletViewModel.getErrorMessageLiveData().observe(this, errorMessage ->
-                Toast.makeText(AccountWallet.this, errorMessage, Toast.LENGTH_SHORT).show());
+                        ToastUtil.showCustomToast(AccountWallet.this, errorMessage, 1000));
+//                Toast.makeText(AccountWallet.this, errorMessage, Toast.LENGTH_SHORT).show());
     }
 
     private void initView() {

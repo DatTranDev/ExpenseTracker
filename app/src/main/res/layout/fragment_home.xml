@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.HomeFragment">
-        <!-- TODO: Update blank fragment layout -->
         <ScrollView
             android:id="@+id/scrollView5"
             android:layout_width="match_parent"
@@ -175,7 +174,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="vertical"
-                                tools:listitem="@layout/wallet_item"></androidx.recyclerview.widget.RecyclerView>
+                                tools:listitem="@layout/wallet_item" />
 
                             <TextView
                                 android:id="@+id/wallet_empty"
@@ -472,15 +471,29 @@
             </LinearLayout>
         </ScrollView>
 
+        <View
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/light_gray"
+            android:alpha="0.36"
+            android:visibility="gone" />
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
+            android:indeterminateTint="@color/accent_green"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:visibility="gone"
+            android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

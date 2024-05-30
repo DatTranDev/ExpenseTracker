@@ -59,6 +59,7 @@ public class WalletViewModel extends ViewModel {
         return errorMessageLiveData;
     }
 
+
     public void loadMembers(String userId, Wallet fund){
         isLoading.setValue(true);
         userList = fund.getMembers();
@@ -66,7 +67,7 @@ public class WalletViewModel extends ViewModel {
         isLoading.setValue(false);
     }
 
-    public void loadWallets(String userId) {
+    public void loadWallets(String userId, Context context) {
         isLoading.setValue(true);
         appUserRepository.getWallet(userId, new ApiCallBack<List<Wallet>>() {
             @Override
@@ -74,6 +75,7 @@ public class WalletViewModel extends ViewModel {
                 walletList = wallets;
                 walletsLiveData.setValue(walletList);
                 isLoading.setValue(false);
+                SharedPreferencesManager.getInstance(context).saveList("wallets", walletList);
             }
 
             @Override
@@ -119,6 +121,7 @@ public class WalletViewModel extends ViewModel {
                     Toast.makeText(context, "Tạo quỹ thành công", Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(context, "Tạo ví thành công", Toast.LENGTH_SHORT).show();
+                SharedPreferencesManager.getInstance(context).saveList("wallets", walletList);
             }
 
             @Override
@@ -136,6 +139,7 @@ public class WalletViewModel extends ViewModel {
                 if (currentWallets != null) {
                     walletsLiveData.setValue(currentWallets);
                     Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    SharedPreferencesManager.getInstance(context).saveList("wallets", walletList);
                 }
             }
 
@@ -154,6 +158,7 @@ public class WalletViewModel extends ViewModel {
                 currentWallets.remove(index);
                 walletsLiveData.setValue(currentWallets);
                 Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                SharedPreferencesManager.getInstance(context).saveList("wallets", walletList);
             }
 
             @Override

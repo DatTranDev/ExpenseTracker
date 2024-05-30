@@ -17,6 +17,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ActivityDeleteCategoryBinding;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Icon;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.viewmodel.accountVM.AddCategoryViewModel;
 import com.example.expensetracker.viewmodel.accountVM.DeleteCategoryViewModel;
@@ -86,7 +87,8 @@ public class DeleteCategoryActivity extends AppCompatActivity {
                 Intent intent1 = new Intent();
                 intent1.putExtra("typedelete",title);
                 setResult(1,intent1);
-                Toast.makeText(DeleteCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(DeleteCategoryActivity.this, message, 1000);
+//                Toast.makeText(DeleteCategoryActivity.this, message, Toast.LENGTH_SHORT).show();
                 if (message == "Xóa danh mục thành công")
                     finish();
             }

@@ -11,7 +11,7 @@
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_salary"
+        android:src="@drawable/error"
         android:layout_marginLeft="50dp"/>
 
     <TextView

@@ -26,12 +26,14 @@ import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.Helper;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.CategoryAdapter;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.view.addTransaction.ChooseWalletFragment;
 import com.example.expensetracker.view.addTransaction.ThousandSeparatorTextWatcher;
 import com.example.expensetracker.viewmodel.AddTransactionViewModel;
 import com.example.expensetracker.viewmodel.ModifyTransactionViewModel;
+import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.google.gson.Gson;
 
 import java.sql.Timestamp;
@@ -199,12 +201,15 @@ public class ModifyTransactionActivity extends AppCompatActivity {
         money.addTextChangedListener(new ThousandSeparatorTextWatcher(money));
         modifyTransactionViewModel.message.observe(this, message -> {
             if (message != null) {
-                Toast.makeText(ModifyTransactionActivity.this, message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(ModifyTransactionActivity.this, message, 1000);
+//                Toast.makeText(ModifyTransactionActivity.this, message, Toast.LENGTH_SHORT).show();
                 if (message.equals("Sửa giao dịch thành công!")) {
                     Intent resultIntent = new Intent();
                     Gson gson = new Gson();
                     String updatedTransactionJson = gson.toJson(modifyTransactionViewModel.getUpdatedTransaction(transaction));
                     resultIntent.putExtra("updatedTransaction", updatedTransactionJson);
+                    TransactionViewModel transactionViewModel = new TransactionViewModel();
+                    transactionViewModel.loadTransactions(transaction.getUserId(), getBaseContext());
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 }

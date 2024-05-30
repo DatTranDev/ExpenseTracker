@@ -14,10 +14,14 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.TransactionRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ModifyTransactionViewModel extends BaseObservable {
     private Context context;
@@ -31,11 +35,13 @@ public class ModifyTransactionViewModel extends BaseObservable {
     public ObservableField<String> image = new ObservableField<>("");
     public ObservableField<Timestamp> timeTransaction= new ObservableField<>();
     private final MutableLiveData<String> _message = new MutableLiveData<>();
+    public List<TransactionExp> listTransaction = new ArrayList<>();
     public LiveData<String> message = _message;
     public ModifyTransactionViewModel(Context context)
     {
-
         user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        Type type = new TypeToken<List<TransactionExp>>() {}.getType();
+        listTransaction = SharedPreferencesManager.getInstance(context).getList("transactions", type);
     }
 
     public void setData(TransactionExp transaction) {
@@ -91,7 +97,16 @@ public class ModifyTransactionViewModel extends BaseObservable {
 
             TransactionRepository.getInstance().updateTransaction(transactionExp.getId(), newTransaction, new ApiCallBack<TransactionExp>() {
                 @Override
-                public void onSuccess(TransactionExp transactionExp) {
+                public void onSuccess(TransactionExp transaction) {
+                    newTransaction.setId(transactionExp.getId());
+                    for (int i = 0; i < listTransaction.size(); i++) {
+                        if (listTransaction.get(i).getId() == newTransaction.getId()) {
+                            listTransaction.set(i, newTransaction);
+                            break;
+                        }
+                    }
+                    SharedPreferencesManager.getInstance(context).removeKey("transactions");
+                    SharedPreferencesManager.getInstance(context).saveList("transactions", listTransaction);
                     _message.setValue("Sửa giao dịch thành công!");
                 }
 

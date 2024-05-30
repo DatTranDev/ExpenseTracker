@@ -67,14 +67,17 @@ public class AddCategoryViewModel extends BaseObservable {
             Log.e("Test: ", "Success");
             if(nameCategory.get()==null){
                 showMessage("Vui lòng nhập tên danh mục mới");
+                return;
             }
             if(iconCategory.get()==null)
             {
                 showMessage("Vui lòng chọn icon cho danh mục");
+                return;
             }
             if (parentCategory.get() == null)
             {
                 showMessage("Vui lòng chọn danh mục cha");
+                return;
             }
         }
         else {

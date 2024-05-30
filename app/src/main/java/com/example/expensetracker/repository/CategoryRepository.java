@@ -89,4 +89,33 @@ public class CategoryRepository {
             }
         });
     }
+
+    public synchronized void updateCategory(String id, CategoryReq categoryReq, ApiCallBack<Category> callback) {
+        categoryApi.updateCategory(id, categoryReq).enqueue(new Callback<DataResponse<Category>>() {
+            @Override
+            public void onResponse(Call<DataResponse<Category>> call, retrofit2.Response<DataResponse<Category>> response) {
+                if (response.isSuccessful()) {
+                    DataResponse<Category> responseData = response.body();
+                    callback.onSuccess(responseData.getData());
+                } else {
+                    if (response.code() == 400) {
+                        try {
+                            // Parse the error body if the status code is 400
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            callback.onError(jObjError.getString("message"));
+                        } catch (Exception e) {
+                            callback.onError("Failed to update category");
+                        }
+                    } else {
+                        callback.onError("Failed to update category");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataResponse<Category>> call, Throwable t) {
+                callback.onError("Server error, please try again later: " + t.getMessage());
+            }
+        });
+    }
 }
