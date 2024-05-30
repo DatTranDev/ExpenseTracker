@@ -17,7 +17,22 @@
         android:id="@+id/progress_bar_fund"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:alpha="1"
+        android:elevation="10dp"
+        android:indeterminateTint="@color/accent_green"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.36"
+        android:background="@color/light_gray"
+        android:orientation="vertical"
         android:visibility="gone"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,6 +63,42 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linerLayoutisEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rounded_background_20"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
+
+                <TextView
+                    android:id="@+id/wallet_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="Không có quỹ nào"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fund_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
+                    tools:listitem="@layout/fund_item"></androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout5"
@@ -133,7 +184,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.432"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollView7">
+                app:layout_constraintTop_toBottomOf="@+id/linerLayoutisEmpty">
 
                 <TextView
                     android:id="@+id/txtThongTinGiaoDich"
@@ -231,54 +282,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
-                    tools:listitem="@layout/member_item">
-                </androidx.recyclerview.widget.RecyclerView>
+                    tools:listitem="@layout/member_item"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-
-            <ScrollView
-                android:id="@+id/scrollView7"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/rounded_background_20"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy">
-
-                <LinearLayout
-                    android:id="@+id/linerLayoutisEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="47dp">
-
-                    <TextView
-                        android:id="@+id/wallet_empty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
-                        android:text="Không có quỹ nào"
-                        android:textAlignment="center"
-                        android:textSize="16sp"
-                        android:visibility="gone" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fund_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutQuy"
-                        tools:listitem="@layout/fund_item"></androidx.recyclerview.widget.RecyclerView>
-
-                </LinearLayout>
-            </ScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

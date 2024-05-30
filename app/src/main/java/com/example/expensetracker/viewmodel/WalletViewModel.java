@@ -120,7 +120,9 @@ public class WalletViewModel extends ViewModel {
                 if(addedWallet.isSharing()){
                     Toast.makeText(context, "Tạo quỹ thành công", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(context, "Tạo ví thành công", Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(context, "Tạo ví thành công", Toast.LENGTH_SHORT).show();
+                }
                 SharedPreferencesManager.getInstance(context).saveList("wallets", walletList);
             }
 
