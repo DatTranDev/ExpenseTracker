@@ -95,10 +95,20 @@ public class WalletViewModel extends ViewModel {
 //        walletsLiveData.setValue(walletList);
 //        isLoading.setValue(false);
 
-        AppUserRepository.getInstance().getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
+        appUserRepository.getInstance().getSharingWallet(userId, new ApiCallBack<List<Wallet>>() {
             @Override
             public synchronized void onSuccess(List<Wallet> wallets) {
-                walletList = wallets;
+                List<Wallet> sharingWallets = new ArrayList<>();
+                for (Wallet wallet : wallets) {
+                    if (wallet.isSharing()) {
+                        for(AppUser appUser: wallet.getMembers()){
+                            if (appUser.getId().equals(userId)){
+                                sharingWallets.add(wallet);
+                            }
+                        }
+                    }
+                }
+                walletList = sharingWallets;
                 walletsLiveData.setValue(walletList);
                 isLoading.setValue(false);
             }
@@ -237,6 +247,10 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet removeMemberWallet) {
                 for (AppUser user : fund.getMembers()) {
+                    if(user.getId().equals(removeMemberReq.getUserId())){
+                        Toast.makeText(context, "Không thể tự xóa bản thân", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if (user.getId().equals(removeMemberReq.getRemoveUserId())) {
                         fund.getMembers().remove(user);
                         break;
