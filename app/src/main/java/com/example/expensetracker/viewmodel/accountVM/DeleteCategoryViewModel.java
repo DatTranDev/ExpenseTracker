@@ -75,7 +75,7 @@ public class DeleteCategoryViewModel extends BaseObservable {
             }
             @Override
             public void onError(String message) {
-                showMessage("Xóa danh mục thất bại");
+                showMessage(message);
             }
         });
     }
