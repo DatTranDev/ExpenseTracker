@@ -76,8 +76,8 @@ public class AddTransactionViewModel extends BaseObservable {
     public synchronized void addTransaction() {
         showMessage("Start");
         final Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+//        calendar.set(Calendar.MILLISECOND, 0);
         Timestamp currentDate = new Timestamp(calendar.getTimeInMillis());
         if (timeTransaction.get() == null) {
             timeTransaction.set(currentDate);

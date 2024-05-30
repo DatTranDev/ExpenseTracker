@@ -141,8 +141,7 @@ public class mainAddActivity extends AppCompatActivity {
                     String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                     timeTran.setText(selectedDate);
                     Calendar selectedCalendar = Calendar.getInstance();
-                    selectedCalendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-                    selectedCalendar.set(Calendar.MILLISECOND, 0);
+                    selectedCalendar.set(year, monthOfYear, dayOfMonth);
                     addTransactionViewModel.timeTransaction.set(new Timestamp(selectedCalendar.getTimeInMillis()));
 //                    System.out.println("Selected Timestamp: " + addTransactionViewModel.getTimeTransaction().toString());
                 }

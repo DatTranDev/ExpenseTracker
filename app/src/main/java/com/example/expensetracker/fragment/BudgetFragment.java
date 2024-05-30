@@ -330,7 +330,6 @@ public class BudgetFragment extends Fragment {
         }
     }
     public void getData(){
-        Log.d("test","đã vào 2");
         allTransactions= mainBudgetViewModel.listTransaction.get();
         allBudgets= mainBudgetViewModel.listBudget.get();
         updateDateRange();
