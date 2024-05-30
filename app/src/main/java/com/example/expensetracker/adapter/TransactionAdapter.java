@@ -62,7 +62,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         holder.transactionTime.setText(Helper.formatDate(transactionExp.getCreatedAt()));
         holder.transactionName.setText(String.valueOf(transactionExp.getCategory().getName()));
-        holder.transactionType.setText(String.valueOf(transactionExp.getNote()));
+        holder.transactionType.setText(transactionExp.getNote() != null ? String.valueOf(transactionExp.getNote()) : "");
+
 
         String iconName = transactionExp.getCategory().getIcon().getLinking();
         int iconId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());

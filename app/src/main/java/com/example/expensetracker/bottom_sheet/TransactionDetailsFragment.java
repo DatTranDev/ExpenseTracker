@@ -44,6 +44,8 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
     private ImageView transactionImage;
     private TextView btnModify;
     private ImageButton btnBack;
+    private LinearLayout borrowerLayout;
+    private TextView transactionBorrowerName, type;
     private Button btnDelete;
 
     public static TransactionDetailsFragment newInstance(TransactionExp transactionExp) {
@@ -83,7 +85,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
                 int maxHeight = getResources().getDisplayMetrics().heightPixels;
-                maxHeight = maxHeight - maxHeight / 4;
+                maxHeight = maxHeight - maxHeight / 8;
 
                 ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                 if (layoutParams != null) {
@@ -148,6 +150,9 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
         btnBack = view.findViewById(R.id.btnBack);
         transactionImage = view.findViewById(R.id.transaction_image);
         btnDelete = view.findViewById(R.id.btnDelete);
+        borrowerLayout = view.findViewById(R.id.borrower_layout);
+        transactionBorrowerName = view.findViewById(R.id.name_borrower);
+        type = view.findViewById(R.id.type);
     }
 
     private void setTransactionData() {
@@ -158,6 +163,30 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
                 String iconName = transactionExp.getCategory().getIcon().getLinking();
                 int iconId = getContext().getResources().getIdentifier(iconName, "drawable", getContext().getPackageName());
                 transactionCategoryIcon.setImageResource(iconId);
+
+                if (!transactionExp.getCategory().getType().equals("Khoản thu") && !transactionExp.getCategory().getType().equals("Khoản chi")) {
+                    borrowerLayout.setVisibility(View.VISIBLE);
+                    transactionBorrowerName.setText(transactionExp.getPartner());
+                    switch (transactionExp.getCategory().getType()) {
+                        case "Đi vay":
+                            type.setText("Người vay");
+                            break;
+                        case "Cho vay":
+                            type.setText("Người cho vay");
+                            break;
+                        case "Thu nợ":
+                            type.setText("Người thu nợ");
+                            break;
+                        case "Trả nợ":
+                            type.setText("Người vay nợ");
+                            break;
+                        default:
+                            type.setText("");
+                            break;
+                    }
+                } else {
+                    borrowerLayout.setVisibility(View.GONE);
+                }
             } else {
                 transactionType.setText(transactionExp.getCategory().getType());
                 transactionCategory.setText(transactionExp.getCategory().getName());
@@ -170,7 +199,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
             transactionAmount.setText(Helper.formatCurrency(transactionExp.getSpend()));
             walletName.setText(transactionExp.getWallet() != null ? transactionExp.getWallet().getName() : "");
 
-            if (!transactionExp.getImage().isEmpty()) {
+            if (transactionExp.getImage() != null) {
                 transactionImage.setVisibility(View.VISIBLE);
                 Glide.with(this)
                         .load(transactionExp.getImage())
