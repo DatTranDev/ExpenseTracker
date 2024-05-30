@@ -98,6 +98,10 @@ public class DeleteCategoryViewModel extends BaseObservable {
         }
         else {
             CategoryReq categoryReq;
+            if(iconCategory.get()==null)
+            {
+                iconCategory.set(category.get().getIcon());
+            }
             if (parentCate.get().getId() == null){
                 categoryReq = new CategoryReq(user.getId(), nameCategory.get().toString(), Objects.requireNonNull(iconCategory.get()).getId(), null,type.get().toString(),false );
             }
