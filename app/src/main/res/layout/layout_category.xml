@@ -12,7 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_salary"
+        android:src="@drawable/error"
         android:layout_marginLeft="14dp"/>
 
     <TextView

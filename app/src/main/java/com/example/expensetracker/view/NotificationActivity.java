@@ -21,6 +21,7 @@ import com.example.expensetracker.model.Request;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.RequestRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.example.expensetracker.utils.ToastUtil;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -96,13 +97,15 @@ public class NotificationActivity extends AppCompatActivity {
                List<Wallet> sharingWallets = SharedPreferencesManager.getInstance(NotificationActivity.this).getList("sharingWallets", listType);
                sharingWallets.add(wallet);
                SharedPreferencesManager.getInstance(NotificationActivity.this).saveList("sharingWallets", sharingWallets);
+               ToastUtil.showCustomToast(NotificationActivity.this, "Thành công tham gia quỹ "+wallet.getName(), 1000);
 
-               Toast.makeText(NotificationActivity.this, "Thành công tham gia quỹ "+wallet.getName(), Toast.LENGTH_SHORT).show();
+//               Toast.makeText(NotificationActivity.this, "Thành công tham gia quỹ "+wallet.getName(), Toast.LENGTH_SHORT).show();
            }
 
            @Override
            public void onError(String message) {
-               Toast.makeText(NotificationActivity.this, message, Toast.LENGTH_SHORT).show();
+               ToastUtil.showCustomToast(NotificationActivity.this, message, 1000);
+//               Toast.makeText(NotificationActivity.this, message, Toast.LENGTH_SHORT).show();
                // Show error message (implement as needed)
            }
        });
@@ -123,13 +126,15 @@ public class NotificationActivity extends AppCompatActivity {
                             public synchronized void onSuccess(Request response) {
                                 refreshNotification();
                                 // Show success message (implement as needed)
-                                Toast.makeText(NotificationActivity.this, "Từ chối thành công", Toast.LENGTH_SHORT).show();
+                                ToastUtil.showCustomToast(NotificationActivity.this, "Từ chối thành công", 1000);
+//                                Toast.makeText(NotificationActivity.this, "Từ chối thành công", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onError(String message) {
                                 // Show error message
-                                Toast.makeText(NotificationActivity.this, "Từ chối thất bại", Toast.LENGTH_SHORT).show();
+                                ToastUtil.showCustomToast(NotificationActivity.this, "Từ chối thất bại", 1000);
+//                                Toast.makeText(NotificationActivity.this, "Từ chối thất bại", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
