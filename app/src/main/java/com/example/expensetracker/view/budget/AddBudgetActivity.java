@@ -26,6 +26,7 @@ import com.example.expensetracker.databinding.ActivityAddTransactionBinding;
 import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.utils.SharedPreferencesManager;
+import com.example.expensetracker.utils.ToastUtil;
 import com.example.expensetracker.view.addTransaction.ChooseCategoryActivity;
 import com.example.expensetracker.view.addTransaction.ThousandSeparatorTextWatcher;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
@@ -99,8 +100,9 @@ public class AddBudgetActivity extends AppCompatActivity {
         });
         addBudgetViewModel.message.observe(this, message -> {
             if (message != null) {
-                // Hiển thị thông báo
-                Toast.makeText(AddBudgetActivity.this, message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(this,message,1000);
+//                // Hiển thị thông báo
+//                Toast.makeText(AddBudgetActivity.this, message, Toast.LENGTH_SHORT).show();
                 if(message.equals("Thêm ngân sách thành công"))
                 {
                     setResult(1);
