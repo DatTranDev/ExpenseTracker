@@ -28,11 +28,13 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.FundAdapter;
 import com.example.expensetracker.adapter.MemberAdapter;
 import com.example.expensetracker.adapter.TransactionAdapter;
+import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.bottom_sheet.WalletUpdateListener;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
+import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
@@ -102,29 +104,42 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
         initView(view);
 
+        FundFragmentActivity fundFragmentActivity = FundFragmentActivity.newInstance();
+        fundFragmentActivity.show(getActivity().getSupportFragmentManager(), fundFragmentActivity.getTag());
+        fundFragmentActivity.dismiss();
+
         setupRecyclerViews(view);
         setupClickListeners();
         observeLoadingState();
 
         walletViewModel.loadFunds(user.getId());
-        walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), wallets -> {
-            fundAdapter.updateWallet(wallets);
-            fundAdapter.notifyDataSetChanged();
-        });
         observeWalletViewModel();
 
         transactionViewModel.loadIsSharingTransactions(user.getId());
         observeTransactionViewModel();
 
-        if(!walletViewModel.getWalletsLiveData().getValue().isEmpty()) {
-            currentWallet = walletViewModel.getWalletsLiveData().getValue().get(0);
-            Toast.makeText(getContext(), "Đã chọn quỹ " + currentWallet.getName(), Toast.LENGTH_SHORT).show();
-        }
+        AppUserRepository.getInstance().getSharingWallet(user.getId(), new ApiCallBack<List<Wallet>>() {
+            @Override
+            public synchronized void onSuccess(List<Wallet> wallets) {
+                List<Wallet> sharingWallets = new ArrayList<>();
+                for (Wallet wallet : wallets) {
+                    if (wallet.isSharing()) {
+                        for(AppUser appUser: wallet.getMembers()){
+                            if (appUser.getId().equals(user.getId())){
+                                sharingWallets.add(wallet);
+                            }
+                        }
+                    }
+                }
+                currentWallet = sharingWallets.get(0);
+                Toast.makeText(getContext(), "Đã chọn quỹ " + currentWallet.getName(), Toast.LENGTH_SHORT).show();
+            }
 
-        FundFragmentActivity fundFragmentActivity = FundFragmentActivity.newInstance();
-        fundFragmentActivity.show(getActivity().getSupportFragmentManager(), fundFragmentActivity.getTag());
-        fundFragmentActivity.dismiss();
-
+            @Override
+            public void onError(String message) {
+               return;
+            }
+        });
         return view;
     }
 
@@ -183,7 +198,11 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
                 List<Wallet> sharingWallets = new ArrayList<>();
                 for (Wallet wallet : wallets) {
                     if (wallet.isSharing()) {
-                        sharingWallets.add(wallet);
+                        for(AppUser appUser: wallet.getMembers()){
+                            if (appUser.getId().equals(user.getId())){
+                                sharingWallets.add(wallet);
+                            }
+                        }
                     }
                 }
                 subFunds = sharingWallets;

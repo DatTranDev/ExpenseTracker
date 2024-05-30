@@ -39,72 +39,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FundTransactionActivity extends BottomSheetDialogFragment implements TransactionAdapter.OnItemClickListener{
-    private static final String KEY_WALLET_LIST = "wallet_list";
     private ImageView btnReturn;
     private Button btnAdd;
     private TransactionAdapter transactionAdapter;
-    private List<TransactionExp> sharingTransactionExps = new ArrayList<>();
     private List<TransactionExp> allTransactions = new ArrayList<>();
     private TransactionViewModel transactionViewModel;
     private LinearLayout transactionEmpty;
-    private View view;
+    private AppUser user;
 
     public FundTransactionActivity(){}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            allTransactions = getArguments().getParcelableArrayList(KEY_WALLET_LIST);
-        }
         transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Gọi lại các hàm cần thiết để làm mới dữ liệu và cập nhật giao diện
+        transactionViewModel.loadIsSharingTransactions(user.getId());
+        observeTransactionViewModel();
     }
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.activity_fund_transaction, null);
-        bottomSheetDialog.setContentView(viewDialog);
+    public synchronized View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_fund_transaction, container, false);
 
+        user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
 
-        AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
+        initView(view);
+        setupRecycleView(view);
 
-        initView(viewDialog);
         transactionViewModel.loadIsSharingTransactions(user.getId());
         observeTransactionViewModel();
 
-        btnReturn.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
-        bottomSheetDialog.setOnShowListener(dialog -> {
-            BottomSheetDialog d = (BottomSheetDialog) dialog;
-            FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
-                int maxHeight = getResources().getDisplayMetrics().heightPixels;
-
-                ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-                if (layoutParams != null) {
-                    layoutParams.height = maxHeight;
-                    bottomSheet.setLayoutParams(layoutParams);
-                }
-            }
-        });
+        btnReturn.setOnClickListener(v -> dismiss());
 
         btnAdd.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), mainAddActivity.class);
             startActivity(intent);
         });
 
-        MainActivity mainActivity = (MainActivity)getActivity();
-        RecyclerView rvTransaction = viewDialog.findViewById(R.id.fund_transaction_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
-        rvTransaction.setLayoutManager(linearLayoutManager);
-        transactionAdapter = new TransactionAdapter(getContext(), allTransactions, this);
-        rvTransaction.setAdapter(transactionAdapter);
-        return bottomSheetDialog;
+        return view;
     }
 
     private void initView(View view) {
@@ -125,7 +104,7 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
             }
 
             if (transactionExpsisSharing.isEmpty()) {
-                transactionEmpty.setVisibility(View.VISIBLE);
+               transactionEmpty.setVisibility(View.VISIBLE);
             } else {
                 transactionEmpty.setVisibility(View.GONE);
             }
@@ -138,6 +117,27 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
     }
 
+    public void setupRecycleView(View view){
+        LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(requireActivity());
+        RecyclerView rvTransaction = view.findViewById(R.id.fund_transaction_list);
+        rvTransaction.setLayoutManager(transactionLayoutManager);
+        transactionAdapter = new TransactionAdapter(getContext(), allTransactions, this);
+        rvTransaction.setAdapter(transactionAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        View view = getView();
+        if (view != null) {
+            View parent = (View) view.getParent();
+            BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(parent);
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            parent.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+            parent.requestLayout();
+        }
+    }
 
     @Override
     public void onItemClick(TransactionExp transactionExp) {
