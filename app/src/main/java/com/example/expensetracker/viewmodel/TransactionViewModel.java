@@ -73,14 +73,14 @@ public class TransactionViewModel extends ViewModel {
             public void onSuccess(List<TransactionExp> transactions) {
                 List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
                 for (TransactionExp exp : transactions) {
-                    Wallet wallet = new Wallet();
-                    wallet.setId(exp.getWalletId());
-                    if (wallet.isSharing()) {
+                    // Assume each transaction contains a reference to its wallet
+                    Wallet wallet = exp.getWallet();
+                    if (wallet != null && wallet.isSharing()) {
                         transactionExpsisSharing.add(exp);
                     }
                 }
-                transactionList = transactionExpsisSharing;
-                transactionsLiveData.setValue(transactionList);
+                // Update LiveData with the filtered list of transactions
+                transactionsLiveData.setValue(transactionExpsisSharing);
                 isLoading.setValue(false);
             }
 
@@ -91,6 +91,7 @@ public class TransactionViewModel extends ViewModel {
             }
         });
     }
+
 
     public void addTransaction(TransactionExp transaction, Context context) {
         TransactionRepository.getInstance().addTransaction(transaction, new ApiCallBack<TransactionExp>() {

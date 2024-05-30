@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.expensetracker.Fund.FundFragmentActivity;
+import com.example.expensetracker.Fund.FundTransactionActivity;
 import com.example.expensetracker.Fund.MemberFragmentActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.FundAdapter;
@@ -66,6 +68,7 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
     private WalletViewModel walletViewModel;
     private TransactionViewModel transactionViewModel;
     private ProgressBar progressBar;
+    private View overlay;
 
     public FundFragment() {
         // Required empty public constructor
@@ -99,20 +102,24 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
         initView(view);
 
-        walletViewModel.loadFunds(user.getId());
-        observeWalletViewModel();
+        setupRecyclerViews(view);
+        setupClickListeners();
+        observeLoadingState();
 
-        if(!walletViewModel.getWalletsLiveData().getValue().isEmpty()) {
-            currentWallet = walletViewModel.getWalletsLiveData().getValue().get(0);
-            Toast.makeText(getContext(), "Select fund " + currentWallet.getName(), Toast.LENGTH_SHORT).show();
-        }
+        walletViewModel.loadFunds(user.getId());
+        walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), wallets -> {
+            fundAdapter.updateWallet(wallets);
+            fundAdapter.notifyDataSetChanged();
+        });
+        observeWalletViewModel();
 
         transactionViewModel.loadIsSharingTransactions(user.getId());
         observeTransactionViewModel();
 
-        setupRecyclerViews(view);
-        setupClickListeners();
-        observeLoadingState();
+        if(!walletViewModel.getWalletsLiveData().getValue().isEmpty()) {
+            currentWallet = walletViewModel.getWalletsLiveData().getValue().get(0);
+            Toast.makeText(getContext(), "Đã chọn quỹ " + currentWallet.getName(), Toast.LENGTH_SHORT).show();
+        }
 
         FundFragmentActivity fundFragmentActivity = FundFragmentActivity.newInstance();
         fundFragmentActivity.show(getActivity().getSupportFragmentManager(), fundFragmentActivity.getTag());
@@ -131,20 +138,21 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
 
         if (Boolean.TRUE.equals(isWalletLoading) || Boolean.TRUE.equals(isTransactionLoading)) {
+            overlay.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         } else {
+            overlay.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
         }
     }
 
     private void observeTransactionViewModel() {
         transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
-            transactionList = transactions;
             List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
-            for (TransactionExp exp : transactionList) {
-                Wallet wallet = new Wallet();
-                wallet.setId(exp.getWalletId());
-                if (wallet.isSharing()) {
+            for (TransactionExp exp : transactions) {
+                // Assume each transaction contains a reference to its wallet
+                Wallet wallet = exp.getWallet();
+                if (wallet != null && wallet.isSharing()) {
                     transactionExpsisSharing.add(exp);
                 }
             }
@@ -166,6 +174,7 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         transactionViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
     }
+
 
     private void observeWalletViewModel() {
         walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), wallets -> {
@@ -195,6 +204,9 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
                     if (appUserList == null) {
                         appUserList = new ArrayList<>(); // Ensure the list is not null
                     }
+                    if(appUserList.size() > MAX_DISPLAY_ITEMS){
+                       appUserList = appUserList.subList(0,MAX_DISPLAY_ITEMS);
+                    }
                     memberAdapter.updateMemberWallet(appUserList);
                     memberAdapter.notifyDataSetChanged();
                 } else {
@@ -216,12 +228,12 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
 
     private void initView(View view) {
         progressBar = view.findViewById(R.id.progress_bar_fund);
+        overlay = view.findViewById(R.id.overlay);
         emptyWallet = view.findViewById(R.id.wallet_empty);
         emptyTransaction = view.findViewById(R.id.transaction_empty);
         emptyMember = view.findViewById(R.id.member_empty);
         showFund = view.findViewById(R.id.show_fund);
         showTransaction = view.findViewById(R.id.show_transaction);
-        progressBar = view.findViewById(R.id.progress_bar_fund);
         showMember = view.findViewById(R.id.show_member);
     }
 
@@ -253,9 +265,13 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
 
         showMember.setOnClickListener(v -> showAllMember());
 
-        showTransaction.setOnClickListener(v -> {
+        showTransaction.setOnClickListener(v -> showAllTransaction());
 
-        });
+    }
+
+    private void showAllTransaction(){
+        FundTransactionActivity fundTransactionActivity = new FundTransactionActivity();
+        fundTransactionActivity.show(getActivity().getSupportFragmentManager(), fundTransactionActivity.getTag());
     }
 
     private void showAllFund(List<Wallet> walletList) {
@@ -279,13 +295,13 @@ public class FundFragment extends Fragment implements TransactionAdapter.OnItemC
         currentWallet = wallet;
         if (currentWallet != null) {
             walletViewModel.loadMembers(user.getId(), currentWallet);
-            Toast.makeText(getContext(), "Select fund " + currentWallet.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Đã chọn quỹ " + currentWallet.getName(), Toast.LENGTH_SHORT).show();
             // Hiển thị lại danh sách thành viên
             List<AppUser> members = currentWallet.getMembers();
             memberAdapter.updateMemberWallet(members != null ? members : new ArrayList<>());
             memberAdapter.notifyDataSetChanged();
         } else {
-            Toast.makeText(getContext(), "No fund have selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Chưa có quỹ nào được chọn", Toast.LENGTH_SHORT).show();
         }
     }
 

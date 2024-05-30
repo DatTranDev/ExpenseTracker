@@ -43,7 +43,11 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
             holder.fundAmount.setText(Helper.formatCurrency(wallet.getAmount()));
             holder.fundName.setText(wallet.getName());
             holder.itemView.setTag(wallet);
-            holder.itemView.setBackgroundColor(selectedPosition == position ? Color.GREEN : Color.TRANSPARENT);
+            if (selectedPosition == position) {
+                holder.itemView.setBackgroundResource(R.drawable.fund_table_layout_background_select);
+            } else {
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
         }
     }
 
