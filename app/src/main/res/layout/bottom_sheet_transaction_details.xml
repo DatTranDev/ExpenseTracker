@@ -223,6 +223,45 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/borrower_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/borrower"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_borrower"
+                    android:layout_gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_marginStart="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Người vay"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/montserrat"/>
+                    <TextView
+                        android:id="@+id/name_borrower"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/montserrat"
+                        android:text=""
+                        android:layout_marginTop="8dp"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
