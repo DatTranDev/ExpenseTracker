@@ -100,13 +100,14 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
 
-//        check = false;
-//        check = SharedPreferencesManager.getInstance(getContext()).getObject("toggle_state",Boolean.class);
-//        if (check)
-//        {
-//            Log.e("check",check.toString());
-//            NotifictionAccount.scheduleDailyNotification(getContext());
-//        }
+        check = false;
+        if(SharedPreferencesManager.getInstance(getContext()).getObject("toggle_state",Boolean.class)==null)
+            check =false;
+        if (check)
+        {
+            Log.e("check",check.toString());
+            NotifictionAccount.scheduleDailyNotification(getContext());
+        }
         initView(view);
 
         userName.setText(user.getUserName());
