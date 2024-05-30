@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.adapter.WalletAdapter;
+import com.example.expensetracker.bottom_sheet.NotifictionAccount;
 import com.example.expensetracker.bottom_sheet.ReportsFragment;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
 import com.example.expensetracker.bottom_sheet.WalletFragment;
@@ -77,6 +78,7 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
     private ChartViewModel chartViewModel;
     private TransactionViewModel transactionViewModel;
     private ProgressBar progressBar;
+    private Boolean check;
     private View overlay;
     public HomeFragment() {
 
@@ -98,6 +100,13 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
 
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
 
+        check = false;
+        check = SharedPreferencesManager.getInstance(getContext()).getObject("toggle_state",Boolean.class);
+        if (check)
+        {
+            Log.e("check",check.toString());
+            NotifictionAccount.scheduleDailyNotification(getContext());
+        }
         initView(view);
 
         userName.setText(user.getUserName());
