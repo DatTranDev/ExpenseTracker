@@ -62,7 +62,7 @@ public class WalletFragment extends BottomSheetDialogFragment implements WalletS
         initView(binding.getRoot());
         observeViewModel();
 
-        walletViewModel.loadWallets(user.getId());
+        walletViewModel.loadWallets(user.getId(), getContext());
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override

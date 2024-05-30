@@ -12,6 +12,9 @@
         <variable
             name="transactionExp"
             type="com.example.expensetracker.model.TransactionExp" />
+        <variable
+            name="transactionViewModel"
+            type="com.example.expensetracker.viewmodel.TransactionViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
