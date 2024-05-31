@@ -66,20 +66,22 @@ public class TransactionViewModel extends ViewModel {
         });
     }
 
-    public void loadIsSharingTransactions(String userId) {
+    public void loadIsSharingTransactions(String userId, Wallet fund) {
         isLoading.setValue(true);
         appUserRepository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
                 List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
                 for (TransactionExp exp : transactions) {
-                    // Assume each transaction contains a reference to its wallet
-                    Wallet wallet = exp.getWallet();
-                    if (wallet != null && wallet.isSharing()) {
-                        transactionExpsisSharing.add(exp);
+                    // Kiểm tra nếu exp hoặc wallet là null
+                    if (exp != null) {
+                        Wallet wallet = exp.getWallet();
+                        if (wallet != null && wallet.isSharing() && fund != null && wallet.getId().equals(fund.getId())) {
+                            transactionExpsisSharing.add(exp);
+                        }
                     }
                 }
-                // Update LiveData with the filtered list of transactions
+                // Update LiveData với danh sách các giao dịch đã lọc
                 transactionsLiveData.setValue(transactionExpsisSharing);
                 isLoading.setValue(false);
             }
@@ -91,7 +93,6 @@ public class TransactionViewModel extends ViewModel {
             }
         });
     }
-
 
     public void addTransaction(TransactionExp transaction, Context context) {
         TransactionRepository.getInstance().addTransaction(transaction, new ApiCallBack<TransactionExp>() {

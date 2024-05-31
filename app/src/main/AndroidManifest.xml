@@ -24,6 +24,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".adapter.FundTransactionAdapter"
+            android:exported="false" />
+        <activity
             android:name=".Fund.FundTransactionActivity"
             android:exported="false" />
         <activity
@@ -94,7 +97,7 @@
             android:exported="true" />
         <activity
             android:name=".view.addTransaction.ChooseCategoryActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".view.budget.AddBudgetActivity"
             android:exported="true" />
@@ -124,7 +127,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <receiver android:name=".utils.NotificationReceiver"
+        <receiver
+            android:name=".utils.NotificationReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
