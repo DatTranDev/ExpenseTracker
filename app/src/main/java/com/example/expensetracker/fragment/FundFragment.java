@@ -210,13 +210,7 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         walletViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
             List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
             for (TransactionExp exp : transactions) {
-                // Kiểm tra nếu exp hoặc wallet là null
-                if (exp != null) {
-                    Wallet wallet = exp.getWallet();
-                    if (wallet != null && wallet.isSharing() && currentWallet != null && wallet.getId().equals(currentWallet.getId())) {
-                        transactionExpsisSharing.add(exp);
-                    }
-                }
+                transactionExpsisSharing.add(exp);
             }
 
             if (transactionExpsisSharing.isEmpty()) {
@@ -318,8 +312,7 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             memberAdapter.notifyDataSetChanged();
 
             // Tải lại danh sách giao dịch khi chọn quỹ mới
-            if(currentWallet != null)
-            walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
+                walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
             observeWalletViewModel(); // Đảm bảo cập nhật observer cho ViewModel
         } else {
             Toast.makeText(getContext(), "Chưa có quỹ nào được chọn", Toast.LENGTH_SHORT).show();
