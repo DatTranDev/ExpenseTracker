@@ -68,6 +68,7 @@ public class MemberFragmentActivity extends BottomSheetDialogFragment implements
         fundName.setText("Thành viên quỹ " + wallet.getName());
 
         walletViewModel.loadMembers(user.getId(), this.wallet);
+        observeViewModel();
 
         imageReturn.setOnClickListener(new View.OnClickListener() {
             @Override

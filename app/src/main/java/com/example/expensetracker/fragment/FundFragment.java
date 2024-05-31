@@ -312,8 +312,8 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             memberAdapter.notifyDataSetChanged();
 
             // Tải lại danh sách giao dịch khi chọn quỹ mới
-                walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
-            observeWalletViewModel(); // Đảm bảo cập nhật observer cho ViewModel
+            walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
+            //observeWalletViewModel(); // Đảm bảo cập nhật observer cho ViewModel
         } else {
             Toast.makeText(getContext(), "Chưa có quỹ nào được chọn", Toast.LENGTH_SHORT).show();
         }
