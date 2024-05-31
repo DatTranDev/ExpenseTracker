@@ -105,7 +105,7 @@ public class AddBudgetViewModel extends BaseObservable {
 
                     @Override
                     public void onError(String message) {
-                        showMessage("Thêm ngân sách thất bại");
+                        showMessage(message);
                     }
                 });
             }

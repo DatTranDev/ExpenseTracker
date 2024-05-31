@@ -187,10 +187,10 @@ public class WalletRepository {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             callback.onError(jObjError.getString("message"));
                         } catch (Exception e) {
-                            callback.onError("Failed to get transactions");
+                            callback.onError("Failed to get transactions: " + e.getMessage());
                         }
                     } else {
-                        callback.onError("Failed to get transactions");
+                        callback.onError("Failed to get transactions: ");
                     }
                 }
             }

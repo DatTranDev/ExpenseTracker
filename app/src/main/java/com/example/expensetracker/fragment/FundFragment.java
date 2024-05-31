@@ -138,9 +138,9 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         observeLoadingState();
 
         walletViewModel.loadFunds(user.getId());
-        observeWalletViewModel();
 
-        walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
+        if(currentWallet != null)
+            walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
         observeWalletViewModel();
 
         return view;
@@ -318,6 +318,7 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             memberAdapter.notifyDataSetChanged();
 
             // Tải lại danh sách giao dịch khi chọn quỹ mới
+            if(currentWallet != null)
             walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
             observeWalletViewModel(); // Đảm bảo cập nhật observer cho ViewModel
         } else {

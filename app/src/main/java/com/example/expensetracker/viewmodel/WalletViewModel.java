@@ -135,18 +135,7 @@ public class WalletViewModel extends ViewModel {
         WalletRepository.getInstance().getTransaction(walletId, new ApiCallBack<List<TransactionExp>>() {
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
-                List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
-                for (TransactionExp exp : transactions) {
-                    // Kiểm tra nếu exp hoặc wallet là null
-                    if (exp != null) {
-                        Wallet wallet = exp.getWallet();
-                        if (wallet != null && wallet.isSharing() && fund != null && walletId.equals(fund.getId())) {
-                            transactionExpsisSharing.add(exp);
-                        }
-                    }
-                }
-                // Update LiveData với danh sách các giao dịch đã lọc
-                transactionsLiveData.setValue(transactionExpsisSharing);
+                transactionsLiveData.setValue(transactions);
                 isLoading.setValue(false);
             }
 
