@@ -109,8 +109,9 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
 
         rvTransaction.setAdapter(transactionAdapter);
         pdfButton.setOnClickListener(v -> {
-            //String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
+            String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
             PDFExporter.exportToPDF(getContext(), allTransactions);
+
             Toast.makeText(getContext(), "PDF exported in downloads", Toast.LENGTH_SHORT).show();
         });
 

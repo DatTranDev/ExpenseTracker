@@ -132,16 +132,16 @@ public class HomeFragment extends Fragment implements TransactionAdapter.OnItemC
             }
         });
 
-        check = false;
-        if(SharedPreferencesManager.getInstance(getContext()).getObject("toggle_state",Boolean.class)==null) {
-            //Log.e("check",null);
-            check = false;
-        }
-        if (check)
-        {
-            //Log.e("check",check.toString());
-            NotifictionAccount.scheduleDailyNotification(getContext());
-        }
+//        check = false;
+//        if(SharedPreferencesManager.getInstance(getContext()).getObject("toggle_state",Boolean.class)==null) {
+//            //Log.e("check",null);
+//            check = false;
+//        }
+//        if (check)
+//        {
+//            //Log.e("check",check.toString());
+//            NotifictionAccount.scheduleDailyNotification(getContext());
+//        }
 
         return view;
 
