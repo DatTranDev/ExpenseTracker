@@ -53,12 +53,19 @@ public class AddTransactionViewModel extends BaseObservable {
     private final MutableLiveData<String> _message = new MutableLiveData<>();
     public LiveData<String> message = _message;
     public List<TransactionExp> listTransaction= new ArrayList<>();
+    public List<Wallet> walletList= new ArrayList<>();
 
     public AddTransactionViewModel(Context context) {
 
         user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
         Type type = new TypeToken<List<TransactionExp>>() {}.getType();
         listTransaction=SharedPreferencesManager.getInstance(context).getList("transactions",type);
+        Type type2 = new TypeToken<List<Wallet>>() {}.getType();
+        List<Wallet> wallets = SharedPreferencesManager.getInstance(context).getList("wallets", type2);
+        List<Wallet> shareWallets = SharedPreferencesManager.getInstance(context).getList("sharingWallets", type2);
+        List<Wallet> allWallet=wallets;
+        allWallet.addAll(shareWallets);
+        walletList=allWallet;
     }
 
 
@@ -125,6 +132,16 @@ public class AddTransactionViewModel extends BaseObservable {
                         listTransaction.add(newTransaction);
                         SharedPreferencesManager.getInstance(context).removeKey("transactions");
                         SharedPreferencesManager.getInstance(context).saveList("transactions", listTransaction);
+                        for (Wallet item:walletList) {
+                            if(item.getId().equals(newTransaction.getWalletId()))
+                            {
+                                item.setAmount(item.getAmount().subtract(newTransaction.getSpend()));
+                                break;
+                            }
+
+                        }
+                        SharedPreferencesManager.getInstance(context).saveList("wallets",walletList);
+
                         showMessage("Thêm giao dịch thành công");
 
                     }
