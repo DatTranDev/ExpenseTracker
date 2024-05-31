@@ -11,13 +11,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.Category;
-
-import com.example.expensetracker.repository.AppUserRepository;
-import com.example.expensetracker.view.addTransaction.CategoryAdapter;
-import com.google.gson.Gson;
-
-
-
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.reflect.TypeToken;
 

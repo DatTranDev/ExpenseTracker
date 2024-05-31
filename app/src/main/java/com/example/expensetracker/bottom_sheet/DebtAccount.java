@@ -1,8 +1,10 @@
 package com.example.expensetracker.bottom_sheet;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,32 +12,35 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import java.lang.reflect.Type;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.adapter.TransactionAdapter;
-import com.example.expensetracker.api.ApiCallBack;
-import com.example.expensetracker.enums.Type;
+//import com.example.expensetracker.enums.Type;
 import com.example.expensetracker.model.AppUser;
 import com.example.expensetracker.model.TransactionExp;
-import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
+import com.example.expensetracker.viewmodel.accountVM.SharedViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DebtAccount extends BottomSheetDialogFragment implements TransactionAdapter.OnItemClickListener{
+public class DebtAccount extends BottomSheetDialogFragment implements TransactionAdapter.OnItemClickListener {
     private static final String KEY_WALLET_LIST = "wallet_list";
     private ImageButton btnCancel;
     private FloatingActionButton btnAdd;
@@ -48,7 +53,6 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
 
     private LinearLayout transactionEmpty;
 
-    private View view;
 
     public DebtAccount(){}
 
@@ -74,7 +78,7 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
         initView(viewDialog);
 
         btnCancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
+        Log.e("debt","hih");
         tabLayoutFilter.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -117,12 +121,14 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
         rvTransaction.setLayoutManager(linearLayoutManager);
         transactionAdapter = new TransactionAdapter(getContext(), allTransactions, this);
-        getTransactionsForUser(user.getId(),1);
+        getTransactionsForUser(1);
         rvTransaction.setAdapter(transactionAdapter);
+
+
         return bottomSheetDialog;
 
-
     }
+
 
     private void filterTransactions(String userId) {
         int check = 0;
@@ -135,7 +141,7 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
                 break;
         }
 
-        getTransactionsForUser(userId, check);
+        getTransactionsForUser(check);
     }
 
     private String getFilter() {
@@ -153,27 +159,23 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
 
     }
 
-    private void getTransactionsForUser(String userId, int check) {
+    private void getTransactionsForUser( int check) {
         List<TransactionExp> filteredTransactions = new ArrayList<>();
-        AppUserRepository repository = AppUserRepository.getInstance();
-        repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
-            @Override
-            public void onSuccess(List<TransactionExp> transactions) {
-                allTransactions = transactions;
+        Type type = new TypeToken<List<TransactionExp>>() {}.getType();
+        List<TransactionExp> current = SharedPreferencesManager.getInstance(getContext()).getList("transactions",type);
+        if (current != null) {
+                allTransactions = current;
                 for (TransactionExp transaction : allTransactions) {
-                    if (check ==1){
-                        List<String> income = Arrays.asList(Type.TRA_NO.getDisplayName(), Type.DI_VAY.getDisplayName());
+                    if (check == 1) {
+                        List<String> income = Arrays.asList("Trả nợ");
                         if (income.contains(transaction.getCategory().getType())) {
                             filteredTransactions.add(transaction);
                         }
-                    } else if (check == 2){
-                        List<String> income1 = Arrays.asList(Type.THU_NO.getDisplayName(), Type.CHO_VAY.getDisplayName());
+                    } else if (check == 2) {
+                        List<String> income1 = Arrays.asList("Cho vay");
                         if (income1.contains(transaction.getCategory().getType()))
                             filteredTransactions.add(transaction);
                     }
-
-                }
-
                 transactionAdapter.updateTransaction(filteredTransactions);
                 transactionAdapter.notifyDataSetChanged();
 
@@ -183,17 +185,29 @@ public class DebtAccount extends BottomSheetDialogFragment implements Transactio
                     transactionEmpty.setVisibility(View.VISIBLE);
                 }
             }
-            @Override
-            public void onError(String errorMessage) {
+        }
+    }
 
-            }
-        });
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        switch (getFilter()) {
+            case "Cần trả":
+                getTransactionsForUser(1);
+                break;
+            case "Cần thu":
+                getTransactionsForUser(2);
+                break;
+        }
     }
 
     @Override
     public void onItemClick(TransactionExp transactionExp) {
         TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
+
         transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
+
     }
+
+
 }

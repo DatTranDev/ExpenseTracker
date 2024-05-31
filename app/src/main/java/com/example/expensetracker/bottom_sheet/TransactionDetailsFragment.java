@@ -1,5 +1,6 @@
 package com.example.expensetracker.bottom_sheet;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +29,7 @@ import com.example.expensetracker.utils.Helper;
 import com.example.expensetracker.view.ModifyTransactionActivity;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
 import com.example.expensetracker.viewmodel.WalletViewModel;
+import com.example.expensetracker.viewmodel.accountVM.SharedViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -49,6 +51,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
     private TextView transactionBorrowerName, type;
     private Button btnDelete;
 
+
     public static TransactionDetailsFragment newInstance(TransactionExp transactionExp) {
         TransactionDetailsFragment transactionDetailsFragment = new TransactionDetailsFragment();
         Bundle bundle = new Bundle();
@@ -57,6 +60,8 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
 
         return transactionDetailsFragment;
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +103,7 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
 
         btnModify.setOnClickListener(v -> modifyTransaction(transactionExp));
         btnBack.setOnClickListener(v -> dismiss());
+
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,12 +180,14 @@ public class TransactionDetailsFragment extends BottomSheetDialogFragment {
                             break;
                         case "Cho vay":
                             type.setText("Người cho vay");
+                            btnDelete.setText("Đã trả hết");
                             break;
                         case "Thu nợ":
                             type.setText("Người thu nợ");
                             break;
                         case "Trả nợ":
                             type.setText("Người vay nợ");
+                            btnDelete.setText("Đã trả hết");
                             break;
                         default:
                             type.setText("");
