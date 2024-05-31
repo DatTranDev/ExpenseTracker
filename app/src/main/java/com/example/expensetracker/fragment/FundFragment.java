@@ -46,7 +46,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FundFragment extends Fragment implements FundTransactionAdapter.OnItemClickListener, WalletUpdateListener, FundAdapter.OnFundClickListener {
+public class FundFragment extends Fragment implements FundTransactionAdapter.OnItemClickListener, WalletUpdateListener, FundAdapter.OnFundClickListener{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -68,12 +68,9 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
     private EditText showMember;
     private TextView emptyWallet;
     private TextView emptyTransaction;
-    private TextView emptyMember;
     private WalletViewModel walletViewModel;
-    private TransactionViewModel transactionViewModel;
     private ProgressBar progressBar;
     private View overlay;
-    private AppUserRepository appUserRepository;
 
     public FundFragment() {
         // Required empty public constructor
@@ -96,7 +93,6 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         walletViewModel = new ViewModelProvider(requireActivity()).get(WalletViewModel.class);
-        transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
     }
 
     @Nullable
@@ -107,7 +103,7 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
         initView(view);
 
-        appUserRepository.getInstance().getSharingWallet(user.getId(), new ApiCallBack<List<Wallet>>() {
+        AppUserRepository.getInstance().getSharingWallet(user.getId(), new ApiCallBack<List<Wallet>>() {
             @Override
             public synchronized void onSuccess(List<Wallet> wallets) {
                 List<Wallet> sharingWallets = new ArrayList<>();
@@ -144,22 +140,20 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         walletViewModel.loadFunds(user.getId());
         observeWalletViewModel();
 
-        transactionViewModel.loadIsSharingTransactions(user.getId(), currentWallet);
-        observeTransactionViewModel();
+        walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
+        observeWalletViewModel();
 
         return view;
     }
 
     private void observeLoadingState() {
         walletViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> updateLoadingState());
-        transactionViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> updateLoadingState());
     }
 
     private void updateLoadingState() {
         Boolean isWalletLoading = walletViewModel.getIsLoading().getValue();
-        Boolean isTransactionLoading = transactionViewModel.getIsLoading().getValue();
 
-        if (Boolean.TRUE.equals(isWalletLoading) || Boolean.TRUE.equals(isTransactionLoading)) {
+        if (Boolean.TRUE.equals(isWalletLoading)) {
             overlay.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         } else {
@@ -167,38 +161,6 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             progressBar.setVisibility(View.GONE);
         }
     }
-
-    private void observeTransactionViewModel() {
-        transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
-            List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
-            for (TransactionExp exp : transactions) {
-                // Kiểm tra nếu exp hoặc wallet là null
-                if (exp != null) {
-                    Wallet wallet = exp.getWallet();
-                    if (wallet != null && wallet.isSharing() && currentWallet != null && wallet.getId().equals(currentWallet.getId())) {
-                        transactionExpsisSharing.add(exp);
-                    }
-                }
-            }
-
-            if (transactionExpsisSharing.isEmpty()) {
-                emptyTransaction.setVisibility(View.VISIBLE);
-            } else {
-                emptyTransaction.setVisibility(View.GONE);
-            }
-
-            if (transactionExpsisSharing.size() > MAX_DISPLAY_ITEMS) {
-                transactionExpsisSharing = transactionExpsisSharing.subList(0, MAX_DISPLAY_ITEMS);
-            }
-
-            transactionAdapter.updateTransaction(transactionExpsisSharing);
-            transactionAdapter.notifyDataSetChanged();
-        });
-
-        transactionViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
-    }
-
 
     private void observeWalletViewModel() {
         walletViewModel.getWalletsLiveData().observe(getViewLifecycleOwner(), wallets -> {
@@ -225,26 +187,54 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
                     Log.e("FundFragment", "Wallet list is empty");
                 }
             }
-
-            walletViewModel.getUsersLiveData().observe(getViewLifecycleOwner(), members -> {
-                if (currentWallet != null) {
-                    List<AppUser> appUserList = currentWallet.getMembers();
-                    if (appUserList == null) {
-                        appUserList = new ArrayList<>(); // Ensure the list is not null
-                    }
-                    if(appUserList.size() > MAX_DISPLAY_ITEMS){
-                       appUserList = appUserList.subList(0,MAX_DISPLAY_ITEMS);
-                    }
-                    memberAdapter.updateMemberWallet(appUserList);
-                    memberAdapter.notifyDataSetChanged();
-                } else {
-                    Log.e("FundFragment", "currentWallet is null");
-                }
-            });
-
             walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
                     Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
         });
+
+        walletViewModel.getUsersLiveData().observe(getViewLifecycleOwner(), members -> {
+            if (currentWallet != null) {
+                List<AppUser> appUserList = currentWallet.getMembers();
+                if (appUserList == null) {
+                    appUserList = new ArrayList<>(); // Ensure the list is not null
+                }
+                if(appUserList.size() > MAX_DISPLAY_ITEMS){
+                    appUserList = appUserList.subList(0,MAX_DISPLAY_ITEMS);
+                }
+                memberAdapter.updateMemberWallet(appUserList);
+                memberAdapter.notifyDataSetChanged();
+            } else {
+                Log.e("FundFragment", "currentWallet is null");
+            }
+        });
+
+        walletViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
+            List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
+            for (TransactionExp exp : transactions) {
+                // Kiểm tra nếu exp hoặc wallet là null
+                if (exp != null) {
+                    Wallet wallet = exp.getWallet();
+                    if (wallet != null && wallet.isSharing() && currentWallet != null && wallet.getId().equals(currentWallet.getId())) {
+                        transactionExpsisSharing.add(exp);
+                    }
+                }
+            }
+
+            if (transactionExpsisSharing.isEmpty()) {
+                emptyTransaction.setVisibility(View.VISIBLE);
+            } else {
+                emptyTransaction.setVisibility(View.GONE);
+            }
+
+            if (transactionExpsisSharing.size() > MAX_DISPLAY_ITEMS) {
+                transactionExpsisSharing = transactionExpsisSharing.subList(0, MAX_DISPLAY_ITEMS);
+            }
+
+            transactionAdapter.updateTransaction(transactionExpsisSharing);
+            transactionAdapter.notifyDataSetChanged();
+        });
+
+        walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
     }
 
 
@@ -259,7 +249,6 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         overlay = view.findViewById(R.id.overlay);
         emptyWallet = view.findViewById(R.id.wallet_empty);
         emptyTransaction = view.findViewById(R.id.transaction_empty);
-        emptyMember = view.findViewById(R.id.member_empty);
         showFund = view.findViewById(R.id.show_fund);
         showTransaction = view.findViewById(R.id.show_transaction);
         showMember = view.findViewById(R.id.show_member);
@@ -329,8 +318,8 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             memberAdapter.notifyDataSetChanged();
 
             // Tải lại danh sách giao dịch khi chọn quỹ mới
-            transactionViewModel.loadIsSharingTransactions(user.getId(), currentWallet);
-            observeTransactionViewModel(); // Đảm bảo cập nhật observer cho ViewModel
+            walletViewModel.loadIsSharingTransactions(currentWallet.getId(), currentWallet);
+            observeWalletViewModel(); // Đảm bảo cập nhật observer cho ViewModel
         } else {
             Toast.makeText(getContext(), "Chưa có quỹ nào được chọn", Toast.LENGTH_SHORT).show();
         }

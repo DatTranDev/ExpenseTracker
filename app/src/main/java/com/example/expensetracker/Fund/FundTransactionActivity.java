@@ -33,6 +33,7 @@ import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.example.expensetracker.view.MainActivity;
 import com.example.expensetracker.view.addTransaction.mainAddActivity;
 import com.example.expensetracker.viewmodel.TransactionViewModel;
+import com.example.expensetracker.viewmodel.WalletViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -47,7 +48,7 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
     private TextView txtTransactionName;
     private FundTransactionAdapter transactionAdapter;
     private List<TransactionExp> allTransactions = new ArrayList<>();
-    private TransactionViewModel transactionViewModel;
+    private WalletViewModel walletViewModel;
     private LinearLayout transactionEmpty;
     private AppUser user;
 
@@ -58,15 +59,15 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
+        walletViewModel = new ViewModelProvider(requireActivity()).get(WalletViewModel.class);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Gọi lại các hàm cần thiết để làm mới dữ liệu và cập nhật giao diện
-        transactionViewModel.loadIsSharingTransactions(user.getId(), this.wallet);
-        observeTransactionViewModel();
+        walletViewModel.loadIsSharingTransactions(this.wallet.getId(), this.wallet);
+        observWalletViewModel();
     }
 
     @NonNull
@@ -81,8 +82,8 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
 
         txtTransactionName.setText("Tất cả giao dịch quỹ " + wallet.getName());
 
-        transactionViewModel.loadIsSharingTransactions(user.getId(), this.wallet);
-        observeTransactionViewModel();
+        walletViewModel.loadIsSharingTransactions(this.wallet.getId(), this.wallet);
+        observWalletViewModel();
 
         btnReturn.setOnClickListener(v -> dismiss());
 
@@ -101,14 +102,14 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
         txtTransactionName = view.findViewById(R.id.txtChiTietGiaoDich);
     }
 
-    private void observeTransactionViewModel() {
-        transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
+    private void observWalletViewModel() {
+        walletViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
             List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
             for (TransactionExp exp : transactions) {
                 // Kiểm tra nếu exp hoặc wallet là null
                 if (exp != null) {
                     Wallet wallet = exp.getWallet();
-                    if (wallet != null && wallet.isSharing() && wallet != null && wallet.getId().equals(wallet.getId())) {
+                    if (wallet != null && wallet.isSharing() && this.wallet != null && wallet.getId().equals(this.wallet.getId())) {
                         transactionExpsisSharing.add(exp);
                     }
                 }
@@ -123,7 +124,7 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
             transactionAdapter.notifyDataSetChanged();
         });
 
-        transactionViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
+        walletViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage ->
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
     }
 
