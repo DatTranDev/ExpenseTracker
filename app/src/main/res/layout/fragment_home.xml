@@ -35,7 +35,7 @@
                 <LinearLayout
                     android:id="@+id/profile"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/rounded_background"
                     android:orientation="horizontal"
                     android:padding="4dp">
@@ -50,7 +50,7 @@
                     <LinearLayout
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
@@ -481,7 +481,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/light_gray"
-            android:alpha="0.36"
+            android:alpha="0.16"
             android:visibility="gone" />
         <ProgressBar
             android:id="@+id/progress_bar"

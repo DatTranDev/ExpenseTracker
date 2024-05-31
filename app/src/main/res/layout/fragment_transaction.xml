@@ -277,7 +277,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/light_gray"
-        android:alpha="0.36"
+        android:alpha="0.16"
         android:visibility="gone" />
     <ProgressBar
         android:id="@+id/progress_bar"

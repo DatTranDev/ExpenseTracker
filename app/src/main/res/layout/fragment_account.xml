@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Tài khoản"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center|center_vertical"/>
     </FrameLayout>
 
@@ -58,7 +58,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/montserrat_semibold"
         android:text="Hoàng Tiến Đạt"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_avt" />
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
             android:text="Ví của tôi"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -135,7 +135,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
             android:text="Danh mục"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/imageView8"
@@ -171,7 +171,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
             android:text="Sổ nợ"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/imageView10"
@@ -183,7 +183,7 @@
     <LinearLayout
         android:id="@+id/account_notifiication_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -207,7 +207,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
             android:text="Bật thông báo hằng ngày"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/imageView12"
@@ -243,7 +243,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
             android:text="Xuất file các giao dịch"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/exporticon"
@@ -279,7 +279,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
             android:text="Đăng xuất"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 

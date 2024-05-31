@@ -226,7 +226,7 @@ public class WalletViewModel extends ViewModel {
 
     }
 
-    public void removeMember(RemoveMemberReq removeMemberReq, Wallet fund, Context context) {
+    public synchronized void removeMember(RemoveMemberReq removeMemberReq, Wallet fund, Context context) {
         // Find the member to remove
         AppUser memberToRemove = null;
         for (AppUser member : fund.getMembers()) {
@@ -234,6 +234,11 @@ public class WalletViewModel extends ViewModel {
                 memberToRemove = member;
                 break;
             }
+        }
+        AppUser user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        if(memberToRemove.getId().equals(user.getId())){
+            Toast.makeText(context, "Không thể tự xóa bản thân", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // If member not found, show a message and return
@@ -247,10 +252,6 @@ public class WalletViewModel extends ViewModel {
             @Override
             public void onSuccess(Wallet removeMemberWallet) {
                 for (AppUser user : fund.getMembers()) {
-                    if(user.getId().equals(removeMemberReq.getUserId())){
-                        Toast.makeText(context, "Không thể tự xóa bản thân", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                     if (user.getId().equals(removeMemberReq.getRemoveUserId())) {
                         fund.getMembers().remove(user);
                         break;
