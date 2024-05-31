@@ -12,6 +12,7 @@ import com.example.expensetracker.api.Wallet.AddMemberReq;
 import com.example.expensetracker.api.Wallet.RemoveMemberReq;
 import com.example.expensetracker.api.Wallet.WalletReq;
 import com.example.expensetracker.model.AppUser;
+import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.UserWallet;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
@@ -31,6 +32,8 @@ public class WalletViewModel extends ViewModel {
     private List<AppUser> userList;
     private MutableLiveData<List<AppUser>> usersLiveData;
     private Wallet fund;
+    private MutableLiveData<List<TransactionExp>> transactionsLiveData;
+    private List<TransactionExp> transactionList;
     private MutableLiveData<String> errorMessageLiveData = new MutableLiveData<>();
     private AppUserRepository appUserRepository;
 
@@ -41,6 +44,9 @@ public class WalletViewModel extends ViewModel {
         userList = new ArrayList<>();
         usersLiveData = new MutableLiveData<>();
         usersLiveData.setValue(userList);
+        transactionList = new ArrayList<>();
+        transactionsLiveData = new MutableLiveData<>();
+        transactionsLiveData.setValue(transactionList);
         isLoading = new MutableLiveData<>();
         fund = new Wallet();
         appUserRepository = AppUserRepository.getInstance();
@@ -54,6 +60,9 @@ public class WalletViewModel extends ViewModel {
     }
 
     public LiveData<List<AppUser>> getUsersLiveData(){return usersLiveData;}
+    public LiveData<List<TransactionExp>> getTransactionsLiveData() {
+        return transactionsLiveData;
+    }
 
     public LiveData<String> getErrorMessageLiveData() {
         return errorMessageLiveData;
@@ -110,6 +119,34 @@ public class WalletViewModel extends ViewModel {
                 }
                 walletList = sharingWallets;
                 walletsLiveData.setValue(walletList);
+                isLoading.setValue(false);
+            }
+
+            @Override
+            public void onError(String message) {
+                errorMessageLiveData.setValue(message);
+                isLoading.setValue(false);
+            }
+        });
+    }
+
+    public void loadIsSharingTransactions(String walletId, Wallet fund) {
+        isLoading.setValue(true);
+        WalletRepository.getInstance().getTransaction(walletId, new ApiCallBack<List<TransactionExp>>() {
+            @Override
+            public void onSuccess(List<TransactionExp> transactions) {
+                List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
+                for (TransactionExp exp : transactions) {
+                    // Kiểm tra nếu exp hoặc wallet là null
+                    if (exp != null) {
+                        Wallet wallet = exp.getWallet();
+                        if (wallet != null && wallet.isSharing() && fund != null && walletId.equals(fund.getId())) {
+                            transactionExpsisSharing.add(exp);
+                        }
+                    }
+                }
+                // Update LiveData với danh sách các giao dịch đã lọc
+                transactionsLiveData.setValue(transactionExpsisSharing);
                 isLoading.setValue(false);
             }
 

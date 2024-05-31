@@ -13,6 +13,7 @@ import com.example.expensetracker.model.TransactionExp;
 import com.example.expensetracker.model.Wallet;
 import com.example.expensetracker.repository.AppUserRepository;
 import com.example.expensetracker.repository.TransactionRepository;
+import com.example.expensetracker.repository.WalletRepository;
 import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -56,34 +57,6 @@ public class TransactionViewModel extends ViewModel {
                 transactionsLiveData.setValue(transactionList);
                 isLoading.setValue(false);
                 SharedPreferencesManager.getInstance(context).saveList("transactions", transactionList);
-            }
-
-            @Override
-            public void onError(String message) {
-                errorMessageLiveData.setValue(message);
-                isLoading.setValue(false);
-            }
-        });
-    }
-
-    public void loadIsSharingTransactions(String userId, Wallet fund) {
-        isLoading.setValue(true);
-        appUserRepository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
-            @Override
-            public void onSuccess(List<TransactionExp> transactions) {
-                List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
-                for (TransactionExp exp : transactions) {
-                    // Kiểm tra nếu exp hoặc wallet là null
-                    if (exp != null) {
-                        Wallet wallet = exp.getWallet();
-                        if (wallet != null && wallet.isSharing() && fund != null && wallet.getId().equals(fund.getId())) {
-                            transactionExpsisSharing.add(exp);
-                        }
-                    }
-                }
-                // Update LiveData với danh sách các giao dịch đã lọc
-                transactionsLiveData.setValue(transactionExpsisSharing);
-                isLoading.setValue(false);
             }
 
             @Override
