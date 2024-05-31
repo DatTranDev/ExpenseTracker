@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
+import com.example.expensetracker.adapter.FundTransactionAdapter;
 import com.example.expensetracker.adapter.TransactionAdapter;
 import com.example.expensetracker.api.ApiCallBack;
 import com.example.expensetracker.bottom_sheet.TransactionDetailsFragment;
@@ -38,16 +40,20 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FundTransactionActivity extends BottomSheetDialogFragment implements TransactionAdapter.OnItemClickListener{
+public class FundTransactionActivity extends BottomSheetDialogFragment implements FundTransactionAdapter.OnItemClickListener{
     private ImageView btnReturn;
     private Button btnAdd;
-    private TransactionAdapter transactionAdapter;
+    private Wallet wallet;
+    private TextView txtTransactionName;
+    private FundTransactionAdapter transactionAdapter;
     private List<TransactionExp> allTransactions = new ArrayList<>();
     private TransactionViewModel transactionViewModel;
     private LinearLayout transactionEmpty;
     private AppUser user;
 
-    public FundTransactionActivity(){}
+    public FundTransactionActivity(Wallet wallet){
+        this.wallet = wallet;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +65,7 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
     public void onResume() {
         super.onResume();
         // Gọi lại các hàm cần thiết để làm mới dữ liệu và cập nhật giao diện
-        transactionViewModel.loadIsSharingTransactions(user.getId());
+        transactionViewModel.loadIsSharingTransactions(user.getId(), this.wallet);
         observeTransactionViewModel();
     }
 
@@ -73,7 +79,9 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
         initView(view);
         setupRecycleView(view);
 
-        transactionViewModel.loadIsSharingTransactions(user.getId());
+        txtTransactionName.setText("Tất cả giao dịch quỹ " + wallet.getName());
+
+        transactionViewModel.loadIsSharingTransactions(user.getId(), this.wallet);
         observeTransactionViewModel();
 
         btnReturn.setOnClickListener(v -> dismiss());
@@ -90,19 +98,21 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
         btnAdd = view.findViewById(R.id.add_transaction);
         btnReturn = view.findViewById(R.id.imageQuayLai);
         transactionEmpty = view.findViewById(R.id.transaction_empty);
+        txtTransactionName = view.findViewById(R.id.txtChiTietGiaoDich);
     }
 
     private void observeTransactionViewModel() {
         transactionViewModel.getTransactionsLiveData().observe(getViewLifecycleOwner(), transactions -> {
             List<TransactionExp> transactionExpsisSharing = new ArrayList<>();
             for (TransactionExp exp : transactions) {
-                // Assume each transaction contains a reference to its wallet
-                Wallet wallet = exp.getWallet();
-                if (wallet != null && wallet.isSharing()) {
-                    transactionExpsisSharing.add(exp);
+                // Kiểm tra nếu exp hoặc wallet là null
+                if (exp != null) {
+                    Wallet wallet = exp.getWallet();
+                    if (wallet != null && wallet.isSharing() && wallet != null && wallet.getId().equals(wallet.getId())) {
+                        transactionExpsisSharing.add(exp);
+                    }
                 }
             }
-
             if (transactionExpsisSharing.isEmpty()) {
                transactionEmpty.setVisibility(View.VISIBLE);
             } else {
@@ -121,7 +131,7 @@ public class FundTransactionActivity extends BottomSheetDialogFragment implement
         LinearLayoutManager transactionLayoutManager = new LinearLayoutManager(requireActivity());
         RecyclerView rvTransaction = view.findViewById(R.id.fund_transaction_list);
         rvTransaction.setLayoutManager(transactionLayoutManager);
-        transactionAdapter = new TransactionAdapter(getContext(), allTransactions, this);
+        transactionAdapter = new FundTransactionAdapter(getContext(), allTransactions, this);
         rvTransaction.setAdapter(transactionAdapter);
     }
 
