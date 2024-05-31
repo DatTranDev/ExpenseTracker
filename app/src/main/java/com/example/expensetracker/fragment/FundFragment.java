@@ -73,6 +73,7 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
     private TransactionViewModel transactionViewModel;
     private ProgressBar progressBar;
     private View overlay;
+    private AppUserRepository appUserRepository;
 
     public FundFragment() {
         // Required empty public constructor
@@ -106,7 +107,7 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         user = SharedPreferencesManager.getInstance(getContext()).getObject("user", AppUser.class);
         initView(view);
 
-        AppUserRepository.getInstance().getSharingWallet(user.getId(), new ApiCallBack<List<Wallet>>() {
+        appUserRepository.getInstance().getSharingWallet(user.getId(), new ApiCallBack<List<Wallet>>() {
             @Override
             public synchronized void onSuccess(List<Wallet> wallets) {
                 List<Wallet> sharingWallets = new ArrayList<>();
@@ -124,13 +125,6 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
                 FundTransactionActivity fundTransactionActivity = new FundTransactionActivity(currentWallet);
                 fundTransactionActivity.show(getActivity().getSupportFragmentManager(), fundTransactionActivity.getTag());
                 fundTransactionActivity.dismiss();
-
-                walletViewModel.loadFunds(user.getId());
-                observeWalletViewModel();
-
-                transactionViewModel.loadIsSharingTransactions(user.getId(), currentWallet);
-                observeTransactionViewModel();
-
             }
 
             @Override
@@ -146,6 +140,12 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
         setupRecyclerViews(view);
         setupClickListeners();
         observeLoadingState();
+
+        walletViewModel.loadFunds(user.getId());
+        observeWalletViewModel();
+
+        transactionViewModel.loadIsSharingTransactions(user.getId(), currentWallet);
+        observeTransactionViewModel();
 
         return view;
     }
@@ -327,6 +327,10 @@ public class FundFragment extends Fragment implements FundTransactionAdapter.OnI
             List<AppUser> members = currentWallet.getMembers();
             memberAdapter.updateMemberWallet(members != null ? members : new ArrayList<>());
             memberAdapter.notifyDataSetChanged();
+
+            // Tải lại danh sách giao dịch khi chọn quỹ mới
+            transactionViewModel.loadIsSharingTransactions(user.getId(), currentWallet);
+            observeTransactionViewModel(); // Đảm bảo cập nhật observer cho ViewModel
         } else {
             Toast.makeText(getContext(), "Chưa có quỹ nào được chọn", Toast.LENGTH_SHORT).show();
         }
