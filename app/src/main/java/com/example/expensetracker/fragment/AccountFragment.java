@@ -123,9 +123,9 @@ public class AccountFragment extends Fragment implements TransactionAdapter.OnIt
 
         account_notification = view.findViewById(R.id.account_notifiication_layout);
         account_notification.setOnClickListener(v -> {
-
-            NotifictionAccount notifictionAccount = new NotifictionAccount();
-            notifictionAccount.show(getActivity().getSupportFragmentManager(), notifictionAccount.getTag());
+        Toast.makeText(getActivity(),"Tính năng đang được phát triển",Toast.LENGTH_SHORT).show();
+//            NotifictionAccount notifictionAccount = new NotifictionAccount();
+//            notifictionAccount.show(getActivity().getSupportFragmentManager(), notifictionAccount.getTag());
 //            Intent intent = new Intent(getActivity(), NotifictionAccount.class);
 //            startActivity(intent);
         });
