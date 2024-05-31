@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class DeleteCategoryActivity extends AppCompatActivity {
     ImageView iconCategory;
     ImageView iconParentCategory;
     Button deletebtn;
+    EditText name;
 
     Button modifybtn;
 
@@ -64,10 +66,12 @@ public class DeleteCategoryActivity extends AppCompatActivity {
 
 
         iconCategory= findViewById(R.id.iconcategory);
-        iconCategory.setOnClickListener(v -> {
-            Intent intent1 = new Intent(DeleteCategoryActivity.this, ChooseIconActivity.class);
-            startActivityForResult(intent1,69);
-        });
+        if (!title.equals("Vay/nợ")) {
+            iconCategory.setOnClickListener(v -> {
+                Intent intent1 = new Intent(DeleteCategoryActivity.this, ChooseIconActivity.class);
+                startActivityForResult(intent1, 69);
+            });
+        }
 
 
         iconParentCategory = findViewById(R.id.iconparent);
@@ -93,10 +97,12 @@ public class DeleteCategoryActivity extends AppCompatActivity {
         Log.e("title",title);
         deletebtn = findViewById(R.id.delete_category);
         modifybtn = findViewById(R.id.modify_category);
-        if (Objects.equals(title, "Vay/nợ") || parentCategory == null){
+        name = findViewById(R.id.editTextText);
+        if (Objects.equals(title, "Vay/nợ") ){
             Log.e("delete","true");
-           // deletebtn.setVisibility(View.GONE);
-           // modifybtn.setVisibility(View.GONE);
+            deletebtn.setVisibility(View.GONE);
+            modifybtn.setVisibility(View.GONE);
+            name.setFocusable(false);
         }
 
         deleteCategoryViewModel.get_message().observe(this, message -> {

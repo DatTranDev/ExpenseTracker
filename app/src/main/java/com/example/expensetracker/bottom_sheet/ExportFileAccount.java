@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,8 +53,9 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
     private List<TransactionExp> allTransactions = new ArrayList<>();
 
     private LinearLayout transactionEmpty;
-
-
+    private ProgressBar progressBar;
+    private View overlay;
+    private Boolean isLoading;
     public ExportFileAccount(){}
 
 
@@ -73,6 +76,14 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
 
         AppUser user = SharedPreferencesManager.getInstance(getActivity()).getObject("user", AppUser.class);
         initView(viewDialog);
+
+        isLoading = true;
+
+        if (isLoading)
+        {
+            overlay.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
         bottomSheetDialog.setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
             FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
@@ -87,12 +98,15 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
                 }
             }
         });
+
+
         MainActivity mainActivity = (MainActivity)getActivity();
         RecyclerView rvTransaction = viewDialog.findViewById(R.id.account_transaction_export);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mainActivity);
         rvTransaction.setLayoutManager(linearLayoutManager);
         transactionAdapter = new TransactionAdapter(getContext(),allTransactions, this);
         getTransactionsForUser(user.getId());
+
         rvTransaction.setAdapter(transactionAdapter);
         pdfButton.setOnClickListener(v -> {
             //String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/transactions.pdf";
@@ -109,6 +123,7 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         repository.getTransaction(userId, new ApiCallBack<List<TransactionExp>>() {
             @Override
             public void onSuccess(List<TransactionExp> transactions) {
+                isLoading = false;
                 allTransactions = transactions;
                 transactionAdapter.updateTransaction(allTransactions);
                 transactionAdapter.notifyDataSetChanged();
@@ -117,6 +132,8 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
                 } else {
                     transactionEmpty.setVisibility(View.VISIBLE);
                 }
+                overlay.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
             @Override
             public void onError(String errorMessage) {
@@ -129,12 +146,14 @@ public class ExportFileAccount extends BottomSheetDialogFragment implements Tran
         pdfButton = view.findViewById(R.id.account_pdf);
         btnback = view.findViewById(R.id.back);
         transactionEmpty = view.findViewById(R.id.export_empty);
+        progressBar = view.findViewById(R.id.progress_bar);
+        overlay = view.findViewById(R.id.overlay);
     }
 
     @Override
     public void onItemClick(TransactionExp transactionExp) {
-        TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
-        transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
+        //TransactionDetailsFragment transactionDetailsFragment = TransactionDetailsFragment.newInstance(transactionExp);
+        //transactionDetailsFragment.show(getActivity().getSupportFragmentManager(), transactionDetailsFragment.getTag());
     }
 
 

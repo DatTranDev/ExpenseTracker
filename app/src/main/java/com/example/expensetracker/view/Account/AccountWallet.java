@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,8 +53,10 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
     private WalletUpdateListener walletUpdateListener;
 
     private WalletViewModel walletViewModel;
-    private AccountWalletViewModel accountWalletViewModel;
+    private ProgressBar progressBar;
     private List<Wallet> wallets;
+    private View overlay;
+    private Boolean isLoading;
 
 //    public static AccountWallet newInstance(List<Wallet> walletList) {
 //        AccountWallet accountWallet = new AccountWallet();
@@ -67,17 +70,14 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_wallet);
-
-
         AccountWalletBinding binding = DataBindingUtil.setContentView(this, R.layout.account_wallet);
 //        accountWalletViewModel = new AccountWalletViewModel();
 //        binding.setAccountWalletViewModel(accountWalletViewModel);
         walletViewModel =  new ViewModelProvider(this).get(WalletViewModel.class);
-
-
         initView();
-        observeViewModel();
 
+        observeViewModel();
+        observeLoadingState();
         user = SharedPreferencesManager.getInstance(this).getObject("user", AppUser.class);
 //        accountWalletViewModel.loadWallets(user.getId());
         walletViewModel.loadWallets(user.getId(), this);
@@ -90,10 +90,26 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
 
     }
 
+    private void observeLoadingState() {
+        walletViewModel.getIsLoading().observe(this, isLoading -> updateLoadingState());
+    }
+
+    private void updateLoadingState() {
+        Boolean isWalletLoading = walletViewModel.getIsLoading().getValue();
+
+        if (Boolean.TRUE.equals(isWalletLoading)) {
+            overlay.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            overlay.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
     private void observeViewModel() {
         walletViewModel.getWalletsLiveData().observe(this, wallets -> {
             walletAdapter.updateWallet(wallets);
-            //setData(wallets);
+
         });
 
         walletViewModel.getErrorMessageLiveData().observe(this, errorMessage ->
@@ -108,6 +124,8 @@ public class AccountWallet extends AppCompatActivity implements WalletUpdateList
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         walletAdapter = new WalletShowAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(walletAdapter);
+        progressBar = findViewById(R.id.progress_bar);
+        overlay = findViewById(R.id.overlay);
     }
 
 //    private void setData() {
