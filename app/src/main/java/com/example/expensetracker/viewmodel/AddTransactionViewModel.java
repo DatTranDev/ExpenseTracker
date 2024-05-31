@@ -57,15 +57,23 @@ public class AddTransactionViewModel extends BaseObservable {
     public List<Wallet> listShare= new ArrayList<>();
 
     public AddTransactionViewModel(Context context) {
+        try
+        {
+            user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+            Type type = new TypeToken<List<TransactionExp>>() {}.getType();
+            listTransaction=SharedPreferencesManager.getInstance(context).getList("transactions",type);
+            Type type2 = new TypeToken<List<Wallet>>() {}.getType();
+            List<Wallet> wallets = SharedPreferencesManager.getInstance(context).getList("wallets", type2);
+            List<Wallet> shareWallets = SharedPreferencesManager.getInstance(context).getList("sharingWallets", type2);
+            listShare=shareWallets;
+            walletList=wallets;
+        }
+        catch (Exception ex)
+        {
+            showMessage("Không tải được dữ liệu");
+        }
 
-        user = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
-        Type type = new TypeToken<List<TransactionExp>>() {}.getType();
-        listTransaction=SharedPreferencesManager.getInstance(context).getList("transactions",type);
-        Type type2 = new TypeToken<List<Wallet>>() {}.getType();
-        List<Wallet> wallets = SharedPreferencesManager.getInstance(context).getList("wallets", type2);
-        List<Wallet> shareWallets = SharedPreferencesManager.getInstance(context).getList("sharingWallets", type2);
-        listShare=shareWallets;
-        walletList=wallets;
+
     }
 
 

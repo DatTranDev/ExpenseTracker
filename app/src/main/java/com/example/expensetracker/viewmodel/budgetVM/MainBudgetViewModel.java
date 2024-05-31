@@ -18,11 +18,12 @@ import com.example.expensetracker.utils.SharedPreferencesManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainBudgetViewModel extends BaseObservable {
-   public ObservableField<List<TransactionExp>> listTransaction= new ObservableField<>();
-   public ObservableField<List<Budget>> listBudget= new ObservableField<>();
+   public ObservableField<List<TransactionExp>> listTransaction= new ObservableField<>(new ArrayList<>());
+   public ObservableField<List<Budget>> listBudget= new ObservableField<>(new ArrayList<>());
     private final MutableLiveData<String> _message = new MutableLiveData<>();
     public LiveData<String> message = _message;
 
@@ -37,31 +38,36 @@ public class MainBudgetViewModel extends BaseObservable {
 
     }
     public synchronized void  getData(Context context){
-        Log.d("test","đã vào 1");
 //        SharedPreferences sharedPreferences = context.getSharedPreferences("budgets", Context.MODE_PRIVATE);
-        String budgetsJson = SharedPreferencesManager.getInstance(context).getString("budgets","null");
-        if(!budgetsJson.equals("null")) {
+        try
+        {
+            String budgetsJson = SharedPreferencesManager.getInstance(context).getString("budgets","null");
+            if(!budgetsJson.equals("null")) {
 
-            Gson gson = new Gson();
-            java.lang.reflect.Type type = new TypeToken<List<Budget>>() {
-            }.getType();
-            List<Budget> list = gson.fromJson(budgetsJson, type);
-            if (list != null) {
-                listBudget.set(list);
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<List<Budget>>() {
+                }.getType();
+                List<Budget> list = gson.fromJson(budgetsJson, type);
+                if (list != null) {
+                    listBudget.set(list);
+                }
+            }
+            String transactionsJson = SharedPreferencesManager.getInstance(context).getString("transactions","null");
+            if(!transactionsJson.equals("null")) {
+
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<List<TransactionExp>>() {
+                }.getType();
+                List<TransactionExp> list = gson.fromJson(transactionsJson, type);
+                if (list != null) {
+                    listTransaction.set(list);
+                }
             }
         }
-        String transactionsJson = SharedPreferencesManager.getInstance(context).getString("transactions","null");
-        if(!transactionsJson.equals("null")) {
-
-            Gson gson = new Gson();
-            java.lang.reflect.Type type = new TypeToken<List<TransactionExp>>() {}.getType();
-            List<TransactionExp> list = gson.fromJson(transactionsJson, type);
-            if (list != null) {
-                listTransaction.set(list);
-            }
+        catch (Exception ex)
+        {
+            showMessage("Không tải được dữ liệu");
         }
-        Log.d("test","đã ra 1");
-
 
     }
 }

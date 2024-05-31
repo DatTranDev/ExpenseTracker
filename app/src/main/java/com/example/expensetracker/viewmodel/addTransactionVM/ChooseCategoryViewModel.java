@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ChooseCategoryViewModel extends BaseObservable {
-    private MutableLiveData<List<Category>> listCategory;
+    private MutableLiveData<List<Category>> listCategory= new MutableLiveData<>(new ArrayList<>());
     private Context context;
     private boolean check;
-    private List<Category> Cate;
+    private List<Category> Cate=new ArrayList<>();
     private ObservableField<String> typeTransaction = new ObservableField<>();
     public void setTypeTransaction(String type) {
         this.typeTransaction.set(type);
@@ -46,7 +46,6 @@ public class ChooseCategoryViewModel extends BaseObservable {
     {
         Type type = new TypeToken<List<Category>>() {}.getType();
         List<Category> list = SharedPreferencesManager.getInstance(context).getList("categories", type);
-        listCategory = new MutableLiveData<>();
         if(list!=null)
         {
             List<Category> sortedCategories = new ArrayList<>();

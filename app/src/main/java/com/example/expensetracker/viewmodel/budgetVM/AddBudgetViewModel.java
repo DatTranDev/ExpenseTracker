@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddBudgetViewModel extends BaseObservable {
@@ -36,7 +37,7 @@ public class AddBudgetViewModel extends BaseObservable {
     public AppUser user;
     private final MutableLiveData<String> _message = new MutableLiveData<>();
     public LiveData<String> message = _message;
-    public ObservableField<List<Budget>> listBudget= new ObservableField<>();
+    public ObservableField<List<Budget>> listBudget= new ObservableField<>(new ArrayList<>());
     public void showMessage(String msg) {
         _message.setValue(msg);
     }
@@ -46,17 +47,10 @@ public class AddBudgetViewModel extends BaseObservable {
         user=SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
         Type type = new TypeToken<List<Budget>>() {}.getType();
         listBudget.set(SharedPreferencesManager.getInstance(context).getList("budgets",type));
-
-
-//        category.observeForever(value->updateButton());
-//        moneyBudget.observeForever(value->updateButton());
-
     }
     public synchronized void addBudget(){
-        Log.d("test","Đã vào 2");
         if(category.get()==null ||  moneyBudget.get()==null || moneyBudget.get().equals("") || user==null)
         {
-            Log.d("test","Đã vào 3");
             if(moneyBudget.get()==null){
                 showMessage("Vui lòng nhập số tiền của giao dịch");
             }
@@ -66,16 +60,9 @@ public class AddBudgetViewModel extends BaseObservable {
             }
         }
         else {
-            Log.d("test","Đã vào 4");
             BigDecimal spend ;
             String cleanString = moneyBudget.get().toString().replaceAll("[,]", "");
             spend=new BigDecimal(cleanString);
-//            int compare= spend.compareTo(wallet.get().getAmount());
-//            if(compare>0)
-//            {
-//                showMessage("Số tiền đã vượt quá số tiền trong ví");
-//                return;
-//            }
             String periodStirng="Tuần";
             if(period.get().equals("Theo tháng"))
             {
@@ -87,7 +74,6 @@ public class AddBudgetViewModel extends BaseObservable {
             }
             try
             {
-                Log.d("test","Đã vào 5");
                 Budget newBudget= new Budget(user.getId(),category.get().getId(),spend,periodStirng);
                 newBudget.setCategory(category.get());
                 BudgetRepository.getInstance().addBudget(newBudget, new ApiCallBack<Budget>() {
@@ -96,7 +82,6 @@ public class AddBudgetViewModel extends BaseObservable {
                         newBudget.setId(budget.getId());
                         listBudget.get().add(newBudget);
                         List<Budget> list= listBudget.get();
-                        Log.d("testtttt",listBudget.get().size()+"aaaaa");
                         SharedPreferencesManager.getInstance(context).saveList("budgets",list);
                         showMessage("Thêm ngân sách thành công");
                         resetData();
@@ -110,7 +95,6 @@ public class AddBudgetViewModel extends BaseObservable {
                 });
             }
             catch (Exception ex){
-                Log.d("test", "lỗi 2");
                 return;
             }
 
