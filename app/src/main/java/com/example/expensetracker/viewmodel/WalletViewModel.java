@@ -268,11 +268,10 @@ public class WalletViewModel extends ViewModel {
             return;
         }
 
-        for (AppUser user : fund.getMembers()) {
-            if(user.getId().equals(removeMemberReq.getUserId())){
-                Toast.makeText(context, "Không thể tự xóa bản thân", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        AppUser nowUser = SharedPreferencesManager.getInstance(context).getObject("user", AppUser.class);
+        if (nowUser.getId().equals(removeMemberReq.getRemoveUserId())) {
+            Toast.makeText(context, "Không thể xóa chính mình", Toast.LENGTH_SHORT).show();
+            return;
         }
         // If member found, proceed to remove the member
         WalletRepository.getInstance().removeMember(removeMemberReq, new ApiCallBack<Wallet>() {
