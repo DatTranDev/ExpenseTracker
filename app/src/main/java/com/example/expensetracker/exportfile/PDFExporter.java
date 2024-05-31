@@ -25,7 +25,7 @@ public class PDFExporter {
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document document = new Document(pdfDoc);
 
-            Paragraph title = new Paragraph("Giao dịch")
+            Paragraph title = new Paragraph("Giao dich")
                     .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
                     .setFontSize(18);
 
@@ -46,7 +46,10 @@ public class PDFExporter {
                 table.addCell(new Cell().add(new Paragraph(transaction.getCategory().getName())));
                 table.addCell(new Cell().add(new Paragraph(transaction.getSpend().toString())));
                 table.addCell(new Cell().add(new Paragraph(transaction.getCreatedAt().toString())));
+                if(transaction.getNote() != null)
                 table.addCell(new Cell().add(new Paragraph(transaction.getNote())));
+                else
+                    table.addCell(new Cell().add(new Paragraph("")));
             }
 
             document.add(table);

@@ -38,7 +38,7 @@
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
                 android:text="Sửa quỹ"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout

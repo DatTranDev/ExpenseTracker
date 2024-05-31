@@ -37,7 +37,7 @@
             android:fontFamily="@font/montserrat_semibold"
             android:gravity="center"
             android:text="Thêm thành viên "
-            android:textSize="20sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ScrollView
