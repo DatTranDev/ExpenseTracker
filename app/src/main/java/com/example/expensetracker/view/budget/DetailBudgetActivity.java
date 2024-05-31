@@ -3,6 +3,7 @@ package com.example.expensetracker.view.budget;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,9 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,13 +195,13 @@ public class DetailBudgetActivity extends AppCompatActivity {
         List<Object> groupedItems = new ArrayList<>();
         if(transactions.size()!=0)
         {
-            Log.d("tttt",transactions.get(0).getCategory().getName());
+
             Timestamp currentDate = transactions.get(0).getCreatedAt();
             groupedItems.add(currentDate);
             for (TransactionExp transaction : transactions) {
                 if(transaction.getCategoryId().equals(budgetItem.budget.getCategoryId()))
                 {
-                    if (!transaction.getCreatedAt().equals(currentDate)) {
+                    if (compareTimestampsByDate(transaction.getCreatedAt(),currentDate)!=0) {
                         currentDate = transaction.getCreatedAt();
                         groupedItems.add(currentDate);
                     }
@@ -231,6 +235,16 @@ public class DetailBudgetActivity extends AppCompatActivity {
             empty.setVisibility(View.VISIBLE);
         }
         return groupedItems;
+    }
+    public static int compareTimestampsByDate(Timestamp timestamp1, Timestamp timestamp2) {
+        // Chuyển đổi Timestamp sang LocalDate
+        LocalDate date1 = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            date1 = timestamp1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate date2 = timestamp2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            return date1.compareTo(date2);
+        }
+        return -1;
     }
 
 }
