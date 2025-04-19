@@ -72,8 +72,10 @@ git clone https://github.com/DatTranDev/ExpenseTracker.git
 ---
 
 ## 📸 Screenshots
-![Shared fund](https://drive.google.com/file/d/11Mw-L9nXfrzijsGtdzJPCrDLVb_1y18Q/view?usp=sharing)
-
+![Shared fund](https://firebasestorage.googleapis.com/v0/b/expensetracker-214d3.appspot.com/o/Screenshot_2025-04-19-14-35-31-858_com.example.expensetracker.jpg?alt=media&token=6cca332c-e0c6-4533-b766-907eb1e14ad5)
+![Budget](https://firebasestorage.googleapis.com/v0/b/expensetracker-214d3.appspot.com/o/Screenshot_2025-04-19-14-38-52-894_com.example.expensetracker.jpg?alt=media&token=2d1a86e8-7b37-4bf0-865e-944c4fc74fe5)
+![Home](https://firebasestorage.googleapis.com/v0/b/expensetracker-214d3.appspot.com/o/Screenshot_2025-04-19-14-39-35-982_com.example.expensetracker.jpg?alt=media&token=58e8843c-addb-4201-a490-7c5f64cbcd9a)
+![Transactions](https://firebasestorage.googleapis.com/v0/b/expensetracker-214d3.appspot.com/o/Screenshot_2025-04-19-14-40-04-622_com.example.expensetracker.jpg?alt=media&token=3655a004-2436-4bc4-94ca-e57fe2110a4e)
 
 ---
 
